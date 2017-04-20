@@ -1,0 +1,19 @@
+{
+  "devDependencies": {},
+  "globalDevDependencies": {
+    "es6-promise": "registry:dt/es6-promise#0.0.0+20160614011821",
+    "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
+    "jquery": "registry:dt/jquery#1.10.0+20160908203239",
+    "react": "registry:dt/react#0.14.0+20160923124221",
+    "react-dom": "registry:dt/react-dom#0.14.0+20160412154040"
+  },
+  "dependencies": {
+    "form-data": "registry:npm/form-data#1.0.0+20160812072516",
+    "hapi": "registry:dt/hapi#13.0.0+20170117215614",
+    "opener": "registry:dt/opener#1.4.0+20170121210853",
+    "request": "registry:dt/request#0.0.0+20161230173603"
+  },
+  "globalDependencies": {
+    "node": "registry:dt/node#7.0.0+20170123051134"
+  }
+}

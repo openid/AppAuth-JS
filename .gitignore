@@ -1,0 +1,16 @@
+.DS_Store
+*~
+*.swp
+.idea
+*.iml
+npm-debug.log
+.vscode
+*.log
+*.stackdump
+
+node_modules/
+built/**/*.js
+bower_components/
+tmp/
+typings/
+*.google

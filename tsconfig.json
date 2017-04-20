@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "rootDir": "src",
+        "outDir": "built",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "jsx": "react",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "strictNullChecks": true,
+        "noEmitOnError": true,
+        "inlineSourceMap": true,
+        "inlineSources": true
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "compileOnSave": true
+}

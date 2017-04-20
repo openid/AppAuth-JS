@@ -1,0 +1,10 @@
+---
+BasedOnStyle: Google
+IndentWidth: 2
+---
+Language: JavaScript
+ColumnLimit: 100
+AlignAfterOpenBracket: AlwaysBreak
+BinPackArguments: false
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false

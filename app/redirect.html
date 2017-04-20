@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>AppAuthJS Redirect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript">
+    var REDIRECT_URI = '/app/index.html';
+    document.addEventListener('DOMContentLoaded', function() {
+      var queryString = window.location.search.substring(1); // includes '?'
+      var path = [REDIRECT_URI, queryString].join('#');
+      setTimeout(function() {
+        window.location.assign(path);
+      }, 1000);
+    });
+  </script>
+</head>
+<body>
+  <h3>
+    For more information on why this redirect page exists, please look:
+    <a href="https://tools.ietf.org/html/rfc6749#section-3.1.2.5">here</a>.
+  </h3>
+</body>
+
+</html>
