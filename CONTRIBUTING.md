@@ -1,6 +1,6 @@
 # Contributing to AppAuth
 
-All contributions to AppAuthJs are welcome!
+All contributions to AppAuth-Js are welcome!
 
 Note that as this library is planned to be used in high-profile production code,
 we insist on a very high standards for the code and design, but don't feel shy:
@@ -46,10 +46,8 @@ discussing your proposal, or email the
 
 ## Coding Standards
 
-The AppAuth library follows the
-[Google Coding Style](https://google.github.io/styleguide/javaguide.html) for
-the Java language. Please review your own code for adherence to the standard
-and make sure to run the `check` gradle target.
+This library uses clang-formatter to automatically format the source, based on the Google
+JavaScript style guide. For more information look at `README.md`.
 
 ## Pull Request Reviews
 
