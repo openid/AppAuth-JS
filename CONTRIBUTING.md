@@ -1,4 +1,4 @@
-# Contributing to AppAuth
+# Contributing to AppAuth-JS
 
 All contributions to AppAuth-Js are welcome!
 
