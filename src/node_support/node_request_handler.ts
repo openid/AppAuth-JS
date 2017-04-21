@@ -61,6 +61,22 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
 
     server.route({
       method: 'GET',
+      path: '/authorize',
+      handler: (hapiRequest: Hapi.Request, hapiResponse: Hapi.IReply) => {
+        let queryParams = hapiRequest.query;
+        let redirectUri = queryParams['url'];
+        if (redirectUri) {
+          let decoded = Buffer.from(redirectUri, 'base64').toString();
+          log('Redirecting to ', decoded);
+          hapiResponse.redirect(decoded);
+        } else {
+          hapiResponse(new Error('Invalid request'));
+        }
+      }
+    });
+
+    server.route({
+      method: 'GET',
       path: '/',
       handler: (hapiRequest: Hapi.Request, hapiResponse: Hapi.IReply) => {
         let queryParams = hapiRequest.query;
@@ -93,7 +109,10 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         .then(() => {
           let url = this.buildRequestUrl(configuration, request);
           log('Making a request to ', request, url);
-          opener(url);
+          let encoded = new Buffer(url).toString('base64');
+          let proxiedUrl = `http://localhost:${this.httpServerPort}/authorize?url=${encoded}`;
+          log('Proxied URL ', proxiedUrl);
+          opener(proxiedUrl);
         })
         .catch(error => {
           log('Something bad happened ', error);
