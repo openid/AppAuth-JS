@@ -53,6 +53,7 @@
     "form-data": "^2.1.2",
     "hapi": "^16.1.0",
     "opener": "^1.4.2",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "typescript": "^2.3.1"
   }
 }

@@ -10,6 +10,8 @@
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
+        "alwaysStrict": true,
+        "noImplicitThis": true,
         "strictNullChecks": true,
         "noEmitOnError": true,
         "inlineSourceMap": true,
