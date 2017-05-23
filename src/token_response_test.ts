@@ -37,7 +37,7 @@ describe('Token Response tests', () => {
         'bearer',
         1 /* issued at */,
         1000 /* expires in*/
-        );
+    );
 
     expect(response).not.toBeNull();
     expect(response.accessToken).toBe(accessToken);

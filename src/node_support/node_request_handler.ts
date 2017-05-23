@@ -13,14 +13,14 @@
  */
 
 import opener = require('opener');
-import Hapi = require('hapi');
+import { Request, ServerConnectionOptions, Server, ServerConnection, ReplyNoContinue } from 'hapi';
 import EventEmitter = require('events');
-import {BasicQueryStringUtils, QueryStringUtils} from '../query_string_utils';
-import {AuthorizationRequest, AuthorizationRequestJson} from '../authorization_request';
-import {AuthorizationRequestHandler, AuthorizationRequestResponse, BUILT_IN_PARAMETERS, generateRandom} from '../authorization_request_handler';
-import {AuthorizationError, AuthorizationResponse, AuthorizationResponseJson} from '../authorization_response'
-import {AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson} from '../authorization_service_configuration';
-import {log} from '../logger';
+import { BasicQueryStringUtils, QueryStringUtils } from '../query_string_utils';
+import { AuthorizationRequest, AuthorizationRequestJson } from '../authorization_request';
+import { AuthorizationRequestHandler, AuthorizationRequestResponse, BUILT_IN_PARAMETERS, generateRandom } from '../authorization_request_handler';
+import { AuthorizationError, AuthorizationResponse, AuthorizationResponseJson, AuthorizationErrorJson } from '../authorization_response'
+import { AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson } from '../authorization_service_configuration';
+import { log } from '../logger';
 
 class ServerEventsEmitter extends EventEmitter {
   static ON_UNABLE_TO_START = 'unable_to_start';
@@ -30,7 +30,7 @@ class ServerEventsEmitter extends EventEmitter {
 export class NodeBasedHandler extends AuthorizationRequestHandler {
   httpServerPort: number;
   // the handle to the current authorization request
-  authorizationPromise: Promise<AuthorizationRequestResponse|null>|null;
+  authorizationPromise: Promise<AuthorizationRequestResponse | null> | null;
 
   constructor(httpServerPort?: number, utils?: QueryStringUtils) {
     super(utils || new BasicQueryStringUtils());
@@ -40,11 +40,11 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
   }
 
   performAuthorizationRequest(
-      configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest) {
+    configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest) {
     // use opener to launch a web browser and start the authorization flow.
     // start a web server to handle the authorization response.
-    const server = new Hapi.Server();
-    server.connection(<Hapi.IServerConnectionOptions>{port: this.httpServerPort});
+    const server = new Server();
+    server.connection(<ServerConnectionOptions>{ port: this.httpServerPort });
     const emitter = new ServerEventsEmitter();
 
     this.authorizationPromise = new Promise<AuthorizationRequestResponse>((resolve, reject) => {
@@ -62,14 +62,14 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
     server.route({
       method: 'GET',
       path: '/',
-      handler: (hapiRequest: Hapi.Request, hapiResponse: Hapi.IReply) => {
-        let queryParams = hapiRequest.query;
-        let state: string|undefined = queryParams['state'];
-        let code: string|undefined = queryParams['code'];
-        let error: string|undefined = queryParams['error'];
+      handler: (hapiRequest: Request, hapiResponse: ReplyNoContinue) => {
+        let queryParams = hapiRequest.query as (AuthorizationResponseJson & AuthorizationErrorJson);
+        let state = queryParams['state'];
+        let code = queryParams['code'];
+        let error = queryParams['error'];
         log('Handling Authorization Request ', queryParams, state, code, error);
-        let authorizationResponse: AuthorizationResponse|null = null;
-        let authorizationError: AuthorizationError|null = null;
+        let authorizationResponse: AuthorizationResponse | null = null;
+        let authorizationError: AuthorizationError | null = null;
         if (error) {
           // get additional optional info.
           let errorUri = queryParams['error_uri'];
@@ -79,10 +79,10 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
           authorizationResponse = new AuthorizationResponse(code!, state!);
         }
         let completeResponse = {
-                        request: request,
-                        response: authorizationResponse,
-                        error: authorizationError
-                      } as AuthorizationRequestResponse;
+          request: request,
+          response: authorizationResponse,
+          error: authorizationError
+        } as AuthorizationRequestResponse;
         emitter.emit(ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE, completeResponse);
         hapiResponse('Close your browser to continue');
         server.stop();
@@ -90,20 +90,20 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
     });
 
     server.start()
-        .then(() => {
-          let url = this.buildRequestUrl(configuration, request);
-          log('Making a request to ', request, url);
-          opener(url);
-        })
-        .catch(error => {
-          log('Something bad happened ', error);
-        });
+      .then(() => {
+        let url = this.buildRequestUrl(configuration, request);
+        log('Making a request to ', request, url);
+        opener(url);
+      })
+      .catch(error => {
+        log('Something bad happened ', error);
+      });
   }
 
-  protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse|null> {
+  protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse | null> {
     if (!this.authorizationPromise) {
       return Promise.reject(
-          'No pending authorization request. Call performAuthorizationRequest() ?');
+        'No pending authorization request. Call performAuthorizationRequest() ?');
     }
 
     return this.authorizationPromise;

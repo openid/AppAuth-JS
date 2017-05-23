@@ -116,7 +116,6 @@ This app uses `npm` to provision it dependencies.
 * `git clone` the `AppAuthJS` library and go to the root folder of
    the project containing `package.json` file.
 * `npm install` to install all the dev and project dependencies.
-* `typings install` to install all TypeScript definitions.
 
 Thats it! You are now ready to start working on `AppAuthJS`.
 
