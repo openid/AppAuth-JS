@@ -36,6 +36,16 @@
   "author": "rahulrav@google.com",
   "license": "MIT",
   "devDependencies": {
+    "@types/es6-promise": "0.0.32",
+    "@types/form-data": "0.0.33",
+    "@types/hapi": "^16.1.2",
+    "@types/jasmine": "^2.5.47",
+    "@types/jquery": "^2.0.45",
+    "@types/node": "^7.0.22",
+    "@types/opener": "^1.4.0",
+    "@types/react": "^15.0.24",
+    "@types/react-dom": "^15.5.0",
+    "@types/request": "0.0.43",
     "browserify": "^13.1.0",
     "clang-format": "^1.0.49",
     "google-closure-compiler": "^20160911.0.0",
@@ -45,7 +55,6 @@
     "karma-browserify": "^5.1.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.1.0",
-    "typescript": "^2.2.2",
     "typings": "^2.1.0",
     "watchify": "^3.7.0"
   },
@@ -54,6 +63,6 @@
     "hapi": "^16.1.0",
     "opener": "^1.4.2",
     "request": "^2.79.0",
-    "typescript": "^2.3.1"
+    "typescript": "^2.3.3"
   }
 }
