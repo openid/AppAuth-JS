@@ -61,7 +61,8 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
       if (this.isTokenResponse(response)) {
         return TokenResponse.fromJson(response);
       } else {
-        return Promise.reject(new AppAuthError(response.error, TokenError.fromJson(response)));
+        return Promise.reject<TokenResponse>(
+            new AppAuthError(response.error, TokenError.fromJson(response)));
       }
     });
   }
