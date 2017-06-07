@@ -37,7 +37,6 @@
     "Node"
   ],
   "devDependencies": {
-    "@types/es6-promise": "0.0.32",
     "@types/form-data": "0.0.33",
     "@types/hapi": "^16.1.2",
     "@types/jasmine": "^2.5.47",
