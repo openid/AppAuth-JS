@@ -1,6 +1,6 @@
 {
   "name": "@openid/appauth",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A general purpose OAuth client.",
   "author": "The OpenID Foundation",
   "license": "Apache-2.0",
@@ -22,7 +22,7 @@
     "compile": "node_modules/typescript/bin/tsc",
     "prepublish": "npm run-script build-app",
     "format": "clang-format -i -style=file src/**.ts",
-    "clean": "rm -rf built/**/*.js",
+    "clean": "rm -rf built",
     "pretest": "npm run-script compile",
     "test": "node_modules/karma/bin/karma start karma.conf --browsers=Chrome --single-run=false --debug",
     "pregzipSize": "npm run-script minify",

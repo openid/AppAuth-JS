@@ -9,7 +9,7 @@ npm-debug.log
 *.stackdump
 
 node_modules/
-built/**/*.js
+built/**/*.*
 bower_components/
 tmp/
 typings/
