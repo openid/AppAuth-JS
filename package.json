@@ -1,7 +1,13 @@
 {
-  "name": "appauth-javascript",
+  "name": "@openid/appauth",
   "version": "0.1.0",
   "description": "A general purpose OAuth client.",
+  "author": "The OpenID Foundation",
+  "license": "Apache-2.0",
+  "repository": "openid/AppAuth-JS",
+  "bugs": {
+    "url": "https://github.com/openid/AppAuth-JS/issues"
+  },
   "main": "built/app/bundle.js",
   "scripts": {
     "preapp": "npm run-script watch",
@@ -14,6 +20,7 @@
     "minify": "java -jar node_modules/google-closure-compiler/compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --js built/app/bundle.js --js_output_file built/app/bundle_minified.js",
     "precompile": "npm run-script clean && npm run-script format",
     "compile": "node_modules/typescript/bin/tsc",
+    "prepublish": "npm run-script build-app",
     "format": "clang-format -i -style=file src/**.ts",
     "clean": "rm -rf built/**/*.js",
     "pretest": "npm run-script compile",
@@ -23,18 +30,12 @@
     "prewatch": "npm run-script format",
     "watch": "node_modules/typescript/bin/tsc --watch &"
   },
-  "repository": {
-    "type": "git",
-    "url": "rpc://team/appauth/AppAuthJS"
-  },
   "keywords": [
     "OAuth",
     "AppAuth",
     "JavaScript",
     "Node"
   ],
-  "author": "rahulrav@google.com",
-  "license": "MIT",
   "devDependencies": {
     "@types/es6-promise": "0.0.32",
     "@types/form-data": "0.0.33",
