@@ -12,7 +12,6 @@
     "src/**",
     "app/**"
   ],
-  "main": "built/app/bundle.js",
   "scripts": {
     "preapp": "npm run-script watch",
     "app": "watchify built/app/index.js -o built/app/bundle.js & http-server -p 8000",
