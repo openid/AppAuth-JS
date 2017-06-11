@@ -10,7 +10,8 @@
   },
   "files": [
     "src/**",
-    "app/**"
+    "app/**",
+    "built/**"
   ],
   "scripts": {
     "preapp": "npm run-script watch",
