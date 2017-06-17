@@ -67,6 +67,6 @@
     "hapi": "^16.1.0",
     "opener": "^1.4.2",
     "request": "^2.79.0",
-    "typescript": "^2.3.3"
+    "typescript": "^2.3.4"
   }
 }
