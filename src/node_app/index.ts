@@ -25,6 +25,8 @@ import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} f
 import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_handler';
 import {TokenError, TokenResponse} from '../token_response';
 
+const PORT = 32111;
+
 /* the Node.js based HTTP client. */
 const requestor = new NodeRequestor();
 
@@ -32,11 +34,9 @@ const requestor = new NodeRequestor();
 const openIdConnectUrl = 'https://accounts.google.com';
 
 /* example client configuration */
-const clientId = '511828570984-dhnshqcpegee66hgnp754dupe8sbas18.apps.googleusercontent.com';
-const redirectUri = 'http://localhost:8000';
+const clientId = '511828570984-7nmej36h9j2tebiqmpqh835naet4vci4.apps.googleusercontent.com';
+const redirectUri = `http://127.0.0.1:${PORT}`;
 const scope = 'openid';
-// TODO(rahulrav@): Figure out a way to get rid of this
-const clientSecret = 'TyBOnDZtguEfaKDHAaZjRP7i';
 
 export class App {
   private notifier: AuthorizationNotifier;
@@ -48,7 +48,7 @@ export class App {
 
   constructor() {
     this.notifier = new AuthorizationNotifier();
-    this.authorizationHandler = new NodeBasedHandler();
+    this.authorizationHandler = new NodeBasedHandler(PORT);
     this.tokenHandler = new BaseTokenRequestHandler(requestor);
     // set notifier to deliver responses
     this.authorizationHandler.setAuthorizationNotifier(this.notifier);
@@ -86,8 +86,7 @@ export class App {
   makeRefreshTokenRequest(configuration: AuthorizationServiceConfiguration, code: string) {
     // use the code to make the token request.
     let request = new TokenRequest(
-        clientId, redirectUri, GRANT_TYPE_AUTHORIZATION_CODE, code, undefined,
-        {'client_secret': clientSecret});
+        clientId, redirectUri, GRANT_TYPE_AUTHORIZATION_CODE, code, undefined);
 
     return this.tokenHandler.performTokenRequest(configuration, request).then(response => {
       log(`Refresh Token is ${response.refreshToken}`);
@@ -97,8 +96,7 @@ export class App {
 
   makeAccessTokenRequest(configuration: AuthorizationServiceConfiguration, refreshToken: string) {
     let request = new TokenRequest(
-        clientId, redirectUri, GRANT_TYPE_REFRESH_TOKEN, undefined, refreshToken,
-        {'client_secret': clientSecret});
+        clientId, redirectUri, GRANT_TYPE_REFRESH_TOKEN, undefined, refreshToken);
 
     return this.tokenHandler.performTokenRequest(configuration, request).then(response => {
       log(`Access Token is ${response.accessToken}`);

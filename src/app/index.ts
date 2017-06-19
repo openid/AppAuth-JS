@@ -44,11 +44,9 @@ declare interface MaterialSnackBar { showSnackbar: (options: SnackBarOptions) =>
 const openIdConnectUrl = 'https://accounts.google.com';
 
 /* example client configuration */
-const clientId = '511828570984-dhnshqcpegee66hgnp754dupe8sbas18.apps.googleusercontent.com';
+const clientId = '511828570984-7nmej36h9j2tebiqmpqh835naet4vci4.apps.googleusercontent.com';
 const redirectUri = 'http://localhost:8000/app/redirect.html';
 const scope = 'openid';
-// TODO(rahulrav@): Figure out a way to get rid of this
-const clientSecret = 'TyBOnDZtguEfaKDHAaZjRP7i';
 
 /**
  * The Test application.
@@ -125,13 +123,12 @@ export class App {
     if (this.code) {
       // use the code to make the token request.
       request = new TokenRequest(
-          clientId, redirectUri, GRANT_TYPE_AUTHORIZATION_CODE, this.code, undefined,
-          {'client_secret': clientSecret});
+          clientId, redirectUri, GRANT_TYPE_AUTHORIZATION_CODE, this.code, undefined);
     } else if (this.tokenResponse) {
       // use the token response to make a request for an access token
       request = new TokenRequest(
           clientId, redirectUri, GRANT_TYPE_REFRESH_TOKEN, undefined,
-          this.tokenResponse.refreshToken, {'client_secret': clientSecret});
+          this.tokenResponse.refreshToken);
     }
 
     if (request) {
