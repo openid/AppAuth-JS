@@ -15,7 +15,8 @@
         "inlineSources": true
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "built"
     ],
     "compileOnSave": true
 }
