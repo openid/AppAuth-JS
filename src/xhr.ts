@@ -43,11 +43,11 @@ export class JQueryRequestor extends Requestor {
  * Should be used only in the context of testing. Just uses the underlying
  * Promise to mock the behavior of the Requestor.
  */
-export class TestRequestor<T> extends Requestor {
-  constructor(public promise: Promise<T>) {
+export class TestRequestor extends Requestor {
+  constructor(public promise: Promise<any>) {
     super();
   }
-  xhr(settings: JQueryAjaxSettings): Promise<T> {
-    return this.promise;
+  xhr<T>(settings: JQueryAjaxSettings): Promise<T> {
+    return this.promise;  // unsafe cast
   }
 }

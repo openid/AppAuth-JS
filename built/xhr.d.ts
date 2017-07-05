@@ -15,8 +15,8 @@ export declare class JQueryRequestor extends Requestor {
  * Should be used only in the context of testing. Just uses the underlying
  * Promise to mock the behavior of the Requestor.
  */
-export declare class TestRequestor<T> extends Requestor {
-    promise: Promise<T>;
-    constructor(promise: Promise<T>);
-    xhr(settings: JQueryAjaxSettings): Promise<T>;
+export declare class TestRequestor extends Requestor {
+    promise: Promise<any>;
+    constructor(promise: Promise<any>);
+    xhr<T>(settings: JQueryAjaxSettings): Promise<T>;
 }
