@@ -33,10 +33,10 @@ export declare class AuthorizationResponse {
  */
 export declare class AuthorizationError {
     error: string;
-    errorDescription: string;
-    errorUri: string;
-    state: string;
-    constructor(error: string, errorDescription?: string, errorUri?: string, state?: string);
+    errorDescription: string | undefined;
+    errorUri: string | undefined;
+    state: string | undefined;
+    constructor(error: string, errorDescription?: string | undefined, errorUri?: string | undefined, state?: string | undefined);
     toJson(): AuthorizationErrorJson;
     static fromJson(json: AuthorizationErrorJson): AuthorizationError;
 }

@@ -20,7 +20,7 @@ export declare class AuthorizationRequest {
     redirectUri: string;
     scope: string;
     responseType: string;
-    extras: StringMap;
+    extras: StringMap | undefined;
     static RESPONSE_TYPE_CODE: string;
     state: string;
     /**
@@ -28,7 +28,7 @@ export declare class AuthorizationRequest {
      * Use a `undefined` value for the `state` parameter, to generate a random
      * state for CSRF protection.
      */
-    constructor(clientId: string, redirectUri: string, scope: string, responseType?: string, state?: string, extras?: StringMap);
+    constructor(clientId: string, redirectUri: string, scope: string, responseType?: string, state?: string, extras?: StringMap | undefined);
     /**
      * Serializes the AuthorizationRequest to a JavaScript Object.
      */
