@@ -25,7 +25,7 @@
     "precompile": "npm run-script clean && npm run-script format",
     "compile": "node_modules/.bin/tsc",
     "prepublish": "npm run-script build-app",
-    "format": "clang-format -i -style=file --glob=src/**.ts",
+    "format": "node_modules/.bin/clang-format -i -style=file --glob=src/**.ts",
     "clean": "rm -rf built",
     "pretest": "npm run-script compile",
     "test": "node_modules/.bin/karma start karma.conf --browsers=Chrome --single-run=false --debug",
