@@ -20,30 +20,33 @@ describe('Authorization Service Configuration Tests', () => {
 
   const authorizationEndpoint = 'authorization://endpoint'
   const tokenEndpoint = 'token://endpoint';
+  const revocationEndpoint = 'revocation://endpoint';
 
   it('Initialization should work', () => {
-    let configuration = new AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint);
+    let configuration = new AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint, revocationEndpoint);
 
     expect(configuration).toBeTruthy();
     expect(configuration.authorizationEndpoint).toBe(authorizationEndpoint);
     expect(configuration.tokenEndpoint).toBe(tokenEndpoint);
+    expect(configuration.revocationEndpoint).toBe(revocationEndpoint);
   });
 
   it('Conversion to Json and back should work', () => {
-    let configuration = new AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint);
+    let configuration = new AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint, revocationEndpoint);
 
     let json = configuration.toJson();
     let newConfiguration = AuthorizationServiceConfiguration.fromJson(json);
     expect(newConfiguration).toBeTruthy();
     expect(newConfiguration.authorizationEndpoint).toBe(configuration.authorizationEndpoint);
     expect(newConfiguration.tokenEndpoint).toBe(configuration.tokenEndpoint);
+    expect(newConfiguration.revocationEndpoint).toBe(configuration.revocationEndpoint);
   });
 
   describe('Tests with dependencies', () => {
 
     it('Fetch from issuer tests should work', (done: DoneFn) => {
       let configuration =
-          new AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint);
+          new AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint, revocationEndpoint);
       let promise: Promise<AuthorizationServiceConfigurationJson> =
           Promise.resolve(configuration.toJson());
       let requestor = new TestRequestor(promise);
@@ -52,6 +55,7 @@ describe('Authorization Service Configuration Tests', () => {
             expect(result).toBeTruthy();
             expect(result.authorizationEndpoint).toBe(configuration.authorizationEndpoint);
             expect(result.tokenEndpoint).toBe(configuration.tokenEndpoint);
+            expect(result.revocationEndpoint).toBe(configuration.revocationEndpoint);
             done();
           });
     });

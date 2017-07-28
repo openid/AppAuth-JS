@@ -21,6 +21,7 @@ import {JQueryRequestor, Requestor} from './xhr';
 export interface AuthorizationServiceConfigurationJson {
   authorization_endpoint: string;
   token_endpoint: string;
+  revocation_endpoint: string;
 }
 
 /**
@@ -39,14 +40,18 @@ const OPENID_CONFIGURATION = 'openid-configuration';
  * Configuration details required to interact with an authorization service.
  */
 export class AuthorizationServiceConfiguration {
-  constructor(public authorizationEndpoint: string, public tokenEndpoint: string) {}
+  constructor(public authorizationEndpoint: string, public tokenEndpoint: string, public revocationEndpoint: string) {}
 
   toJson() {
-    return {authorization_endpoint: this.authorizationEndpoint, token_endpoint: this.tokenEndpoint};
+    return {
+      authorization_endpoint: this.authorizationEndpoint,
+      token_endpoint: this.tokenEndpoint,
+      revocation_endpoint: this.revocationEndpoint
+    };
   }
 
   static fromJson(json: AuthorizationServiceConfigurationJson): AuthorizationServiceConfiguration {
-    return new AuthorizationServiceConfiguration(json.authorization_endpoint, json.token_endpoint);
+    return new AuthorizationServiceConfiguration(json.authorization_endpoint, json.token_endpoint, json.revocationEndpoint);
   }
 
   static fetchFromIssuer(openIdIssuerUrl: string, requestor?: Requestor):
