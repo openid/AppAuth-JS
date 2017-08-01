@@ -88,12 +88,13 @@ export class TokenResponse {
   }
 
   static fromJson(input: TokenResponseJson): TokenResponse {
+    const issuedAt = !input.issued_at ? nowInSeconds() : input.issued_at;
     return new TokenResponse(
         input.access_token,
         input.refresh_token,
         input.scope,
         input.token_type,
-        nowInSeconds(),
+        issuedAt,
         input.expires_in)
   }
 }
