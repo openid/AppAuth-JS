@@ -23,7 +23,8 @@ describe('Authorization Service Configuration Tests', () => {
   const revocationEndpoint = 'revocation://endpoint';
 
   it('Initialization should work', () => {
-    let configuration = new AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint, revocationEndpoint);
+    let configuration = new AuthorizationServiceConfiguration(
+        authorizationEndpoint, tokenEndpoint, revocationEndpoint);
 
     expect(configuration).toBeTruthy();
     expect(configuration.authorizationEndpoint).toBe(authorizationEndpoint);
@@ -32,7 +33,8 @@ describe('Authorization Service Configuration Tests', () => {
   });
 
   it('Conversion to Json and back should work', () => {
-    let configuration = new AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint, revocationEndpoint);
+    let configuration = new AuthorizationServiceConfiguration(
+        authorizationEndpoint, tokenEndpoint, revocationEndpoint);
 
     let json = configuration.toJson();
     let newConfiguration = AuthorizationServiceConfiguration.fromJson(json);
@@ -45,8 +47,8 @@ describe('Authorization Service Configuration Tests', () => {
   describe('Tests with dependencies', () => {
 
     it('Fetch from issuer tests should work', (done: DoneFn) => {
-      let configuration =
-          new AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint, revocationEndpoint);
+      let configuration = new AuthorizationServiceConfiguration(
+          authorizationEndpoint, tokenEndpoint, revocationEndpoint);
       let promise: Promise<AuthorizationServiceConfigurationJson> =
           Promise.resolve(configuration.toJson());
       let requestor = new TestRequestor(promise);
