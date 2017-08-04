@@ -40,7 +40,10 @@ const OPENID_CONFIGURATION = 'openid-configuration';
  * Configuration details required to interact with an authorization service.
  */
 export class AuthorizationServiceConfiguration {
-  constructor(public authorizationEndpoint: string, public tokenEndpoint: string, public revocationEndpoint: string) {}
+  constructor(
+      public authorizationEndpoint: string,
+      public tokenEndpoint: string,
+      public revocationEndpoint: string) {}
 
   toJson() {
     return {
@@ -51,7 +54,8 @@ export class AuthorizationServiceConfiguration {
   }
 
   static fromJson(json: AuthorizationServiceConfigurationJson): AuthorizationServiceConfiguration {
-    return new AuthorizationServiceConfiguration(json.authorization_endpoint, json.token_endpoint, json.revocationEndpoint);
+    return new AuthorizationServiceConfiguration(
+        json.authorization_endpoint, json.token_endpoint, json.revocation_endpoint);
   }
 
   static fetchFromIssuer(openIdIssuerUrl: string, requestor?: Requestor):

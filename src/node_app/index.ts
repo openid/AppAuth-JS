@@ -22,6 +22,7 @@ import {log} from '../logger';
 import {NodeBasedHandler} from '../node_support/node_request_handler';
 import {NodeRequestor} from '../node_support/node_requestor';
 import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../token_request';
+import {RevokeTokenRequest} from '../revoke_token_request';
 import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_handler';
 import {TokenError, TokenResponse} from '../token_response';
 
@@ -100,6 +101,15 @@ export class App {
 
     return this.tokenHandler.performTokenRequest(configuration, request).then(response => {
       log(`Access Token is ${response.accessToken}`);
+      return response;
+    });
+  }
+
+  makeRevokeTokenRequest(configuration: AuthorizationServiceConfiguration, refreshToken: string) {
+    let request = new RevokeTokenRequest(refreshToken);
+
+    return this.tokenHandler.performRevokeTokenRequest(configuration, request).then(response => {
+      log('revoked refreshToken');
       return response;
     });
   }
