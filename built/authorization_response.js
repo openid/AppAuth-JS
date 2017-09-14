@@ -18,7 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * For more information look at
  * https://tools.ietf.org/html/rfc6749#section-4.1.2
  */
-var AuthorizationResponse = (function () {
+var AuthorizationResponse = /** @class */ (function () {
     function AuthorizationResponse(code, state) {
         this.code = code;
         this.state = state;
@@ -37,7 +37,7 @@ exports.AuthorizationResponse = AuthorizationResponse;
  * For more information look at:
  * https://tools.ietf.org/html/rfc6749#section-4.1.2.1
  */
-var AuthorizationError = (function () {
+var AuthorizationError = /** @class */ (function () {
     function AuthorizationError(error, errorDescription, errorUri, state) {
         this.error = error;
         this.errorDescription = errorDescription;

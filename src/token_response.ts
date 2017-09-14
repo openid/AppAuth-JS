@@ -17,7 +17,7 @@
  * For more information see:
  * https://tools.ietf.org/html/rfc6749#section-7.1
  */
-export type TokenType = 'bearer' | 'mac';
+export type TokenType = 'bearer'|'mac';
 
 /**
  * Represents the TokenResponse as a JSON Object.
@@ -36,8 +36,8 @@ export interface TokenResponseJson {
  * For more information look at:
  * https://tools.ietf.org/html/rfc6749#section-5.2
  */
-export type ErrorType = 'invalid_request' | 'invalid_client' | 'invalid_grant' |
-    'unauthorized_client' | 'unsupported_grant_type' | 'invalid_scope';
+export type ErrorType = 'invalid_request'|'invalid_client'|'invalid_grant'|'unauthorized_client'|
+    'unsupported_grant_type'|'invalid_scope';
 
 /**
  * Represents the TokenError as a JSON Object.

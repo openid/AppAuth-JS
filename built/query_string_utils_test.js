@@ -18,7 +18,7 @@ var MOCK_LOCATION_UNDEFINED = 'undefined';
 /**
  * Useful in the context of writing tests.
  */
-var MockLocationLike = (function () {
+var MockLocationLike = /** @class */ (function () {
     function MockLocationLike() {
         this.hash = MOCK_LOCATION_UNDEFINED;
         this.host = MOCK_LOCATION_UNDEFINED;

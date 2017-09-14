@@ -33,8 +33,8 @@ export function generateRandom(): string {
  */
 export type AuthorizationListener =
     (request: AuthorizationRequest,
-     response: AuthorizationResponse | null,
-     error: AuthorizationError | null) => void;
+     response: AuthorizationResponse|null,
+     error: AuthorizationError|null) => void;
 
 /**
  * Represents a structural type holding both authorization request and response.

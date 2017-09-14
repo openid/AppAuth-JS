@@ -17,7 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Represents the AuthorizationService which can be used to make
  * authorization requests and token requests.
  */
-var AuthorizationService = (function () {
+var AuthorizationService = /** @class */ (function () {
     function AuthorizationService() {
         // notifier send the response back to the client.
         this.notifier = null;

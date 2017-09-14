@@ -27,7 +27,7 @@ var errors_1 = require("./errors");
 /**
  * An class that abstracts away the ability to make an XMLHttpRequest.
  */
-var Requestor = (function () {
+var Requestor = /** @class */ (function () {
     function Requestor() {
     }
     return Requestor;
@@ -36,7 +36,7 @@ exports.Requestor = Requestor;
 /**
  * Uses $.ajax to makes the Ajax requests.
  */
-var JQueryRequestor = (function (_super) {
+var JQueryRequestor = /** @class */ (function (_super) {
     __extends(JQueryRequestor, _super);
     function JQueryRequestor() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -60,7 +60,7 @@ exports.JQueryRequestor = JQueryRequestor;
  * Should be used only in the context of testing. Just uses the underlying
  * Promise to mock the behavior of the Requestor.
  */
-var TestRequestor = (function (_super) {
+var TestRequestor = /** @class */ (function (_super) {
     __extends(TestRequestor, _super);
     function TestRequestor(promise) {
         var _this = _super.call(this) || this;
