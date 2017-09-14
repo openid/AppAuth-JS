@@ -30,7 +30,7 @@ var query_string_utils_1 = require("../query_string_utils");
 var authorization_request_handler_1 = require("../authorization_request_handler");
 var authorization_response_1 = require("../authorization_response");
 var logger_1 = require("../logger");
-var ServerEventsEmitter = (function (_super) {
+var ServerEventsEmitter = /** @class */ (function (_super) {
     __extends(ServerEventsEmitter, _super);
     function ServerEventsEmitter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -39,7 +39,7 @@ var ServerEventsEmitter = (function (_super) {
     ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE = 'authorization_response';
     return ServerEventsEmitter;
 }(EventEmitter));
-var NodeBasedHandler = (function (_super) {
+var NodeBasedHandler = /** @class */ (function (_super) {
     __extends(NodeBasedHandler, _super);
     function NodeBasedHandler(httpServerPort, utils) {
         var _this = _super.call(this, utils || new query_string_utils_1.BasicQueryStringUtils()) || this;

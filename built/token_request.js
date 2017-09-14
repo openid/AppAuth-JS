@@ -20,7 +20,7 @@ exports.GRANT_TYPE_REFRESH_TOKEN = 'refresh_token';
  * For more information look at:
  * https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
-var TokenRequest = (function () {
+var TokenRequest = /** @class */ (function () {
     function TokenRequest(clientId, redirectUri, 
         // TODO(rahulrav@): Add the ability to infer grant types.
         grantType, code, refreshToken, extras) {

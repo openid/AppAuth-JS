@@ -28,7 +28,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * All methods take the `DOMString`
  * IDL type (as it is the lowest common denominator).
  */
-var StorageBackend = (function () {
+var StorageBackend = /** @class */ (function () {
     function StorageBackend() {
     }
     return StorageBackend;
@@ -37,7 +37,7 @@ exports.StorageBackend = StorageBackend;
 /**
  * A `StorageBackend` backed by `localstorage`.
  */
-var LocalStorageBackend = (function (_super) {
+var LocalStorageBackend = /** @class */ (function (_super) {
     __extends(LocalStorageBackend, _super);
     function LocalStorageBackend(storage) {
         var _this = _super.call(this) || this;

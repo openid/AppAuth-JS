@@ -26,7 +26,7 @@ var newState = function () {
  * For more information look at
  * https://tools.ietf.org/html/rfc6749#section-4.1.1
  */
-var AuthorizationRequest = (function () {
+var AuthorizationRequest = /** @class */ (function () {
     /**
      * Constructs a new AuthorizationRequest.
      * Use a `undefined` value for the `state` parameter, to generate a random

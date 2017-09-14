@@ -20,7 +20,7 @@ var xhr_1 = require("./xhr");
 /**
  * The default token request handler.
  */
-var BaseTokenRequestHandler = (function () {
+var BaseTokenRequestHandler = /** @class */ (function () {
     function BaseTokenRequestHandler(requestor, utils) {
         if (requestor === void 0) { requestor = new xhr_1.JQueryRequestor(); }
         if (utils === void 0) { utils = new query_string_utils_1.BasicQueryStringUtils(); }
