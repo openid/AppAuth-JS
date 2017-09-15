@@ -15,6 +15,7 @@
 import {AppAuthError} from '../errors';
 import request = require('request');
 import {Requestor} from '../xhr';
+import { log } from '../logger';
 
 /**
  * A Node.js HTTP client.
@@ -31,7 +32,8 @@ export class NodeRequestor extends Requestor {
             headers: settings.headers
           },
           (error, response, body) => {
-            if (error) {
+            if (response.statusCode !== 200) {
+              log('Request ended with an error ', response.statusCode, body);
               reject(new AppAuthError(response.statusMessage!));
             } else {
               resolve(body as T);
