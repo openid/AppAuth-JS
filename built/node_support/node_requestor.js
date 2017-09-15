@@ -30,7 +30,7 @@ var logger_1 = require("../logger");
 /**
  * A Node.js HTTP client.
  */
-var NodeRequestor = (function (_super) {
+var NodeRequestor = /** @class */ (function (_super) {
     __extends(NodeRequestor, _super);
     function NodeRequestor() {
         return _super !== null && _super.apply(this, arguments) || this;

@@ -33,7 +33,7 @@ export class JQueryRequestor extends Requestor {
             resolve(data as T);
           },
           (jqXhr, textStatus, error) => {
-            reject(new AppAuthError(textStatus));
+            reject(new AppAuthError(error));
           });
     });
   }

@@ -16,7 +16,9 @@ parameters in all protocol requests and responses.
 
 ### Examples
 
-An example application using the library is included in the `src/node_app` folder.
+
+An example application using the library is included in the `src/node_app` folder and at https://github.com/googlesamples/appauth-js-electron-sample.
+
 
 #### Auth Flow
 AppAuth supports manual interaction with the Authorization Server where you need to perform

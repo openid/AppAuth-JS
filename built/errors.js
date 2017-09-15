@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Represents the AppAuthError type.
  */
-var AppAuthError = (function () {
+var AppAuthError = /** @class */ (function () {
     function AppAuthError(message, extras) {
         this.message = message;
         this.extras = extras;

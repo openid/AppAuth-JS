@@ -27,7 +27,7 @@ var OPENID_CONFIGURATION = 'openid-configuration';
 /**
  * Configuration details required to interact with an authorization service.
  */
-var AuthorizationServiceConfiguration = (function () {
+var AuthorizationServiceConfiguration = /** @class */ (function () {
     function AuthorizationServiceConfiguration(authorizationEndpoint, tokenEndpoint, revocationEndpoint) {
         this.authorizationEndpoint = authorizationEndpoint;
         this.tokenEndpoint = tokenEndpoint;

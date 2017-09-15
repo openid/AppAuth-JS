@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var BasicQueryStringUtils = (function () {
+var BasicQueryStringUtils = /** @class */ (function () {
     function BasicQueryStringUtils() {
     }
     BasicQueryStringUtils.prototype.parse = function (input, useHash) {

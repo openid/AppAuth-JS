@@ -43,7 +43,7 @@ var AUTHORIZATION_REQUEST_HANDLE_KEY = 'appauth_current_authorization_request';
  * Represents an AuthorizationRequestHandler which uses a standard
  * redirect based code flow.
  */
-var RedirectRequestHandler = (function (_super) {
+var RedirectRequestHandler = /** @class */ (function (_super) {
     __extends(RedirectRequestHandler, _super);
     function RedirectRequestHandler(storageBackend, utils, locationLike) {
         var _this = _super.call(this, utils || new query_string_utils_1.BasicQueryStringUtils()) || this;
