@@ -54,19 +54,28 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
   performRevokeTokenRequest(
       configuration: AuthorizationServiceConfiguration,
       request: RevokeTokenRequest): Promise<boolean> {
+    let headers: StringMap = {'Content-Type': 'application/x-www-form-urlencoded'};
+
+    // TODO: client_secret_basic support
+    /*if (request.needsAuthentication()) {
+      headers['Authorization'] = request.getBasicAuthorizationHeader();
+    }*/
+
     let revokeTokenResponse = this.requestor.xhr<any>({
-      url: configuration.revocationEndpoint + '?' + this.utils.stringify(request.toStringMap()),
+      url: configuration.revocationEndpoint,
+      method: 'POST',
       dataType: 'json',  // adding implicit dataType
-      method: 'GET'
+      headers: headers,
+      data: this.utils.stringify(request.toStringMap())
     });
 
-    return revokeTokenResponse.then(response => {
-      if (Object.keys(response).length === 0 && response.constructor === Object) {
-        return true;
-      } else {
-        return Promise.reject<any>(new AppAuthError(response.error, TokenError.fromJson(response)));
-      }
-    });
+    return revokeTokenResponse
+        .then(response => {
+          return true;
+        })
+        .catch(response => {
+          return Promise.reject(response);
+        });
   }
 
   performTokenRequest(configuration: AuthorizationServiceConfiguration, request: TokenRequest):
@@ -79,14 +88,18 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
       data: this.utils.stringify(request.toStringMap())
     });
 
-    return tokenResponse.then(response => {
-      // check for error response
-      if (this.isTokenResponse(response)) {
-        return TokenResponse.fromJson(response);
-      } else {
-        return Promise.reject<TokenResponse>(
-            new AppAuthError(response.error, TokenError.fromJson(response)));
-      }
-    });
+    return tokenResponse
+        .then(response => {
+          if (this.isTokenResponse(response)) {
+            return TokenResponse.fromJson(response);
+          } else {
+            return Promise.reject<TokenResponse>(
+                new AppAuthError(response.error, TokenError.fromJson(response)));
+          }
+        })
+        .catch(response => {
+          return Promise.reject<TokenResponse>(
+              new AppAuthError(response.error, TokenError.fromJson(response)));
+        });
   }
 }
