@@ -1,10 +1,16 @@
 import { StringMap } from './types';
 /**
+ * Supported token types
+ */
+export declare type TokenTypeHint = 'refresh_token' | 'access_token';
+/**
  * Represents the Token Request as JSON.
  */
 export interface RevokeTokenRequestJson {
     token: string;
-    token_type_hint?: string;
+    token_type_hint?: TokenTypeHint;
+    client_id?: string;
+    client_secret?: string;
 }
 /**
  * Represents a revoke token request.
@@ -13,10 +19,10 @@ export interface RevokeTokenRequestJson {
  */
 export declare class RevokeTokenRequest {
     token: string;
-    tokenTypeHint: string | undefined;
+    tokenTypeHint: "refresh_token" | "access_token" | undefined;
     clientId: string | undefined;
     clientSecret: string | undefined;
-    constructor(token: string, tokenTypeHint?: string | undefined, clientId?: string | undefined, clientSecret?: string | undefined);
+    constructor(token: string, tokenTypeHint?: "refresh_token" | "access_token" | undefined, clientId?: string | undefined, clientSecret?: string | undefined);
     /**
      * Serializes a TokenRequest to a JavaScript object.
      */

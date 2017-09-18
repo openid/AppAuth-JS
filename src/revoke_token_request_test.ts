@@ -12,14 +12,14 @@
  * limitations under the License.
  */
 
+import {RevokeTokenRequest, RevokeTokenRequestJson} from './revoke_token_request';
 import {StringMap} from './types';
 
 describe('Revoke Token Request tests', () => {
 
   const token = 'token';
 
-  let request: RevokeTokenRequest = new RevokeTokenRequest(
-      token);
+  let request: RevokeTokenRequest = new RevokeTokenRequest(token);
 
   it('Basic Revoke Token Request Tests', () => {
     expect(request).not.toBeNull();
@@ -43,8 +43,8 @@ describe('Authenticated Revoke Token Request tests', () => {
   const clientId = 'client_id';
   const clientSecret = 'client_secret';
 
-  let request: RevokeTokenRequest = new RevokeTokenRequest(
-      token, tokenTypeHint, clientId, clientSecret);
+  let request: RevokeTokenRequest =
+      new RevokeTokenRequest(token, tokenTypeHint, clientId, clientSecret);
 
   it('Basic Revoke Token Request Tests', () => {
     expect(request).not.toBeNull();

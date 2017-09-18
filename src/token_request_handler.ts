@@ -54,7 +54,7 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
   performRevokeTokenRequest(
       configuration: AuthorizationServiceConfiguration,
       request: RevokeTokenRequest): Promise<boolean> {
-    let revokeTokenResponse = this.requestor.xhr<any>({
+    let revokeTokenResponse = this.requestor.xhr<boolean>({
       url: configuration.revocationEndpoint,
       method: 'POST',
       dataType: 'json',  // adding implicit dataType
@@ -66,8 +66,8 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
         .then(response => {
           return true;
         })
-        .catch(response => {
-          return Promise.reject(response);
+        .catch(error => {
+          return Promise.reject(error);
         });
   }
 
@@ -81,18 +81,13 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
       data: this.utils.stringify(request.toStringMap())
     });
 
-    return tokenResponse
-        .then(response => {
-          if (this.isTokenResponse(response)) {
-            return TokenResponse.fromJson(response);
-          } else {
-            return Promise.reject<TokenResponse>(
-                new AppAuthError(response.error, TokenError.fromJson(response)));
-          }
-        })
-        .catch(response => {
-          return Promise.reject<TokenResponse>(
-              new AppAuthError(response.error, TokenError.fromJson(response)));
-        });
+    return tokenResponse.then(response => {
+      if (this.isTokenResponse(response)) {
+        return TokenResponse.fromJson(response);
+      } else {
+        return Promise.reject<TokenResponse>(
+            new AppAuthError(response.error, TokenError.fromJson(response)));
+      }
+    });
   }
 }

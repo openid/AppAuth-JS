@@ -15,13 +15,19 @@
 import {StringMap} from './types';
 
 /**
+ * Supported token types
+ */
+export type TokenTypeHint = 'refresh_token'|'access_token';
+
+/**
  * Represents the Token Request as JSON.
  */
 export interface RevokeTokenRequestJson {
   token: string;
-  token_type_hint?: string;
+  token_type_hint?: TokenTypeHint;
+  client_id?: string;
+  client_secret?: string;
 }
-
 
 /**
  * Represents a revoke token request.
@@ -31,7 +37,7 @@ export interface RevokeTokenRequestJson {
 export class RevokeTokenRequest {
   constructor(
       public token: string,
-      public tokenTypeHint?: string,
+      public tokenTypeHint?: TokenTypeHint,
       public clientId?: string,
       public clientSecret?: string) {}
 
@@ -42,6 +48,8 @@ export class RevokeTokenRequest {
     return {
       token: this.token,
       token_type_hint: this.tokenTypeHint,
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
     };
   }
 
@@ -64,6 +72,7 @@ export class RevokeTokenRequest {
   }
 
   static fromJson(input: RevokeTokenRequestJson): RevokeTokenRequest {
-    return new RevokeTokenRequest(input.token);
+    return new RevokeTokenRequest(
+        input.token, input.token_type_hint, input.client_id, input.client_secret);
   }
 }
