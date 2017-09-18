@@ -54,18 +54,11 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
   performRevokeTokenRequest(
       configuration: AuthorizationServiceConfiguration,
       request: RevokeTokenRequest): Promise<boolean> {
-    let headers: StringMap = {'Content-Type': 'application/x-www-form-urlencoded'};
-
-    // TODO: client_secret_basic support
-    /*if (request.needsAuthentication()) {
-      headers['Authorization'] = request.getBasicAuthorizationHeader();
-    }*/
-
     let revokeTokenResponse = this.requestor.xhr<any>({
       url: configuration.revocationEndpoint,
       method: 'POST',
       dataType: 'json',  // adding implicit dataType
-      headers: headers,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       data: this.utils.stringify(request.toStringMap())
     });
 

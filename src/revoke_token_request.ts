@@ -45,22 +45,6 @@ export class RevokeTokenRequest {
     };
   }
 
-  // TODO: http://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication
-  // support client_secret_basic and client_secret_post, this also applies to the token endpoint
-  /*needsAuthentication(): boolean {
-    return this.clientId !== undefined && this.clientSecret !== undefined;
-  }
-
-  getBasicAuthorizationHeader(): string {
-    if (!this.needsAuthentication()) {
-      return '';
-    }
-
-    var credentials = this.clientId + ':' + this.clientSecret;
-    var basicScheme = btoa(credentials);
-    return 'Basic ' + basicScheme;
-  }*/
-
   toStringMap(): StringMap {
     let map: StringMap = {token: this.token};
 
