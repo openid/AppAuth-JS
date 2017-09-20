@@ -16,6 +16,7 @@ import {AuthorizationServiceConfiguration} from './authorization_service_configu
 import {AppAuthError} from './errors';
 import {log} from './logger';
 import {BasicQueryStringUtils, QueryStringUtils} from './query_string_utils';
+import {RevokeTokenRequest} from './revoke_token_request';
 import {TokenRequest} from './token_request';
 import {TokenError, TokenErrorJson, TokenResponse, TokenResponseJson} from './token_response';
 import {StringMap} from './types';
@@ -31,6 +32,10 @@ export interface TokenRequestHandler {
    */
   performTokenRequest(configuration: AuthorizationServiceConfiguration, request: TokenRequest):
       Promise<TokenResponse>;
+
+  performRevokeTokenRequest(
+      configuration: AuthorizationServiceConfiguration,
+      request: RevokeTokenRequest): Promise<boolean>;
 }
 
 /**
@@ -46,6 +51,22 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
     return (response as TokenErrorJson).error === undefined;
   }
 
+  performRevokeTokenRequest(
+      configuration: AuthorizationServiceConfiguration,
+      request: RevokeTokenRequest): Promise<boolean> {
+    let revokeTokenResponse = this.requestor.xhr<boolean>({
+      url: configuration.revocationEndpoint,
+      method: 'POST',
+      dataType: 'json',  // adding implicit dataType
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      data: request.toJson()
+    });
+
+    return revokeTokenResponse.then(response => {
+      return true;
+    });
+  }
+
   performTokenRequest(configuration: AuthorizationServiceConfiguration, request: TokenRequest):
       Promise<TokenResponse> {
     let tokenResponse = this.requestor.xhr<TokenResponseJson|TokenErrorJson>({
@@ -57,7 +78,6 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
     });
 
     return tokenResponse.then(response => {
-      // check for error response
       if (this.isTokenResponse(response)) {
         return TokenResponse.fromJson(response);
       } else {
