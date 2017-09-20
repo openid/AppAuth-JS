@@ -12,8 +12,6 @@
  * limitations under the License.
  */
 
-import {StringMap} from './types';
-
 /**
  * Supported token types
  */
@@ -45,30 +43,21 @@ export class RevokeTokenRequest {
    * Serializes a TokenRequest to a JavaScript object.
    */
   toJson(): RevokeTokenRequestJson {
-    return {
-      token: this.token,
-      token_type_hint: this.tokenTypeHint,
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-    };
-  }
-
-  toStringMap(): StringMap {
-    let map: StringMap = {token: this.token};
+    let json: RevokeTokenRequestJson = {token: this.token};
 
     if (this.tokenTypeHint) {
-      map['token_type_hint'] = this.tokenTypeHint;
+      json['token_type_hint'] = this.tokenTypeHint;
     }
 
     if (this.clientId) {
-      map['client_id'] = this.clientId;
+      json['client_id'] = this.clientId;
     }
 
     if (this.clientSecret) {
-      map['client_secret'] = this.clientSecret;
+      json['client_secret'] = this.clientSecret;
     }
 
-    return map;
+    return json;
   }
 
   static fromJson(input: RevokeTokenRequestJson): RevokeTokenRequest {

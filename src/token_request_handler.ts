@@ -59,16 +59,12 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
       method: 'POST',
       dataType: 'json',  // adding implicit dataType
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      data: this.utils.stringify(request.toStringMap())
+      data: request.toJson()
     });
 
-    return revokeTokenResponse
-        .then(response => {
-          return true;
-        })
-        .catch(error => {
-          return Promise.reject(error);
-        });
+    return revokeTokenResponse.then(response => {
+      return true;
+    });
   }
 
   performTokenRequest(configuration: AuthorizationServiceConfiguration, request: TokenRequest):
