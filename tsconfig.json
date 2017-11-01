@@ -2,13 +2,17 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es5",
-        "lib": [ "dom", "es2015" ],
+        "lib": [
+            "dom",
+            "es2015"
+        ],
         "rootDir": "src",
         "outDir": "built",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "jsx": "react",
         "strict": true,
+        "strictFunctionTypes": true,
         "declaration": true,
         "noEmitOnError": true,
         "inlineSourceMap": true,

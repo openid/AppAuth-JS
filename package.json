@@ -24,7 +24,7 @@
     "minify": "java -jar node_modules/google-closure-compiler/compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --js built/app/bundle.js --js_output_file built/app/bundle_minified.js",
     "precompile": "npm run-script clean && npm run-script format",
     "compile": "node_modules/.bin/tsc",
-    "prepublish": "npm run-script build-app",
+    "prepare": "npm run-script build-app",
     "format": "node_modules/.bin/clang-format -i -style=file --glob=src/**.ts",
     "clean": "rm -rf built",
     "pretest": "npm run-script compile",
@@ -53,19 +53,19 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "@types/form-data": "0.0.33",
-    "@types/hapi": "^16.1.9",
-    "@types/jasmine": "^2.5.54",
-    "@types/jquery": "^3.2.12",
-    "@types/node": "^7.0.43",
+    "@types/form-data": "2.2.0",
+    "@types/hapi": "^16.1.10",
+    "@types/jasmine": "^2.6.2",
+    "@types/jquery": "^3.2.16",
+    "@types/node": "^8.0.47",
     "@types/opener": "^1.4.0",
-    "@types/react": "^15.6.2",
-    "@types/react-dom": "^15.5.4",
-    "@types/request": "0.0.45",
-    "form-data": "^2.2.0",
-    "hapi": "^16.4.3",
+    "@types/react": "^16.0.19",
+    "@types/react-dom": "^16.0.2",
+    "@types/request": "2.0.7",
+    "form-data": "^2.3.1",
+    "hapi": "^16.6.2",
     "opener": "^1.4.3",
-    "request": "^2.81.0",
-    "typescript": "^2.5.2"
+    "request": "^2.83.0",
+    "typescript": "^2.6.1"
   }
 }

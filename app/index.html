@@ -35,44 +35,44 @@
   <!-- extras -->
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
   <link rel="stylesheet" href="./app.css" />
   <!-- scripts -->
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-  <script src="https://fb.me/react-with-addons-15.1.0.min.js"></script>
-  <script src="https://fb.me/react-dom-15.1.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script src="../built/app/bundle.js"></script>
   <script type="text/javascript">
     var application = null;
-    var init = function() {
+    var init = function () {
       application = new App(document.querySelector('#snackbar'));
       // check for authorization response if available.
       application.checkForAuthorizationResponse();
 
       // fetch configuration handler
       var fetchConfiguration = document.querySelector('#fetchConfig');
-      fetchConfiguration.addEventListener('click', function() {
+      fetchConfiguration.addEventListener('click', function () {
         application.fetchServiceConfiguration();
         event.preventDefault();
       });
 
       // authorize request handler
       var authorize = document.querySelector('#authorize');
-      authorize.addEventListener('click', function() {
+      authorize.addEventListener('click', function () {
         application.makeAuthorizationRequest();
         event.preventDefault();
       });
 
       // token request handler
       var makeTokenRequest = document.querySelector('#makeTokenRequest');
-      makeTokenRequest.addEventListener('click', function() {
+      makeTokenRequest.addEventListener('click', function () {
         application.makeTokenRequest();
         event.preventDefault();
       });
     };
     // initialize app when MDL is ready to go.
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
       console.log('Initializing App.');
       init();
     });
