@@ -13,6 +13,8 @@
     "app/**",
     "built/**"
   ],
+  "main": "built/index.js",
+  "types": "built/index.d.ts",
   "scripts": {
     "preapp": "npm run-script watch",
     "app": "node_modules/.bin/watchify built/app/index.js -o built/app/bundle.js & http-server -p 8000",
