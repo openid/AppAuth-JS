@@ -1,11 +1,8 @@
 import { AuthorizationRequest } from './authorization_request';
 import { AuthorizationError, AuthorizationResponse } from './authorization_response';
 import { AuthorizationServiceConfiguration } from './authorization_service_configuration';
+import { RandomGenerator } from './crypto_utils';
 import { QueryStringUtils } from './query_string_utils';
-/**
- * Generates a random number.
- */
-export declare function generateRandom(): string;
 /**
  * This type represents a lambda that can take an AuthorizationRequest,
  * and an AuthorizationResponse as arguments.
@@ -38,8 +35,9 @@ export declare const BUILT_IN_PARAMETERS: string[];
  */
 export declare abstract class AuthorizationRequestHandler {
     utils: QueryStringUtils;
-    constructor(utils: QueryStringUtils);
+    constructor(utils: QueryStringUtils, generateRandom?: RandomGenerator);
     protected notifier: AuthorizationNotifier | null;
+    protected generateRandom: RandomGenerator;
     /**
      * A utility method to be able to build the authorization request URL.
      */

@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {generateRandom} from './crypto_utils';
+import {generateRandom as cryptoGenerateRandom, RandomGenerator} from './crypto_utils';
 import {StringMap} from './types';
 
 /**
@@ -36,7 +36,7 @@ export interface AuthorizationRequestJson {
  * Generates a cryptographically random new state. Useful for CSRF protection.
  */
 const BYTES_LENGTH = 10;  // 10 bytes
-const newState = function(): string {
+const newState = function(generateRandom: RandomGenerator): string {
   return generateRandom(BYTES_LENGTH);
 };
 
@@ -60,8 +60,9 @@ export class AuthorizationRequest {
       public scope: string,
       public responseType: string = AuthorizationRequest.RESPONSE_TYPE_CODE,
       state?: string,
-      public extras?: StringMap) {
-    this.state = state || newState();
+      public extras?: StringMap,
+      generateRandom?: RandomGenerator) {
+    this.state = state || newState(generateRandom || cryptoGenerateRandom);
   }
 
   /**

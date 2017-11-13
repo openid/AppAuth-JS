@@ -1,3 +1,4 @@
+import { RandomGenerator } from './crypto_utils';
 import { StringMap } from './types';
 /**
  * Represents an AuthorizationRequest as JSON.
@@ -28,7 +29,7 @@ export declare class AuthorizationRequest {
      * Use a `undefined` value for the `state` parameter, to generate a random
      * state for CSRF protection.
      */
-    constructor(clientId: string, redirectUri: string, scope: string, responseType?: string, state?: string, extras?: StringMap | undefined);
+    constructor(clientId: string, redirectUri: string, scope: string, responseType?: string, state?: string, extras?: StringMap | undefined, generateRandom?: RandomGenerator);
     /**
      * Serializes the AuthorizationRequest to a JavaScript Object.
      */
