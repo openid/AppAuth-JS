@@ -13,9 +13,10 @@
  */
 
 import {AuthorizationRequest, AuthorizationRequestJson} from './authorization_request';
-import {AuthorizationRequestHandler, AuthorizationRequestResponse, BUILT_IN_PARAMETERS, generateRandom} from './authorization_request_handler';
+import {AuthorizationRequestHandler, AuthorizationRequestResponse, BUILT_IN_PARAMETERS} from './authorization_request_handler';
 import {AuthorizationError, AuthorizationResponse, AuthorizationResponseJson} from './authorization_response'
 import {AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson} from './authorization_service_configuration';
+import {RandomGenerator} from './crypto_utils';
 import {log} from './logger';
 import {BasicQueryStringUtils, QueryStringUtils} from './query_string_utils';
 import {LocalStorageBackend} from './storage';
@@ -48,8 +49,9 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
   constructor(
       storageBackend?: LocalStorageBackend,
       utils?: QueryStringUtils,
-      locationLike?: LocationLike) {
-    super(utils || new BasicQueryStringUtils());
+      locationLike?: LocationLike,
+      generateRandom?: RandomGenerator) {
+    super(utils || new BasicQueryStringUtils(), generateRandom);
     // use the provided storage backend
     // or initialize local storage with the default storage backend which
     // uses window.localStorage
@@ -60,7 +62,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
   performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
       request: AuthorizationRequest) {
-    let handle = generateRandom();
+    let handle = this.generateRandom();
     // before you make request, persist all request related data in local storage.
     let persisted = Promise.all([
       this.storageBackend.setItem(AUTHORIZATION_REQUEST_HANDLE_KEY, handle),

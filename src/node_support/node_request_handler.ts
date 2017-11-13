@@ -1,3 +1,4 @@
+import { nodeGenerateRandom } from './crypto_utils';
 /*
  * Copyright 2017 Google Inc.
  *
@@ -17,7 +18,11 @@ import { Request, ServerConnectionOptions, Server, ServerConnection, ReplyNoCont
 import EventEmitter = require('events');
 import { BasicQueryStringUtils, QueryStringUtils } from '../query_string_utils';
 import { AuthorizationRequest, AuthorizationRequestJson } from '../authorization_request';
-import { AuthorizationRequestHandler, AuthorizationRequestResponse, BUILT_IN_PARAMETERS, generateRandom } from '../authorization_request_handler';
+import {
+    AuthorizationRequestHandler,
+    AuthorizationRequestResponse,
+    BUILT_IN_PARAMETERS
+} from '../authorization_request_handler';
 import { AuthorizationError, AuthorizationResponse, AuthorizationResponseJson, AuthorizationErrorJson } from '../authorization_response'
 import { AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson } from '../authorization_service_configuration';
 import { log } from '../logger';
@@ -33,7 +38,7 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
   authorizationPromise: Promise<AuthorizationRequestResponse | null> | null;
 
   constructor(httpServerPort?: number, utils?: QueryStringUtils) {
-    super(utils || new BasicQueryStringUtils());
+    super(utils || new BasicQueryStringUtils(), nodeGenerateRandom);
 
     this.authorizationPromise = null;
     this.httpServerPort = httpServerPort || 8000;  // default to port 8000
