@@ -43,6 +43,7 @@
     "Node"
   ],
   "devDependencies": {
+    "@types/jasmine": "^2.6.2",
     "browserify": "^13.1.0",
     "clang-format": "^1.0.49",
     "google-closure-compiler": "^20170521.0.0",
@@ -57,7 +58,6 @@
   "dependencies": {
     "@types/form-data": "2.2.0",
     "@types/hapi": "^16.1.10",
-    "@types/jasmine": "^2.6.2",
     "@types/jquery": "^3.2.16",
     "@types/node": "^8.0.47",
     "@types/opener": "^1.4.0",
