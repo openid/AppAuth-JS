@@ -46,7 +46,6 @@
     "@types/form-data": "2.2.0",
     "@types/hapi": "^16.1.10",
     "@types/jasmine": "^2.6.2",
-    "@types/jquery": "^3.2.16",
     "@types/node": "^8.0.47",
     "@types/opener": "^1.4.0",
     "@types/react": "^16.0.19",
@@ -65,6 +64,7 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "@types/jquery": "^3.2.16",
     "form-data": "^2.3.1",
     "hapi": "^16.6.2",
     "opener": "^1.4.3",
