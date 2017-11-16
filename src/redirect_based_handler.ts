@@ -17,6 +17,7 @@ import {AuthorizationRequestHandler, AuthorizationRequestResponse, BUILT_IN_PARA
 import {AuthorizationError, AuthorizationResponse, AuthorizationResponseJson} from './authorization_response'
 import {AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson} from './authorization_service_configuration';
 import {RandomGenerator} from './crypto_utils';
+import {cryptoGenerateRandom, StorageBackend} from './index';
 import {log} from './logger';
 import {BasicQueryStringUtils, QueryStringUtils} from './query_string_utils';
 import {LocalStorageBackend} from './storage';
@@ -43,20 +44,15 @@ const AUTHORIZATION_REQUEST_HANDLE_KEY = 'appauth_current_authorization_request'
  * redirect based code flow.
  */
 export class RedirectRequestHandler extends AuthorizationRequestHandler {
-  storageBackend: LocalStorageBackend;
-  utils: QueryStringUtils;
-  locationLike: LocationLike;
   constructor(
-      storageBackend?: LocalStorageBackend,
-      utils?: QueryStringUtils,
-      locationLike?: LocationLike,
-      generateRandom?: RandomGenerator) {
-    super(utils || new BasicQueryStringUtils(), generateRandom);
-    // use the provided storage backend
-    // or initialize local storage with the default storage backend which
-    // uses window.localStorage
-    this.storageBackend = storageBackend || new LocalStorageBackend();
-    this.locationLike = locationLike || window.location;
+      // use the provided storage backend
+      // or initialize local storage with the default storage backend which
+      // uses window.localStorage
+      public storageBackend: StorageBackend = new LocalStorageBackend(),
+      utils = new BasicQueryStringUtils(),
+      public locationLike: LocationLike = window.location,
+      generateRandom = cryptoGenerateRandom) {
+    super(utils, generateRandom);
   }
 
   performAuthorizationRequest(

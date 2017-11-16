@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {generateRandom as cryptoGenerateRandom, RandomGenerator} from './crypto_utils';
+import {cryptoGenerateRandom, RandomGenerator} from './crypto_utils';
 import {StringMap} from './types';
 
 /**
@@ -61,8 +61,8 @@ export class AuthorizationRequest {
       public responseType: string = AuthorizationRequest.RESPONSE_TYPE_CODE,
       state?: string,
       public extras?: StringMap,
-      generateRandom?: RandomGenerator) {
-    this.state = state || newState(generateRandom || cryptoGenerateRandom);
+      generateRandom = cryptoGenerateRandom) {
+    this.state = state || newState(generateRandom);
   }
 
   /**

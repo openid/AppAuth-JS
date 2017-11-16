@@ -28,7 +28,7 @@ export interface RandomGenerator { (sizeInBytes?: number): string; }
 const DEFAULT_SIZE = 1; /** size in bytes */
 const HAS_CRYPTO = typeof window !== 'undefined' && !!(window.crypto as any);
 
-export const generateRandom: RandomGenerator = (sizeInBytes = DEFAULT_SIZE) => {
+export const cryptoGenerateRandom: RandomGenerator = (sizeInBytes = DEFAULT_SIZE) => {
   const buffer = new Uint8Array(sizeInBytes);
   if (HAS_CRYPTO) {
     window.crypto.getRandomValues(buffer);

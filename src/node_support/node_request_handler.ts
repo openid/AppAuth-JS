@@ -1,4 +1,4 @@
-import { nodeGenerateRandom } from './crypto_utils';
+import { nodeCryptoGenerateRandom, RandomGenerator } from './crypto_utils';
 /*
  * Copyright 2017 Google Inc.
  *
@@ -13,9 +13,10 @@ import { nodeGenerateRandom } from './crypto_utils';
  * limitations under the License.
  */
 
+// TypeScript typings for `opener` are not correct and do not export it as module
 import opener = require('opener');
 import { Request, ServerConnectionOptions, Server, ServerConnection, ReplyNoContinue } from 'hapi';
-import EventEmitter = require('events');
+import * as  EventEmitter from 'events';
 import { BasicQueryStringUtils, QueryStringUtils } from '../query_string_utils';
 import { AuthorizationRequest, AuthorizationRequestJson } from '../authorization_request';
 import {
@@ -33,15 +34,15 @@ class ServerEventsEmitter extends EventEmitter {
 }
 
 export class NodeBasedHandler extends AuthorizationRequestHandler {
-  httpServerPort: number;
   // the handle to the current authorization request
-  authorizationPromise: Promise<AuthorizationRequestResponse | null> | null;
+  authorizationPromise: Promise<AuthorizationRequestResponse | null> | null = null;
 
-  constructor(httpServerPort?: number, utils?: QueryStringUtils) {
-    super(utils || new BasicQueryStringUtils(), nodeGenerateRandom);
-
-    this.authorizationPromise = null;
-    this.httpServerPort = httpServerPort || 8000;  // default to port 8000
+  constructor(
+    // default to port 8000
+    public httpServerPort = 8000,
+    utils: QueryStringUtils = new BasicQueryStringUtils(),
+    generateRandom = nodeCryptoGenerateRandom) {
+    super(utils, generateRandom);
   }
 
   performAuthorizationRequest(

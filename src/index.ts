@@ -1,4 +1,3 @@
-export * from './app';
 export * from './authorization_request';
 export * from './authorization_request_handler';
 export * from './authorization_response';

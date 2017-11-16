@@ -35,9 +35,9 @@ export declare const BUILT_IN_PARAMETERS: string[];
  */
 export declare abstract class AuthorizationRequestHandler {
     utils: QueryStringUtils;
-    constructor(utils: QueryStringUtils, generateRandom?: RandomGenerator);
-    protected notifier: AuthorizationNotifier | null;
     protected generateRandom: RandomGenerator;
+    constructor(utils: QueryStringUtils, generateRandom: RandomGenerator);
+    protected notifier: AuthorizationNotifier | null;
     /**
      * A utility method to be able to build the authorization request URL.
      */
