@@ -13,7 +13,7 @@
  */
 
 import {AppAuthError} from '../errors';
-import request = require('request');
+import * as request from 'request';
 import {Requestor} from '../xhr';
 import { log } from '../logger';
 

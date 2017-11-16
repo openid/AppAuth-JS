@@ -15,7 +15,7 @@
 import {AuthorizationRequest, AuthorizationRequestJson} from './authorization_request';
 import {AuthorizationError, AuthorizationErrorJson, AuthorizationResponse, AuthorizationResponseJson} from './authorization_response';
 import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
-import {generateRandom as cryptoGenerateRandom, RandomGenerator} from './crypto_utils';
+import {cryptoGenerateRandom, RandomGenerator} from './crypto_utils';
 import {log} from './logger';
 import {QueryStringUtils} from './query_string_utils';
 import {StringMap} from './types';
@@ -72,14 +72,10 @@ export const BUILT_IN_PARAMETERS = ['redirect_uri', 'client_id', 'response_type'
  * using various methods (iframe / popup / different process etc.).
  */
 export abstract class AuthorizationRequestHandler {
-  constructor(public utils: QueryStringUtils, generateRandom?: RandomGenerator) {
-    this.generateRandom = generateRandom || cryptoGenerateRandom;
-  }
+  constructor(public utils: QueryStringUtils, protected generateRandom: RandomGenerator) {}
 
   // notifier send the response back to the client.
   protected notifier: AuthorizationNotifier|null = null;
-
-  protected generateRandom: RandomGenerator;
 
   /**
    * A utility method to be able to build the authorization request URL.
