@@ -1,6 +1,6 @@
 ## Expected Behavior
 
-#### [REQUIRED] Describe your problem
+#### [REQUIRED] Describe expected behavior
 
 ## Describe the problem
 
