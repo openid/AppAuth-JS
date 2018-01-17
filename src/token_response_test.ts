@@ -15,13 +15,14 @@
 import {TokenError, TokenResponse} from './token_response';
 
 describe('Token Response tests', () => {
-
   const accessToken = 'accessToken';
+  const idToken = 'idToken';
 
   it('Basic Token Response Tests', () => {
-    let response = new TokenResponse(accessToken);
+    let response = new TokenResponse(accessToken, idToken);
     expect(response).not.toBeNull();
     expect(response.accessToken).toBe(accessToken);
+    expect(response.idToken).toBe(idToken);
     expect(response.tokenType).toBe('bearer');
     expect(response.issuedAt).toBeTruthy();
     expect(response.isValid()).toBe(true);
@@ -32,6 +33,7 @@ describe('Token Response tests', () => {
   it('Test response token validity', () => {
     let response = new TokenResponse(
         accessToken,
+        idToken,
         undefined /* refresh token */,
         undefined /* scope */,
         'bearer',
@@ -41,6 +43,7 @@ describe('Token Response tests', () => {
 
     expect(response).not.toBeNull();
     expect(response.accessToken).toBe(accessToken);
+    expect(response.idToken).toBe(idToken);
     expect(response.tokenType).toBe('bearer');
     expect(response.issuedAt).toBeTruthy();
     expect(response.isValid()).toBe(false);
@@ -49,11 +52,12 @@ describe('Token Response tests', () => {
   });
 
   it('To Json() and from Json() should work', () => {
-    let response = new TokenResponse(accessToken);
+    let response = new TokenResponse(accessToken, idToken);
     let json = JSON.parse(JSON.stringify(response.toJson()));
     let newResponse = TokenResponse.fromJson(json);
     expect(newResponse).not.toBeNull();
     expect(newResponse.accessToken).toBe(accessToken);
+    expect(newResponse.idToken).toBe(idToken);
     expect(newResponse.tokenType).toBe('bearer');
     expect(newResponse.issuedAt).toBeTruthy();
     expect(newResponse.isValid()).toBe(true);
@@ -78,5 +82,4 @@ describe('Token Response tests', () => {
     expect(newError.errorDescription).toBeFalsy();
     expect(newError.errorUri).toBeFalsy();
   });
-
 });
