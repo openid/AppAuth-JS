@@ -1,7 +1,6 @@
 export * from './authorization_request';
 export * from './authorization_request_handler';
 export * from './authorization_response';
-export * from './authorization_service';
 export * from './authorization_service_configuration';
 export * from './crypto_utils';
 export * from './errors';
