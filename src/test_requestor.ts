@@ -11,8 +11,17 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import {Requestor, RequestorSettings} from './requestor';
 
-// Compatibility header for code which imported 'xhr' before
-export {JQueryRequestor} from './jquery_requestor';
-export {Requestor, RequestorSettings} from './requestor';
-export {TestRequestor} from './test_requestor';
+/**
+ * Should be used only in the context of testing. Just uses the underlying
+ * Promise to mock the behavior of the Requestor.
+ */
+export class TestRequestor extends Requestor {
+  constructor(public promise: Promise<any>) {
+    super();
+  }
+  xhr<T>(settings: RequestorSettings): Promise<T> {
+    return this.promise;  // unsafe cast
+  }
+}
