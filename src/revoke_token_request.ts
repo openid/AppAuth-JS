@@ -1,3 +1,5 @@
+import {StringMap} from './types';
+
 /*
  * Copyright 2017 Google Inc.
  *
@@ -58,6 +60,15 @@ export class RevokeTokenRequest {
     }
 
     return json;
+  }
+
+  /**
+   *
+   * @param input Serializes a TokenRequest to a StringMap
+   */
+  toStringMap(): StringMap {
+    // we cast to any since RevokeTokenResponse doesn't have an index declared
+    return this.toJson() as any as StringMap;
   }
 
   static fromJson(input: RevokeTokenRequestJson): RevokeTokenRequest {

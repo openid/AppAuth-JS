@@ -65,7 +65,7 @@ export class AuthorizationServiceConfiguration {
     const requestorToUse = requestor || new JQueryRequestor();
 
     return requestorToUse
-        .xhr<AuthorizationServiceConfigurationJson>({url: fullUrl, dataType: 'json'})
+        .xhr<AuthorizationServiceConfigurationJson>({url: fullUrl, method: 'GET', dataType: 'json'})
         .then(json => AuthorizationServiceConfiguration.fromJson(json));
   }
 }

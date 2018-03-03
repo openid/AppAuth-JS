@@ -14,21 +14,21 @@
 
 import {AppAuthError} from '../errors';
 import * as request from 'request';
-import {Requestor} from '../xhr';
+import {Requestor, RequestorSettings, RequestorPostSettings} from '../requestor';
 import { log } from '../logger';
 
 /**
  * A Node.js HTTP client.
  */
 export class NodeRequestor extends Requestor {
-  xhr<T>(settings: JQueryAjaxSettings): Promise<T> {
+  xhr<T>(settings: RequestorSettings): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       // implementing a subset that is required.
       request(
           settings.url!, {
             method: settings.method,
-            json: settings.dataType === 'json' ? true : undefined,
-            form: settings.data,
+            json: true,
+            form: settings.method === 'POST' && settings.data,
             headers: settings.headers
           },
           (error, response, body) => {
