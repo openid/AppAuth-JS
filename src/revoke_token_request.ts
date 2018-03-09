@@ -12,6 +12,9 @@
  * limitations under the License.
  */
 
+import {StringMap} from '.';
+
+
 /**
  * Supported token types
  */
@@ -58,6 +61,26 @@ export class RevokeTokenRequest {
     }
 
     return json;
+  }
+
+  /**
+   * Serializes a TokenRequest to a StringMap.
+   */
+  toStringMap(): StringMap {
+    let stringMap: StringMap = {};
+    if (this.tokenTypeHint) {
+      stringMap['token_type_hint'] = this.tokenTypeHint;
+    }
+
+    if (this.clientId) {
+      stringMap['client_id'] = this.clientId;
+    }
+
+    if (this.clientSecret) {
+      stringMap['client_secret'] = this.clientSecret;
+    }
+
+    return stringMap;
   }
 
   static fromJson(input: RevokeTokenRequestJson): RevokeTokenRequest {

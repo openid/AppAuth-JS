@@ -1,3 +1,4 @@
+import { StringMap } from '.';
 /**
  * Supported token types
  */
@@ -26,5 +27,9 @@ export declare class RevokeTokenRequest {
      * Serializes a TokenRequest to a JavaScript object.
      */
     toJson(): RevokeTokenRequestJson;
+    /**
+     * Serializes a TokenRequest to a StringMap.
+     */
+    toStringMap(): StringMap;
     static fromJson(input: RevokeTokenRequestJson): RevokeTokenRequest;
 }

@@ -14,7 +14,7 @@
 
 import {AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson} from './authorization_service_configuration';
 import {AppAuthError} from './errors';
-import {TestRequestor} from './xhr';
+import {testFetchWithError, testFetchWithResult} from './test_fetcher';
 
 describe('Authorization Service Configuration Tests', () => {
 
@@ -49,10 +49,8 @@ describe('Authorization Service Configuration Tests', () => {
     it('Fetch from issuer tests should work', (done: DoneFn) => {
       let configuration = new AuthorizationServiceConfiguration(
           authorizationEndpoint, tokenEndpoint, revocationEndpoint);
-      let promise: Promise<AuthorizationServiceConfigurationJson> =
-          Promise.resolve(configuration.toJson());
-      let requestor = new TestRequestor(promise);
-      AuthorizationServiceConfiguration.fetchFromIssuer('some://endpoint', requestor)
+      AuthorizationServiceConfiguration
+          .fetchFromIssuer('some://endpoint', testFetchWithResult(configuration.toJson()))
           .then(result => {
             expect(result).toBeTruthy();
             expect(result.authorizationEndpoint).toBe(configuration.authorizationEndpoint);
@@ -63,11 +61,9 @@ describe('Authorization Service Configuration Tests', () => {
     });
 
     it('Fetch from issuer tests should work', (done: DoneFn) => {
-      let promise: Promise<AuthorizationServiceConfigurationJson> =
-          Promise.reject(new Error('Something bad happened.'));
-      let requestor = new TestRequestor(promise);
-
-      AuthorizationServiceConfiguration.fetchFromIssuer('some://endpoint', requestor)
+      let error = new Error('Something bad happened.');
+      AuthorizationServiceConfiguration
+          .fetchFromIssuer('some://endpoint', testFetchWithError(error))
           .catch(result => {
             expect(result).toBeTruthy();
             let error = result as AppAuthError;

@@ -11,9 +11,7 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import {JQueryRequestor, Requestor} from './xhr';
-
+import defaultFetcher from './default_fetcher';
 
 /**
  * Represents AuthorizationServiceConfiguration as a JSON object.
@@ -58,14 +56,13 @@ export class AuthorizationServiceConfiguration {
         json.authorization_endpoint, json.token_endpoint, json.revocation_endpoint);
   }
 
-  static fetchFromIssuer(openIdIssuerUrl: string, requestor?: Requestor):
+  static fetchFromIssuer(openIdIssuerUrl: string, fetcher?: GlobalFetch):
       Promise<AuthorizationServiceConfiguration> {
     const fullUrl = `${openIdIssuerUrl}/${WELL_KNOWN_PATH}/${OPENID_CONFIGURATION}`;
 
-    const requestorToUse = requestor || new JQueryRequestor();
-
-    return requestorToUse
-        .xhr<AuthorizationServiceConfigurationJson>({url: fullUrl, dataType: 'json'})
+    const fetcherToUse = fetcher || defaultFetcher;
+    return fetcherToUse.fetch(fullUrl, {mode: 'cors'})
+        .then(response => response.json())
         .then(json => AuthorizationServiceConfiguration.fromJson(json));
   }
 }
