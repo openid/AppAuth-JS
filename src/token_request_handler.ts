@@ -13,6 +13,7 @@
  */
 
 import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
+import defaultFetcher from './default_fetcher';
 import {AppAuthError} from './errors';
 import {log} from './logger';
 import {BasicQueryStringUtils, QueryStringUtils} from './query_string_utils';
@@ -20,7 +21,6 @@ import {RevokeTokenRequest} from './revoke_token_request';
 import {TokenRequest} from './token_request';
 import {TokenError, TokenErrorJson, TokenResponse, TokenResponseJson} from './token_response';
 import {StringMap} from './types';
-import {JQueryRequestor, Requestor} from './xhr';
 
 
 /**
@@ -43,7 +43,7 @@ export interface TokenRequestHandler {
  */
 export class BaseTokenRequestHandler implements TokenRequestHandler {
   constructor(
-      public readonly requestor: Requestor = new JQueryRequestor(),
+      public readonly fetcher: GlobalFetch = defaultFetcher,
       public readonly utils: QueryStringUtils = new BasicQueryStringUtils()) {}
 
   private isTokenResponse(response: TokenResponseJson|
@@ -54,36 +54,32 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
   performRevokeTokenRequest(
       configuration: AuthorizationServiceConfiguration,
       request: RevokeTokenRequest): Promise<boolean> {
-    let revokeTokenResponse = this.requestor.xhr<boolean>({
-      url: configuration.revocationEndpoint,
-      method: 'POST',
-      dataType: 'json',  // adding implicit dataType
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      data: request.toJson()
-    });
-
-    return revokeTokenResponse.then(response => {
-      return true;
-    });
+    return this.fetcher
+        .fetch(configuration.revocationEndpoint, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: this.utils.stringify(request.toStringMap())
+        })
+        .then(response => response.json())
+        .then(json => true);
   }
 
   performTokenRequest(configuration: AuthorizationServiceConfiguration, request: TokenRequest):
       Promise<TokenResponse> {
-    let tokenResponse = this.requestor.xhr<TokenResponseJson|TokenErrorJson>({
-      url: configuration.tokenEndpoint,
-      method: 'POST',
-      dataType: 'json',  // adding implicit dataType
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      data: this.utils.stringify(request.toStringMap())
-    });
-
-    return tokenResponse.then(response => {
-      if (this.isTokenResponse(response)) {
-        return TokenResponse.fromJson(response);
-      } else {
-        return Promise.reject<TokenResponse>(
-            new AppAuthError(response.error, TokenError.fromJson(response)));
-      }
-    });
+    return this.fetcher
+        .fetch(configuration.tokenEndpoint, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: this.utils.stringify(request.toStringMap())
+        })
+        .then(response => response.json())
+        .then(json => {
+          if (this.isTokenResponse(json)) {
+            return TokenResponse.fromJson(json);
+          } else {
+            return Promise.reject<TokenResponse>(
+                new AppAuthError(json.error, TokenError.fromJson(json)))
+          }
+        });
   }
 }

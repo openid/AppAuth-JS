@@ -47,6 +47,7 @@
     "@types/hapi": "^16.1.10",
     "@types/jasmine": "^2.6.2",
     "@types/node": "^8.0.53",
+    "@types/node-fetch": "^1.6.7",
     "@types/opener": "^1.4.0",
     "@types/react": "^16.0.19",
     "@types/react-dom": "^16.0.2",
@@ -64,10 +65,10 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "@types/jquery": "^3.2.16",
     "form-data": "^2.3.1",
     "hapi": "^16.6.2",
+    "node-fetch": "^2.1.1",
     "opener": "^1.4.3",
-    "request": "^2.83.0"
+    "whatwg-fetch": "^2.0.3"
   }
 }

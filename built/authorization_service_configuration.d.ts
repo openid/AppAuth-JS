@@ -1,4 +1,3 @@
-import { Requestor } from './xhr';
 /**
  * Represents AuthorizationServiceConfiguration as a JSON object.
  */
@@ -21,5 +20,5 @@ export declare class AuthorizationServiceConfiguration {
         revocation_endpoint: string;
     };
     static fromJson(json: AuthorizationServiceConfigurationJson): AuthorizationServiceConfiguration;
-    static fetchFromIssuer(openIdIssuerUrl: string, requestor?: Requestor): Promise<AuthorizationServiceConfiguration>;
+    static fetchFromIssuer(openIdIssuerUrl: string, fetcher?: GlobalFetch): Promise<AuthorizationServiceConfiguration>;
 }

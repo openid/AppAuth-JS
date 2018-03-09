@@ -20,16 +20,12 @@ import {AuthorizationResponse} from '../authorization_response';
 import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
 import {log} from '../logger';
 import {NodeBasedHandler} from '../node_support/node_request_handler';
-import {NodeRequestor} from '../node_support/node_requestor';
 import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../token_request';
 import {RevokeTokenRequest} from '../revoke_token_request';
 import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_handler';
 import {TokenError, TokenResponse} from '../token_response';
 
 const PORT = 32111;
-
-/* the Node.js based HTTP client. */
-const requestor = new NodeRequestor();
 
 /* an example open id connect provider */
 const openIdConnectUrl = 'https://accounts.google.com';
@@ -50,7 +46,7 @@ export class App {
   constructor() {
     this.notifier = new AuthorizationNotifier();
     this.authorizationHandler = new NodeBasedHandler(PORT);
-    this.tokenHandler = new BaseTokenRequestHandler(requestor);
+    this.tokenHandler = new BaseTokenRequestHandler();
     // set notifier to deliver responses
     this.authorizationHandler.setAuthorizationNotifier(this.notifier);
     // set a listener to listen for authorization responses
@@ -66,7 +62,7 @@ export class App {
   }
 
   fetchServiceConfiguration(): Promise<AuthorizationServiceConfiguration> {
-    return AuthorizationServiceConfiguration.fetchFromIssuer(openIdConnectUrl, requestor)
+    return AuthorizationServiceConfiguration.fetchFromIssuer(openIdConnectUrl)
         .then(response => {
           log('Fetched service configuration', response);
           return response;
