@@ -21,8 +21,8 @@ import {AuthorizationServiceConfiguration} from '../authorization_service_config
 import {log} from '../logger';
 import {NodeBasedHandler} from '../node_support/node_request_handler';
 import {NodeRequestor} from '../node_support/node_requestor';
-import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../token_request';
 import {RevokeTokenRequest} from '../revoke_token_request';
+import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../token_request';
 import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_handler';
 import {TokenError, TokenResponse} from '../token_response';
 
@@ -76,7 +76,10 @@ export class App {
   makeAuthorizationRequest(configuration: AuthorizationServiceConfiguration) {
     // create a request
     let request = new AuthorizationRequest(
-        clientId, redirectUri, scope, AuthorizationRequest.RESPONSE_TYPE_CODE,
+        clientId,
+        redirectUri,
+        scope,
+        AuthorizationRequest.RESPONSE_TYPE_CODE,
         undefined, /* state */
         {'prompt': 'consent', 'access_type': 'offline'});
 
@@ -86,8 +89,8 @@ export class App {
 
   makeRefreshTokenRequest(configuration: AuthorizationServiceConfiguration, code: string) {
     // use the code to make the token request.
-    let request = new TokenRequest(
-        clientId, redirectUri, GRANT_TYPE_AUTHORIZATION_CODE, code, undefined);
+    let request =
+        new TokenRequest(clientId, redirectUri, GRANT_TYPE_AUTHORIZATION_CODE, code, undefined);
 
     return this.tokenHandler.performTokenRequest(configuration, request).then(response => {
       log(`Refresh Token is ${response.refreshToken}`);
@@ -96,11 +99,11 @@ export class App {
   }
 
   makeAccessTokenRequest(configuration: AuthorizationServiceConfiguration, refreshToken: string) {
-    let request = new TokenRequest(
-        clientId, redirectUri, GRANT_TYPE_REFRESH_TOKEN, undefined, refreshToken);
+    let request =
+        new TokenRequest(clientId, redirectUri, GRANT_TYPE_REFRESH_TOKEN, undefined, refreshToken);
 
     return this.tokenHandler.performTokenRequest(configuration, request).then(response => {
-      log(`Access Token is ${response.accessToken}`);
+      log(`Access Token is ${response.accessToken}, Id Token is ${response.idToken}`);
       return response;
     });
   }
