@@ -22,6 +22,8 @@ export interface AuthorizationServiceConfigurationJson {
   authorization_endpoint: string;
   token_endpoint: string;
   revocation_endpoint: string;
+  end_session_endpoint?: string;
+  userinfo_endpoint?: string;
 }
 
 /**
@@ -38,24 +40,34 @@ const OPENID_CONFIGURATION = 'openid-configuration';
 
 /**
  * Configuration details required to interact with an authorization service.
+ *
+ * More information at https://openid.net/specs/openid-connect-discovery-1_0-17.html
  */
 export class AuthorizationServiceConfiguration {
   constructor(
       public authorizationEndpoint: string,
       public tokenEndpoint: string,
-      public revocationEndpoint: string) {}
+      public revocationEndpoint: string,   // for Revoking Access Tokens
+      public endSessionEndpoint?: string,  // for OpenID session management
+      public userInfoEndpoint?: string) {}
 
   toJson() {
     return {
       authorization_endpoint: this.authorizationEndpoint,
       token_endpoint: this.tokenEndpoint,
-      revocation_endpoint: this.revocationEndpoint
+      revocation_endpoint: this.revocationEndpoint,
+      end_session_endpoint: this.endSessionEndpoint,
+      userinfo_endpoint: this.userInfoEndpoint
     };
   }
 
   static fromJson(json: AuthorizationServiceConfigurationJson): AuthorizationServiceConfiguration {
     return new AuthorizationServiceConfiguration(
-        json.authorization_endpoint, json.token_endpoint, json.revocation_endpoint);
+        json.authorization_endpoint,
+        json.token_endpoint,
+        json.revocation_endpoint,
+        json.end_session_endpoint,
+        json.userinfo_endpoint);
   }
 
   static fetchFromIssuer(openIdIssuerUrl: string, requestor?: Requestor):

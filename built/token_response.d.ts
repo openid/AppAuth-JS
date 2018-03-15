@@ -9,6 +9,7 @@ export declare type TokenType = 'bearer' | 'mac';
  */
 export interface TokenResponseJson {
     access_token: string;
+    id_token?: string;
     token_type?: TokenType;
     issued_at?: number;
     expires_in?: number;
@@ -36,12 +37,13 @@ export interface TokenErrorJson {
  */
 export declare class TokenResponse {
     accessToken: string;
+    idToken: string | undefined;
     refreshToken: string | undefined;
     scope: string | undefined;
     tokenType: TokenType;
     issuedAt: number;
     expiresIn: number | undefined;
-    constructor(accessToken: string, refreshToken?: string | undefined, scope?: string | undefined, tokenType?: TokenType, issuedAt?: number, expiresIn?: number | undefined);
+    constructor(accessToken: string, idToken?: string | undefined, refreshToken?: string | undefined, scope?: string | undefined, tokenType?: TokenType, issuedAt?: number, expiresIn?: number | undefined);
     toJson(): TokenResponseJson;
     isValid(): boolean;
     static fromJson(input: TokenResponseJson): TokenResponse;

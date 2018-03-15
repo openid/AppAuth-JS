@@ -1,6 +1,6 @@
 {
   "name": "@openid/appauth",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A general purpose OAuth client.",
   "author": "The OpenID Foundation",
   "license": "Apache-2.0",
@@ -60,7 +60,7 @@
     "karma-browserify": "^5.1.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.1.0",
-    "typescript": "^2.7.1",
+    "typescript": "^2.7.2",
     "watchify": "^3.7.0"
   },
   "dependencies": {
