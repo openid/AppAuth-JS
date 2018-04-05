@@ -13,8 +13,6 @@
         "emitDecoratorMetadata": true,
         "jsx": "react",
         "strict": true,
-        "strictPropertyInitialization": true,
-        "strictFunctionTypes": true,
         "declaration": true,
         "noEmitOnError": true,
         "inlineSourceMap": true,

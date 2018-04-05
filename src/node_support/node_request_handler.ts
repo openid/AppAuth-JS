@@ -15,7 +15,7 @@ import { nodeCryptoGenerateRandom, RandomGenerator } from './crypto_utils';
 
 // TypeScript typings for `opener` are not correct and do not export it as module
 import opener = require('opener');
-import { Request, ServerConnectionOptions, Server, ServerConnection, ReplyNoContinue } from 'hapi';
+import { Request, ServerOptions, Server, ResponseToolkit } from 'hapi';
 import * as  EventEmitter from 'events';
 import { BasicQueryStringUtils, QueryStringUtils } from '../query_string_utils';
 import { AuthorizationRequest, AuthorizationRequestJson } from '../authorization_request';
@@ -49,8 +49,10 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
     configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest) {
     // use opener to launch a web browser and start the authorization flow.
     // start a web server to handle the authorization response.
-    const server = new Server();
-    server.connection(<ServerConnectionOptions>{ port: this.httpServerPort });
+    const server = new Server({
+      port: this.httpServerPort
+    });
+
     const emitter = new ServerEventsEmitter();
 
     this.authorizationPromise = new Promise<AuthorizationRequestResponse>((resolve, reject) => {
@@ -68,8 +70,9 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
     server.route({
       method: 'GET',
       path: '/',
-      handler: (hapiRequest: Request, hapiResponse: ReplyNoContinue) => {
-        let queryParams = hapiRequest.query as (AuthorizationResponseJson & AuthorizationErrorJson);
+      handler: (hapiRequest: Request, hapiResponse: ResponseToolkit) => {
+        // Unsafe cast. :(
+        let queryParams = hapiRequest.query as any as (AuthorizationResponseJson & AuthorizationErrorJson);
         let state = queryParams['state'];
         let code = queryParams['code'];
         let error = queryParams['error'];
@@ -90,8 +93,8 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
           error: authorizationError
         } as AuthorizationRequestResponse;
         emitter.emit(ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE, completeResponse);
-        hapiResponse('Close your browser to continue');
         server.stop();
+        return 'Close your browser to continue';
       }
     });
 

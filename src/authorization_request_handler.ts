@@ -20,6 +20,7 @@ import {log} from './logger';
 import {QueryStringUtils} from './query_string_utils';
 import {StringMap} from './types';
 
+
 /**
  * This type represents a lambda that can take an AuthorizationRequest,
  * and an AuthorizationResponse as arguments.
