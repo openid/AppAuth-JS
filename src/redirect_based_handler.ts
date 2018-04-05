@@ -24,6 +24,7 @@ import {LocalStorageBackend} from './storage';
 import {LocationLike, StringMap} from './types';
 
 
+
 /** key for authorization request. */
 const authorizationRequestKey =
     (handle: string) => {
