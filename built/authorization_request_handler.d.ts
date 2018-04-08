@@ -45,7 +45,7 @@ export declare abstract class AuthorizationRequestHandler {
     /**
      * Completes the authorization request if necessary & when possible.
      */
-    completeAuthorizationRequestIfPossible(): void;
+    completeAuthorizationRequestIfPossible(): Promise<void>;
     /**
      * Sets the default Authorization Service notifier.
      */

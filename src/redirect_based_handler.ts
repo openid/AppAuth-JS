@@ -16,13 +16,11 @@ import {AuthorizationRequest, AuthorizationRequestJson} from './authorization_re
 import {AuthorizationRequestHandler, AuthorizationRequestResponse, BUILT_IN_PARAMETERS} from './authorization_request_handler';
 import {AuthorizationError, AuthorizationResponse, AuthorizationResponseJson} from './authorization_response'
 import {AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson} from './authorization_service_configuration';
-import {RandomGenerator} from './crypto_utils';
-import {cryptoGenerateRandom, StorageBackend} from './index';
+import {cryptoGenerateRandom, RandomGenerator} from './crypto_utils';
 import {log} from './logger';
 import {BasicQueryStringUtils, QueryStringUtils} from './query_string_utils';
-import {LocalStorageBackend} from './storage';
+import {LocalStorageBackend, StorageBackend} from './storage';
 import {LocationLike, StringMap} from './types';
-
 
 
 /** key for authorization request. */
