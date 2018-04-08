@@ -115,7 +115,7 @@ export abstract class AuthorizationRequestHandler {
   /**
    * Completes the authorization request if necessary & when possible.
    */
-  completeAuthorizationRequestIfPossible(): void {
+  completeAuthorizationRequestIfPossible(): Promise<void> {
     // call complete authorization if possible to see there might
     // be a response that needs to be delivered.
     log(`Checking to see if there is an authorization response to be delivered.`);
@@ -123,7 +123,7 @@ export abstract class AuthorizationRequestHandler {
       log(`Notifier is not present on AuthorizationRequest handler.
           No delivery of result will be possible`)
     }
-    this.completeAuthorizationRequest().then(result => {
+    return this.completeAuthorizationRequest().then(result => {
       if (!result) {
         log(`No result is available yet.`);
       }

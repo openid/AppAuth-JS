@@ -1,4 +1,4 @@
-import { RandomGenerator } from './crypto_utils';
+import { RandomGenerator } from '../crypto_utils';
 import { QueryStringUtils } from '../query_string_utils';
 import { AuthorizationRequest } from '../authorization_request';
 import { AuthorizationRequestHandler, AuthorizationRequestResponse } from '../authorization_request_handler';

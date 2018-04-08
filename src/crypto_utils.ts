@@ -23,7 +23,7 @@ export function bufferToString(buffer: Uint8Array) {
   return state.join('');
 }
 
-export interface RandomGenerator { (sizeInBytes?: number): string; }
+export type RandomGenerator = (sizeInBytes?: number) => string;
 
 const DEFAULT_SIZE = 1; /** size in bytes */
 const HAS_CRYPTO = typeof window !== 'undefined' && !!(window.crypto as any);

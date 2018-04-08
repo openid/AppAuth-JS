@@ -2,8 +2,8 @@ import { AuthorizationRequest } from './authorization_request';
 import { AuthorizationRequestHandler, AuthorizationRequestResponse } from './authorization_request_handler';
 import { AuthorizationServiceConfiguration } from './authorization_service_configuration';
 import { RandomGenerator } from './crypto_utils';
-import { StorageBackend } from './index';
 import { BasicQueryStringUtils } from './query_string_utils';
+import { StorageBackend } from './storage';
 import { LocationLike } from './types';
 /**
  * Represents an AuthorizationRequestHandler which uses a standard
