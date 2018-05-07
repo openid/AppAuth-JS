@@ -12,7 +12,12 @@ import { LocationLike } from './types';
 export declare class RedirectRequestHandler extends AuthorizationRequestHandler {
     storageBackend: StorageBackend;
     locationLike: LocationLike;
-    constructor(storageBackend?: StorageBackend, utils?: BasicQueryStringUtils, locationLike?: LocationLike, generateRandom?: RandomGenerator);
+    options: {
+        useHashForAuthorization: boolean;
+    };
+    constructor(storageBackend?: StorageBackend, utils?: BasicQueryStringUtils, locationLike?: LocationLike, generateRandom?: RandomGenerator, options?: {
+        useHashForAuthorization: boolean;
+    });
     performAuthorizationRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest): void;
     /**
      * Attempts to introspect the contents of storage backend and completes the

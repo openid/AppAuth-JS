@@ -50,7 +50,8 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
       public storageBackend: StorageBackend = new LocalStorageBackend(),
       utils = new BasicQueryStringUtils(),
       public locationLike: LocationLike = window.location,
-      generateRandom = cryptoGenerateRandom) {
+      generateRandom = cryptoGenerateRandom,
+      public options: {useHashForAuthorization: boolean} = {useHashForAuthorization: true}) {
     super(utils, generateRandom);
   }
 
@@ -94,7 +95,8 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
             .then(request => {
               // check redirect_uri and state
               let currentUri = `${this.locationLike.origin}${this.locationLike.pathname}`;
-              let queryParams = this.utils.parse(this.locationLike, true /* use hash */);
+              let queryParams =
+                  this.utils.parse(this.locationLike, this.options.useHashForAuthorization);
               let state: string|undefined = queryParams['state'];
               let code: string|undefined = queryParams['code'];
               let error: string|undefined = queryParams['error'];
