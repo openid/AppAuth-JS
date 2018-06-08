@@ -12,7 +12,9 @@
  * limitations under the License.
  */
 
-export interface StringMap { [key: string]: string; }
+export interface StringMap {
+  [key: string]: string;
+}
 
 /**
  * Represents a window.location like object.

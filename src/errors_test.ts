@@ -15,7 +15,6 @@
 import {AppAuthError} from './errors';
 
 describe('Errors Tests', () => {
-
   const message = 'Something bad happened';
 
   it('Initialization of an error message should work.', () => {
@@ -23,5 +22,4 @@ describe('Errors Tests', () => {
     expect(error).toBeTruthy();
     expect(error.message).toBe(message);
   });
-
 });

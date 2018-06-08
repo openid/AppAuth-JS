@@ -16,7 +16,6 @@ import {RevokeTokenRequest, RevokeTokenRequestJson} from './revoke_token_request
 import {StringMap} from './types';
 
 describe('Revoke Token Request tests', () => {
-
   const token = 'token';
 
   let request: RevokeTokenRequest = new RevokeTokenRequest(token);
@@ -33,11 +32,9 @@ describe('Revoke Token Request tests', () => {
     expect(newRequest).not.toBeNull();
     expect(newRequest.token).toBe(token);
   });
-
 });
 
 describe('Authenticated Revoke Token Request tests', () => {
-
   const token = 'token';
   const tokenTypeHint = 'refresh_token';
   const clientId = 'client_id';
@@ -64,5 +61,4 @@ describe('Authenticated Revoke Token Request tests', () => {
     expect(newRequest.clientId).toBe(clientId);
     expect(newRequest.clientSecret).toBe(clientSecret);
   });
-
 });

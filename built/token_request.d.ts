@@ -21,9 +21,9 @@ export declare class TokenRequest {
     clientId: string;
     redirectUri: string;
     grantType: string;
-    code: string | undefined;
-    refreshToken: string | undefined;
-    extras: StringMap | undefined;
+    code?: string | undefined;
+    refreshToken?: string | undefined;
+    extras?: StringMap | undefined;
     constructor(clientId: string, redirectUri: string, grantType: string, code?: string | undefined, refreshToken?: string | undefined, extras?: StringMap | undefined);
     /**
      * Serializes a TokenRequest to a JavaScript object.

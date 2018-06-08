@@ -15,7 +15,6 @@
 import {AuthorizationResponse} from './authorization_response';
 
 describe('Authorization Response Tests', () => {
-
   const code = 'code';
   const state = 'state';
 
@@ -37,5 +36,4 @@ describe('Authorization Response Tests', () => {
     expect(newResponse.code).toBe(code);
     expect(newResponse.state).toBe(state);
   });
-
 });

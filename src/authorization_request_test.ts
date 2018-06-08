@@ -16,7 +16,6 @@ import {AuthorizationRequest} from './authorization_request';
 import {StringMap} from './types';
 
 describe('AuthorizationRequest Tests', () => {
-
   const clientId = 'client_id';
   const redirectUri = 'http://my/redirect_uri';
   const scope = 'scope';
@@ -59,5 +58,4 @@ describe('AuthorizationRequest Tests', () => {
   it('Expect cryptographic newState() to populate state', () => {
     expect(request2.state).not.toBeNull();
   });
-
 });

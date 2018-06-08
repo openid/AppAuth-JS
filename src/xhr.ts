@@ -17,7 +17,9 @@ import {AppAuthError} from './errors';
 /**
  * An class that abstracts away the ability to make an XMLHttpRequest.
  */
-export abstract class Requestor { abstract xhr<T>(settings: JQueryAjaxSettings): Promise<T>; }
+export abstract class Requestor {
+  abstract xhr<T>(settings: JQueryAjaxSettings): Promise<T>;
+}
 
 /**
  * Uses $.ajax to makes the Ajax requests.
