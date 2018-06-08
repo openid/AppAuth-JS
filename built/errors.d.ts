@@ -3,6 +3,6 @@
  */
 export declare class AppAuthError {
     message: string;
-    extras: any;
+    extras?: any;
     constructor(message: string, extras?: any);
 }

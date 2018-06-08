@@ -18,9 +18,11 @@ export declare class AuthorizationServiceConfiguration {
     authorizationEndpoint: string;
     tokenEndpoint: string;
     revocationEndpoint: string;
-    endSessionEndpoint: string | undefined;
-    userInfoEndpoint: string | undefined;
-    constructor(authorizationEndpoint: string, tokenEndpoint: string, revocationEndpoint: string, endSessionEndpoint?: string | undefined, userInfoEndpoint?: string | undefined);
+    endSessionEndpoint?: string | undefined;
+    userInfoEndpoint?: string | undefined;
+    constructor(authorizationEndpoint: string, tokenEndpoint: string, revocationEndpoint: string, // for Revoking Access Tokens
+    endSessionEndpoint?: string | undefined, // for OpenID session management
+    userInfoEndpoint?: string | undefined);
     toJson(): {
         authorization_endpoint: string;
         token_endpoint: string;

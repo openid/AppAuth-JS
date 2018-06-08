@@ -37,12 +37,12 @@ export interface TokenErrorJson {
  */
 export declare class TokenResponse {
     accessToken: string;
-    idToken: string | undefined;
-    refreshToken: string | undefined;
-    scope: string | undefined;
+    idToken?: string | undefined;
+    refreshToken?: string | undefined;
+    scope?: string | undefined;
     tokenType: TokenType;
     issuedAt: number;
-    expiresIn: number | undefined;
+    expiresIn?: number | undefined;
     constructor(accessToken: string, idToken?: string | undefined, refreshToken?: string | undefined, scope?: string | undefined, tokenType?: TokenType, issuedAt?: number, expiresIn?: number | undefined);
     toJson(): TokenResponseJson;
     isValid(): boolean;
@@ -55,8 +55,8 @@ export declare class TokenResponse {
  */
 export declare class TokenError {
     readonly error: ErrorType;
-    readonly errorDescription: string | undefined;
-    readonly errorUri: string | undefined;
+    readonly errorDescription?: string | undefined;
+    readonly errorUri?: string | undefined;
     constructor(error: ErrorType, errorDescription?: string | undefined, errorUri?: string | undefined);
     toJson(): TokenErrorJson;
     static fromJson(input: TokenErrorJson): TokenError;

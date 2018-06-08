@@ -21,7 +21,7 @@ export declare class AuthorizationRequest {
     redirectUri: string;
     scope: string;
     responseType: string;
-    extras: StringMap | undefined;
+    extras?: StringMap | undefined;
     static RESPONSE_TYPE_CODE: string;
     state: string;
     /**

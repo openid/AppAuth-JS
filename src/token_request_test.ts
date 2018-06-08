@@ -16,7 +16,6 @@ import {GRANT_TYPE_AUTHORIZATION_CODE, TokenRequest, TokenRequestJson} from './t
 import {StringMap} from './types';
 
 describe('Token Request tests', () => {
-
   const clientId = 'client_id';
   const redirectUri = 'http://my/redirect_uri';
   const code = 'some_code';
@@ -49,5 +48,4 @@ describe('Token Request tests', () => {
     expect(newRequest.extras!['key']).toBe('value');
     expect(newRequest.extras).toEqual(extras);
   });
-
 });

@@ -21,7 +21,7 @@ export declare class BaseTokenRequestHandler implements TokenRequestHandler {
     readonly requestor: Requestor;
     readonly utils: QueryStringUtils;
     constructor(requestor?: Requestor, utils?: QueryStringUtils);
-    private isTokenResponse(response);
+    private isTokenResponse;
     performRevokeTokenRequest(configuration: AuthorizationServiceConfiguration, request: RevokeTokenRequest): Promise<boolean>;
     performTokenRequest(configuration: AuthorizationServiceConfiguration, request: TokenRequest): Promise<TokenResponse>;
 }
