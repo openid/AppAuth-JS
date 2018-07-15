@@ -12,10 +12,16 @@
  * limitations under the License.
  */
 
+import * as Buffer from 'buffer';
+import {ServerResponse} from 'http';
+import * as Url from 'url';
+
 import {AppAuthError} from '../errors';
-import * as request from 'request';
+import {log} from '../logger';
 import {Requestor} from '../xhr';
-import { log } from '../logger';
+
+const https = require('follow-redirects').https;
+const http = require('follow-redirects').http;
 
 /**
  * A Node.js HTTP client.
@@ -24,21 +30,54 @@ export class NodeRequestor extends Requestor {
   xhr<T>(settings: JQueryAjaxSettings): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       // implementing a subset that is required.
-      request(
-          settings.url!, {
-            method: settings.method,
-            json: settings.dataType === 'json' ? true : undefined,
-            form: settings.data,
-            headers: settings.headers
-          },
-          (error, response, body) => {
-            if (response.statusCode !== 200) {
-              log('Request ended with an error ', response.statusCode, body);
-              reject(new AppAuthError(response.statusMessage!));
-            } else {
-              resolve(body as T);
+      const url = Url.parse(settings.url!);
+      const data = settings.data;
+
+      const options = {
+        hostname: url.hostname,
+        port: url.port,
+        path: url.path,
+        method: settings.method,
+        headers: settings.headers || {}
+      };
+
+      if (data) {
+        options.headers['Content-Length'] = String(data.toString().length);
+      }
+
+      const request = https.request(options, (response: ServerResponse) => {
+        if (response.statusCode !== 200) {
+          log('Request ended with an error ', response.statusCode);
+          reject(new AppAuthError(response.statusMessage!));
+        }
+
+        const chunks: string[] = [];
+        response.on('data', (chunk: Buffer) => {
+          chunks.push(chunk.toString());
+        });
+
+        response.on('end', () => {
+          const body = chunks.join('');
+          if (settings.dataType === 'json') {
+            try {
+              resolve((JSON.parse(body) as any) as T);
+            } catch (err) {
+              log('Could not parse json response', body);
             }
-          });
+          } else {
+            resolve((body as any) as T);
+          }
+        });
+      });
+
+      request.on('error', (e: Error) => {
+        reject(new AppAuthError(e.toString()));
+      });
+
+      if (data) {
+        request.write(data);
+      }
+      request.end();
     });
   }
 }
