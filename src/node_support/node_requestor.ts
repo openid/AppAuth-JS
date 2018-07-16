@@ -45,7 +45,12 @@ export class NodeRequestor extends Requestor {
         options.headers['Content-Length'] = String(data.toString().length);
       }
 
-      const request = https.request(options, (response: ServerResponse) => {
+      let protocol = https;
+      if (url.protocol && url.protocol.toLowerCase() === 'http:') {
+        protocol = http;
+      }
+
+      const request = protocol.request(options, (response: ServerResponse) => {
         if (response.statusCode !== 200) {
           log('Request ended with an error ', response.statusCode);
           reject(new AppAuthError(response.statusMessage!));
