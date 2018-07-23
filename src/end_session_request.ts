@@ -16,19 +16,17 @@ import {cryptoGenerateRandom, RandomGenerator} from './crypto_utils';
 import {StringMap} from './types';
 
 /**
- * Represents an AuthorizationRequest as JSON.
+ * Represents an EndSessionRequest as JSON.
  */
 
 // NOTE:
-// Both redirect_uri and state are actually optional.
+// Both post_logout_redirect_uri and state are actually optional.
 // However AppAuth is more opionionated, and requires you to use both.
 
-export interface AuthorizationRequestJson {
-  response_type: string;
-  client_id: string;
-  redirect_uri: string;
+export interface EndSessionRequestJson {
+  id_token_hint: string;
+  post_logout_redirect_uri: string;
   state: string;
-  scope: string;
   extras?: StringMap;
 }
 
@@ -41,24 +39,20 @@ const newState = function(generateRandom: RandomGenerator): string {
 };
 
 /**
- * Represents the AuthorizationRequest.
+ * Represents the EndSessionRequest.
  * For more information look at
- * https://tools.ietf.org/html/rfc6749#section-4.1.1
+ * http://openid.net/specs/openid-connect-session-1_0.html
  */
-export class AuthorizationRequest {
-  static RESPONSE_TYPE_CODE = 'code';
-
+export class EndSessionRequest {
   state: string;
   /**
-   * Constructs a new AuthorizationRequest.
+   * Constructs a new EndSessionRequest.
    * Use a `undefined` value for the `state` parameter, to generate a random
    * state for CSRF protection.
    */
   constructor(
-      public clientId: string,
-      public redirectUri: string,
-      public scope: string,
-      public responseType: string = AuthorizationRequest.RESPONSE_TYPE_CODE,
+      public idTokenHint: string,
+      public postLogoutRedirectUri: string,
       state?: string,
       public extras?: StringMap,
       generateRandom = cryptoGenerateRandom) {
@@ -66,38 +60,22 @@ export class AuthorizationRequest {
   }
 
   /**
-   * Serializes the AuthorizationRequest to a JavaScript Object.
+   * Serializes the EndSessionRequest to a JavaScript Object.
    */
-  toJson(): AuthorizationRequestJson {
+  toJson(): EndSessionRequestJson {
     return {
-      response_type: this.responseType,
-      client_id: this.clientId,
-      redirect_uri: this.redirectUri,
-      scope: this.scope,
+      id_token_hint: this.idTokenHint,
+      post_logout_redirect_uri: this.postLogoutRedirectUri,
       state: this.state,
       extras: this.extras
     };
   }
 
   /**
-   * Creates a new instance of AuthorizationRequest.
+   * Creates a new instance of EndSessionRequest.
    */
-  static fromJson(input: AuthorizationRequestJson): AuthorizationRequest {
-    return new AuthorizationRequest(
-        input.client_id,
-        input.redirect_uri,
-        input.scope,
-        input.response_type,
-        input.state,
-        input.extras);
-  }
-
-  /**
-   * Adds additional extra fields to the AuthorizationRequest.
-   */
-  setExtrasField(key: string, value: string) {
-    if (this.extras) {
-      this.extras[key] = value;
-    }
+  static fromJson(input: EndSessionRequestJson): EndSessionRequest {
+    return new EndSessionRequest(
+        input.id_token_hint, input.post_logout_redirect_uri, input.state, input.extras);
   }
 }

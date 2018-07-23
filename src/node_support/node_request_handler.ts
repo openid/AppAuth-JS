@@ -61,6 +61,7 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
 
       const state = searchParams.get('state') || undefined;
       const code = searchParams.get('code');
+      const id_token = searchParams.get('id_token');
       const error = searchParams.get('error');
 
       if (!state && !code && !error) {
@@ -78,7 +79,7 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         const errorDescription = searchParams.get('error_description') || undefined;
         authorizationError = new AuthorizationError(error, errorDescription, errorUri, state);
       } else {
-        authorizationResponse = new AuthorizationResponse(code!, state!);
+        authorizationResponse = new AuthorizationResponse(code!, state!, id_token!);
       }
       const completeResponse = {
         request,
