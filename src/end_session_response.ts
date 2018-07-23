@@ -13,18 +13,16 @@
  */
 
 /**
- * Represents the AuthorizationResponse as a JSON object.
+ * Represents the EndSessionResponse as a JSON object.
  */
-export interface AuthorizationResponseJson {
-  code: string;
+export interface EndSessionResponseJson {
   state: string;
-  id_token: string;
 }
 
 /**
- * Represents the AuthorizationError as a JSON object.
+ * Represents the EndSessionError as a JSON object.
  */
-export interface AuthorizationErrorJson {
+export interface EndSessionErrorJson {
   error: string;
   error_description?: string;
   error_uri?: string;
@@ -32,35 +30,35 @@ export interface AuthorizationErrorJson {
 }
 
 /**
- * Represents the Authorization Response type.
+ * Represents the EndSession Response type.
  * For more information look at
- * https://tools.ietf.org/html/rfc6749#section-4.1.2
+ * http://openid.net/specs/openid-connect-session-1_0.html
  */
-export class AuthorizationResponse {
-  constructor(public code: string, public state: string, public id_token: string) {}
+export class EndSessionResponse {
+  constructor(public state: string) {}
 
-  toJson(): AuthorizationResponseJson {
-    return {code: this.code, state: this.state, id_token: this.id_token};
+  toJson(): EndSessionResponseJson {
+    return {state: this.state};
   }
 
-  static fromJson(json: AuthorizationResponseJson): AuthorizationResponse {
-    return new AuthorizationResponse(json.code, json.state, json.id_token);
+  static fromJson(json: EndSessionResponseJson): EndSessionResponse {
+    return new EndSessionResponse(json.state);
   }
 }
 
 /**
- * Represents the Authorization error response.
+ * Represents the EndSession error response.
  * For more information look at:
- * https://tools.ietf.org/html/rfc6749#section-4.1.2.1
+ * http://openid.net/specs/openid-connect-session-1_0.html
  */
-export class AuthorizationError {
+export class EndSessionError {
   constructor(
       public error: string,
       public errorDescription?: string,
       public errorUri?: string,
       public state?: string) {}
 
-  toJson(): AuthorizationErrorJson {
+  toJson(): EndSessionErrorJson {
     return {
       error: this.error,
       error_description: this.errorDescription,
@@ -69,7 +67,7 @@ export class AuthorizationError {
     };
   }
 
-  static fromJson(json: AuthorizationErrorJson): AuthorizationError {
-    return new AuthorizationError(json.error, json.error_description, json.error_uri, json.state);
+  static fromJson(json: EndSessionErrorJson): EndSessionError {
+    return new EndSessionError(json.error, json.error_description, json.error_uri, json.state);
   }
 }

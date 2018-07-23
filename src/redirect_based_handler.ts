@@ -20,7 +20,7 @@ import {cryptoGenerateRandom, RandomGenerator} from './crypto_utils';
 import {log} from './logger';
 import {BasicQueryStringUtils, QueryStringUtils} from './query_string_utils';
 import {LocalStorageBackend, StorageBackend} from './storage';
-import {LocationLike, StringMap} from './types';
+import {AUTHORIZATION_RESPONSE_HANDLE_KEY, FLOW_TYPE_IMPLICIT, FLOW_TYPE_PKCE, LocationLike} from './types';
 
 
 /** key for authorization request. */
@@ -92,45 +92,79 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
             .then(result => JSON.parse(result!))
             .then(json => AuthorizationRequest.fromJson(json))
             .then(request => {
-              // check redirect_uri and state
-              let currentUri = `${this.locationLike.origin}${this.locationLike.pathname}`;
-              let queryParams = this.utils.parse(this.locationLike, true /* use hash */);
-              let state: string|undefined = queryParams['state'];
-              let code: string|undefined = queryParams['code'];
-              let error: string|undefined = queryParams['error'];
-              log('Potential authorization request ', currentUri, queryParams, state, code, error);
-              let shouldNotify = state === request.state;
-              let authorizationResponse: AuthorizationResponse|null = null;
-              let authorizationError: AuthorizationError|null = null;
-              if (shouldNotify) {
-                if (error) {
-                  // get additional optional info.
-                  let errorUri = queryParams['error_uri'];
-                  let errorDescription = queryParams['error_description'];
-                  authorizationError =
-                      new AuthorizationError(error, errorDescription, errorUri, state);
-                } else {
-                  authorizationResponse = new AuthorizationResponse(code, state!);
-                }
-                // cleanup state
-                return Promise
-                    .all([
-                      this.storageBackend.removeItem(AUTHORIZATION_REQUEST_HANDLE_KEY),
-                      this.storageBackend.removeItem(authorizationRequestKey(handle)),
-                      this.storageBackend.removeItem(authorizationServiceConfigurationKey(handle))
-                    ])
-                    .then(() => {
-                      log('Delivering authorization response');
-                      return {
-                        request: request,
-                        response: authorizationResponse,
-                        error: authorizationError
-                      } as AuthorizationRequestResponse;
-                    });
-              } else {
-                log('Mismatched request (state and request_uri) dont match.');
-                return Promise.resolve(null);
-              }
+              return this.storageBackend.getItem(authorizationServiceConfigurationKey(handle))
+                  .then(result => {
+                    var configurationJson = JSON.parse(result!);
+                    var configuration = new AuthorizationServiceConfiguration(
+                        configurationJson.oauthFlowType,
+                        configurationJson.authorizationEndpoint,
+                        configurationJson.tokenEndpoint,
+                        configurationJson.revocationEndpoint,
+                        configurationJson.endSessionEndpoint,
+                        configurationJson.userInfoEndpoint);
+
+                    // check redirect_uri and state
+                    let currentUri = `${this.locationLike.origin}${this.locationLike.pathname}`;
+                    var queryParams;
+                    switch (configuration.oauthFlowType) {
+                      case FLOW_TYPE_IMPLICIT:
+                        queryParams = this.utils.parse(this.locationLike, true /* use hash */);
+                        break;
+                      case FLOW_TYPE_PKCE:
+                        queryParams = this.utils.parse(this.locationLike, false /* use ? */);
+                        break;
+                      default:
+                        queryParams = this.utils.parse(this.locationLike, true /* use hash */);
+                    }
+                    let state: string|undefined = queryParams['state'];
+                    let code: string|undefined = queryParams['code'];
+                    let idToken: string|undefined = queryParams['id_token'];
+                    let error: string|undefined = queryParams['error'];
+                    log('Potential authorization request ',
+                        currentUri,
+                        queryParams,
+                        state,
+                        code,
+                        error);
+                    let shouldNotify = state === request.state;
+                    let authorizationResponse: AuthorizationResponse|null = null;
+                    let authorizationError: AuthorizationError|null = null;
+                    if (shouldNotify) {
+                      if (error) {
+                        // get additional optional info.
+                        let errorUri = queryParams['error_uri'];
+                        let errorDescription = queryParams['error_description'];
+                        authorizationError =
+                            new AuthorizationError(error, errorDescription, errorUri, state);
+                      } else {
+                        authorizationResponse = new AuthorizationResponse(code, state!, idToken);
+                      }
+                      // cleanup state
+                      return Promise
+                          .all([
+                            this.storageBackend.removeItem(AUTHORIZATION_REQUEST_HANDLE_KEY),
+                            this.storageBackend.removeItem(authorizationRequestKey(handle)),
+                            this.storageBackend.removeItem(
+                                authorizationServiceConfigurationKey(handle)),
+                            this.storageBackend.setItem(
+                                AUTHORIZATION_RESPONSE_HANDLE_KEY,
+                                (authorizationResponse == null ?
+                                     '' :
+                                     JSON.stringify(authorizationResponse.toJson())))
+                          ])
+                          .then(() => {
+                            log('Delivering authorization response');
+                            return {
+                              request: request,
+                              response: authorizationResponse,
+                              error: authorizationError
+                            } as AuthorizationRequestResponse;
+                          });
+                    } else {
+                      log('Mismatched request (state and request_uri) dont match.');
+                      return Promise.resolve(null);
+                    }
+                  });
             });
       } else {
         return null;

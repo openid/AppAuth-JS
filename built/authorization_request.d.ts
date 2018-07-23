@@ -38,4 +38,8 @@ export declare class AuthorizationRequest {
      * Creates a new instance of AuthorizationRequest.
      */
     static fromJson(input: AuthorizationRequestJson): AuthorizationRequest;
+    /**
+     * Adds additional extra fields to the AuthorizationRequest.
+     */
+    setExtrasField(key: string, value: string): void;
 }
