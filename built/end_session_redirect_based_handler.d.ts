@@ -15,8 +15,7 @@ export declare class EndSessionRedirectRequestHandler extends EndSessionRequestH
     constructor(storageBackend?: StorageBackend, utils?: BasicQueryStringUtils, locationLike?: LocationLike, generateRandom?: RandomGenerator);
     performEndSessionRequest(configuration: AuthorizationServiceConfiguration, request: EndSessionRequest): void;
     /**
-     * Attempts to introspect the contents of storage backend and completes the
-     * request.
+     * Attempts to introspect the contents of storage backend and completes the request.
      */
     protected completeEndSessionRequest(): Promise<EndSessionRequestResponse | null>;
 }

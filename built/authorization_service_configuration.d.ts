@@ -3,7 +3,7 @@ import { Requestor } from './xhr';
  * Represents AuthorizationServiceConfiguration as a JSON object.
  */
 export interface AuthorizationServiceConfigurationJson {
-    oauthFlowType: string;
+    oauth_flow_type: string;
     authorization_endpoint: string;
     token_endpoint: string;
     revocation_endpoint: string;
@@ -26,7 +26,7 @@ export declare class AuthorizationServiceConfiguration {
     endSessionEndpoint?: string | undefined, // for OpenID session management
     userInfoEndpoint?: string | undefined);
     toJson(): {
-        oauthFlowType: string;
+        oauth_flow_type: string;
         authorization_endpoint: string;
         token_endpoint: string;
         revocation_endpoint: string;
