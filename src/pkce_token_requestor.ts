@@ -1,4 +1,5 @@
 import {AuthorizationRequest} from './authorization_request';
+import {AuthorizationRequestHandler} from './authorization_request_handler';
 import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
 import {CodeVerifier} from './pkce_code_verifier';
 import {RedirectRequestHandler} from './redirect_based_handler';
@@ -10,13 +11,13 @@ import {JQueryRequestor} from './xhr';
 
 export class PKCETokenRequestHandler {
   verifier: CodeVerifier;
-  authorizationHandler: RedirectRequestHandler;
+  authorizationHandler: AuthorizationRequestHandler;
   tokenHandler: TokenRequestHandler;
   configuration: AuthorizationServiceConfiguration;
   storageBackend: StorageBackend;
 
   constructor(
-      authorizationHandler: RedirectRequestHandler,
+      authorizationHandler: AuthorizationRequestHandler,
       configuration: AuthorizationServiceConfiguration,
       storageBackend: StorageBackend = new LocalStorageBackend()) {
     this.verifier = new CodeVerifier();
