@@ -9,6 +9,9 @@ import {BaseTokenRequestHandler, TokenRequestHandler} from './token_request_hand
 import {AUTHORIZATION_RESPONSE_HANDLE_KEY} from './types';
 import {JQueryRequestor} from './xhr';
 
+/**
+ * Handler class for PKCE related request handling.
+ */
 export class PKCETokenRequestHandler {
   verifier: CodeVerifier;
   authorizationHandler: AuthorizationRequestHandler;
@@ -27,6 +30,12 @@ export class PKCETokenRequestHandler {
     this.storageBackend = storageBackend;
   }
 
+  /**
+   * Perform PKCE authrization request
+   * 
+   * @param configuration request configs
+   * @param request auth request
+   */
   performPKCEAuthorizationCodeRequest(
       configuration: AuthorizationServiceConfiguration,
       request: AuthorizationRequest) {
@@ -34,6 +43,12 @@ export class PKCETokenRequestHandler {
     this.authorizationHandler.performAuthorizationRequest(configuration, request);
   }
 
+  /**
+   * Perform PKCE authrization token request
+   * 
+   * @param configuration request configs
+   * @param request token request
+   */
   performPKCEAuthorizationTokenRequest(
       configuration: AuthorizationServiceConfiguration,
       request: TokenRequest) {
