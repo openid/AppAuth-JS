@@ -23,6 +23,7 @@ export declare class AuthorizationRequest {
     responseType: string;
     extras?: StringMap | undefined;
     static RESPONSE_TYPE_CODE: string;
+    static RESPONSE_TYPE_ID_TOKEN: string;
     state: string;
     /**
      * Constructs a new AuthorizationRequest.
