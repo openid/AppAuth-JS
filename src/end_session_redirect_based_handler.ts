@@ -76,8 +76,7 @@ export class EndSessionRedirectRequestHandler extends EndSessionRequestHandler {
   }
 
   /**
-   * Attempts to introspect the contents of storage backend and completes the
-   * request.
+   * Attempts to introspect the contents of storage backend and completes the request.
    */
   protected completeEndSessionRequest(): Promise<EndSessionRequestResponse|null> {
     // TODO(rahulrav@): handle endsession errors.

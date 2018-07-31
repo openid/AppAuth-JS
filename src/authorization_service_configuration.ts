@@ -20,7 +20,7 @@ import {JQueryRequestor, Requestor} from './xhr';
  * Represents AuthorizationServiceConfiguration as a JSON object.
  */
 export interface AuthorizationServiceConfigurationJson {
-  oauthFlowType: string;
+  oauth_flow_type: string;
   authorization_endpoint: string;
   token_endpoint: string;
   revocation_endpoint: string;
@@ -56,7 +56,7 @@ export class AuthorizationServiceConfiguration {
 
   toJson() {
     return {
-      oauthFlowType: this.oauthFlowType,
+      oauth_flow_type: this.oauthFlowType,
       authorization_endpoint: this.authorizationEndpoint,
       token_endpoint: this.tokenEndpoint,
       revocation_endpoint: this.revocationEndpoint,
@@ -67,7 +67,7 @@ export class AuthorizationServiceConfiguration {
 
   static fromJson(json: AuthorizationServiceConfigurationJson): AuthorizationServiceConfiguration {
     return new AuthorizationServiceConfiguration(
-        json.oauthFlowType,
+        json.oauth_flow_type,
         json.authorization_endpoint,
         json.token_endpoint,
         json.revocation_endpoint,
