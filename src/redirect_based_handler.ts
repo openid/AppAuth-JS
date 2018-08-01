@@ -96,12 +96,12 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
                   .then(result => {
                     var configurationJson = JSON.parse(result!);
                     var configuration = new AuthorizationServiceConfiguration(
-                        configurationJson.oauthFlowType,
-                        configurationJson.authorizationEndpoint,
-                        configurationJson.tokenEndpoint,
-                        configurationJson.revocationEndpoint,
-                        configurationJson.endSessionEndpoint,
-                        configurationJson.userInfoEndpoint);
+                        configurationJson.oauth_flow_type,
+                        configurationJson.authorization_endpoint,
+                        configurationJson.token_endpoint,
+                        configurationJson.revocation_endpoint,
+                        configurationJson.endSession_endpoint,
+                        configurationJson.userinfo_endpoint);
 
                     // check redirect_uri and state
                     let currentUri = `${this.locationLike.origin}${this.locationLike.pathname}`;
