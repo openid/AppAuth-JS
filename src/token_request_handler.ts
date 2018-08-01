@@ -20,6 +20,7 @@ import {RevokeTokenRequest} from './revoke_token_request';
 import {TokenRequest} from './token_request';
 import {TokenError, TokenErrorJson, TokenResponse, TokenResponseJson} from './token_response';
 import {StringMap} from './types';
+import {UserInfoRequest} from './user_info_request';
 import {JQueryRequestor, Requestor} from './xhr';
 
 
@@ -86,4 +87,25 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
       }
     });
   }
+
+  /*performUserInfoRequest(
+      configuration: AuthorizationServiceConfiguration,
+      request: UserInfoRequest): Promise<TokenResponse> {
+    let tokenResponse = this.requestor.xhr<TokenResponseJson|TokenErrorJson>({
+      url: configuration.userInfoEndpoint,
+      method: 'GET',
+      dataType: 'json',  // adding implicit dataType
+      headers: {'Authorization': 'Bearer ' + accessToken},
+      data: this.utils.stringify(request.toStringMap())
+    });
+
+    return tokenResponse.then(response => {
+      if (this.isTokenResponse(response)) {
+        return TokenResponse.fromJson(response);
+      } else {
+        return Promise.reject<TokenResponse>(
+            new AppAuthError(response.error, TokenError.fromJson(response)));
+      }
+    });
+  }*/
 }
