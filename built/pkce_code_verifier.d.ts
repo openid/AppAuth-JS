@@ -1,4 +1,3 @@
-/// <reference types="node" />
 /**
  * class for PKCE code challenge and code verifier generation.
  */
@@ -17,7 +16,7 @@ export declare class CodeVerifier {
      *
      * @param value text to generate SHA256 code
      */
-    static sha256(value: string): Buffer;
+    static sha256(value: string): ArrayBuffer;
     /**
      * Get PKCE code verifier code.
      */

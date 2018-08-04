@@ -28,8 +28,7 @@ import { LocalStorageBackend, StorageBackend } from '../storage';
 import { EndSessionRedirectRequestHandler } from '../end_session_redirect_based_handler';
 import { EndSessionRequestHandler, EndSessionNotifier } from '../end_session_request_handler';
 import { EndSessionRequest } from '../end_session_request';
-
-import * as crypto from 'crypto';
+import {cryptoGenerateRandom} from '../crypto_utils';
 
 /**
  * The wrapper appication.
@@ -62,7 +61,6 @@ export class App {
   private endSessionHandler: EndSessionRequestHandler;
 
   private configuration: AuthorizationServiceConfiguration;
-  private code: string|undefined;
 
   constructor({
     authorizeUrl = '',
@@ -121,7 +119,6 @@ export class App {
     this.notifier.setAuthorizationListener((request, response, error) => {
       log('Authorization request complete ', request, response, error);
       if (response) {
-        this.code = response.code;
         this.showMessage(`Authorization Code ${response.code}`);
 
         if (this.configuration.toJson().oauth_flow_type == FLOW_TYPE_PKCE && response.code) {
@@ -258,21 +255,13 @@ export class App {
   }
 
   static generateNonce() {
-    var nonceLen = 16;
-    return crypto.randomBytes(Math.ceil(nonceLen * 3 / 4))
-        .toString('base64')    // convert to base64 format
-        .slice(0, nonceLen)    // return required number of characters
-        .replace(/\+/g, '0')   // replace '+' with '0'
-        .replace(/\//g, '0');  // replace '/' with '0'
+    var nonceLen = 8;
+    return cryptoGenerateRandom(nonceLen);
   }
 
   static generateState() {
     var stateLen = 8;
-    return crypto.randomBytes(Math.ceil(stateLen * 3 / 4))
-        .toString('base64')    // convert to base64 format
-        .slice(0, stateLen)    // return required number of characters
-        .replace(/\+/g, '0')   // replace '+' with '0'
-        .replace(/\//g, '0');  // replace '/' with '0'
+    return cryptoGenerateRandom(stateLen);
   }
 
   parseQueryString(location: Location, splitByHash: boolean): Object {
