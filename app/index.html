@@ -21,6 +21,7 @@
       <button class="mdl-button mdl-js-button mdl-button--raised" id="fetchConfig">Fetch Configuration</button>
       <button class="mdl-button mdl-js-button mdl-button--raised" id="authorize">Make Authorization Request</button>
       <button class="mdl-button mdl-js-button mdl-button--raised" id="makeTokenRequest">Make Token Request</button>
+      <button class="mdl-button mdl-js-button mdl-button--raised" id="makeLogoutRequest">Logout Request</button>
     </div>
     <!-- snackbar -->
     <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
@@ -40,13 +41,12 @@
   <!-- scripts -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-  <script src="../built/app/bundle.js"></script>
+  <script src="bundle.js"></script>
   <script type="text/javascript">
+
     var application = null;
     var init = function () {
-      application = new App(document.querySelector('#snackbar'));
+      application = new App({'flowType': "IMPLICIT"});
       // check for authorization response if available.
       application.checkForAuthorizationResponse();
 
@@ -68,6 +68,13 @@
       var makeTokenRequest = document.querySelector('#makeTokenRequest');
       makeTokenRequest.addEventListener('click', function () {
         application.makeTokenRequest();
+        event.preventDefault();
+      });
+
+      // logout request handler
+      var makeLogoutRequest = document.querySelector('#makeLogoutRequest');
+      makeLogoutRequest.addEventListener('click', function () {
+        application.makeLogoutRequest();
         event.preventDefault();
       });
     };
