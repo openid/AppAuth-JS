@@ -15,20 +15,20 @@
 // Represents the test web app that uses the AppAuthJS library.
 
 import {AuthorizationRequest} from '../authorization_request';
-import {AuthorizationListener, AuthorizationNotifier, AuthorizationRequestHandler} from '../authorization_request_handler';
-import {AuthorizationResponse} from '../authorization_response';
+import {AuthorizationNotifier, AuthorizationRequestHandler} from '../authorization_request_handler';
 import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
 import {log} from '../logger';
 import {RedirectRequestHandler} from '../redirect_based_handler';
-import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../token_request';
-import {TokenError, TokenResponse} from '../token_response';
+import {GRANT_TYPE_AUTHORIZATION_CODE, TokenRequest} from '../token_request';
 import { FLOW_TYPE_IMPLICIT, FLOW_TYPE_PKCE, AUTHORIZATION_RESPONSE_HANDLE_KEY } from '../types';
 import { PKCETokenRequestHandler } from '../pkce_token_requestor';
 import { LocalStorageBackend, StorageBackend } from '../storage';
 import { EndSessionRedirectRequestHandler } from '../end_session_redirect_based_handler';
 import { EndSessionRequestHandler, EndSessionNotifier } from '../end_session_request_handler';
 import { EndSessionRequest } from '../end_session_request';
-import {cryptoGenerateRandom} from '../crypto_utils';
+import { cryptoGenerateRandom } from '../crypto_utils';
+import { UserInfoRequestHandler, BaseUserInfoRequestHandler } from '../user_info_request_handler';
+import { UserInfoRequest } from '../user_info_request';
 
 /**
  * The wrapper appication.
@@ -56,6 +56,7 @@ export class App {
   private notifier: AuthorizationNotifier;
   private authorizationHandler: AuthorizationRequestHandler;
   private pkceTokenRequestHandler: PKCETokenRequestHandler;
+  private userInfoRequestHandler: UserInfoRequestHandler;
 
   private endSessionNotifier: EndSessionNotifier;
   private endSessionHandler: EndSessionRequestHandler;
@@ -139,6 +140,7 @@ export class App {
       }
     });
     this.pkceTokenRequestHandler = new PKCETokenRequestHandler(this.authorizationHandler, this.configuration, this.userStore);
+    this.userInfoRequestHandler = new BaseUserInfoRequestHandler(this.userStore);
 
     this.endSessionNotifier = new EndSessionNotifier();
     // uses a redirect flow
@@ -248,6 +250,14 @@ export class App {
 
     // make the authorization request
     this.endSessionHandler.performEndSessionRequest(this.configuration, request);
+  }
+
+  makeUserInfoRequest() {
+    var userInfoRequest = new UserInfoRequest("openid");
+    this.userInfoRequestHandler.performUserInfoRequest(this.configuration, userInfoRequest)
+    .then(userInfoResponse => {
+      this.showMessage(JSON.stringify(userInfoResponse.toJson()));
+    });
   }
 
   showMessage(message: string) {

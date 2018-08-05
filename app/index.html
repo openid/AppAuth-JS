@@ -20,7 +20,7 @@
     <div class="card mdl-card mdl-shadow--2dp">
       <button class="mdl-button mdl-js-button mdl-button--raised" id="fetchConfig">Fetch Configuration</button>
       <button class="mdl-button mdl-js-button mdl-button--raised" id="authorize">Make Authorization Request</button>
-      <button class="mdl-button mdl-js-button mdl-button--raised" id="makeTokenRequest">Make Token Request</button>
+      <button class="mdl-button mdl-js-button mdl-button--raised" id="makeUserInfoRequest">Make User Info Request</button>
       <button class="mdl-button mdl-js-button mdl-button--raised" id="makeLogoutRequest">Logout Request</button>
     </div>
     <!-- snackbar -->
@@ -64,10 +64,10 @@
         event.preventDefault();
       });
 
-      // token request handler
-      var makeTokenRequest = document.querySelector('#makeTokenRequest');
-      makeTokenRequest.addEventListener('click', function () {
-        application.makeTokenRequest();
+      // userInfo request handler
+      var makeUserInfoRequest = document.querySelector('#makeUserInfoRequest');
+      makeUserInfoRequest.addEventListener('click', function () {
+        application.makeUserInfoRequest();
         event.preventDefault();
       });
 

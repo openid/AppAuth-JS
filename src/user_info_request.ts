@@ -4,7 +4,7 @@ import {StringMap} from './types';
  * Represents the User Info Request as JSON.
  */
 export interface UserInfoRequestJson {
-  access_token: string;
+  access_token?: string;
   schema: string;
   extras?: StringMap;
 }
@@ -16,7 +16,7 @@ export interface UserInfoRequestJson {
  * https://tools.ietf.org/html/rfc6749#section-4.1.3 (TODO: Have to update the section)
  */
 export class UserInfoRequest {
-  constructor(public accessToken: string, public schema: string, public extras?: StringMap) {}
+  constructor(public schema: string, public accessToken?: string, public extras?: StringMap) {}
 
   /**
    * Serializes a UserInfoRequest to a JavaScript object.
@@ -26,7 +26,7 @@ export class UserInfoRequest {
   }
 
   toStringMap(): StringMap {
-    let map: StringMap = {access_token: this.accessToken, schema: this.schema};
+    let map: StringMap = {};
 
     // copy over extras
     if (this.extras) {
@@ -42,7 +42,7 @@ export class UserInfoRequest {
   }
 
   static fromJson(input: UserInfoRequestJson): UserInfoRequest {
-    return new UserInfoRequest(input.access_token, input.schema, input.extras);
+    return new UserInfoRequest(input.schema, input.access_token, input.extras);
   }
 
   setExtrasField(key: string, value: string) {

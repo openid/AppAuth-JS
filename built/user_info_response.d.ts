@@ -1,58 +1,57 @@
-export declare type TokenType = 'bearer';
 /**
- * Represents the TokenResponse as a JSON Object.
+ * Represents the UserInfoResponse as a JSON Object.
  */
-export interface TokenResponseJson {
-    access_token: string;
-    id_token?: string;
-    token_type?: TokenType;
-    issued_at?: number;
-    expires_in?: number;
-    refresh_token?: string;
-    scope?: string;
+export interface UserInfoResponseJson {
+    sub: string;
+    name: string;
+    given_name: string;
+    family_name: string;
+    preferred_username: string;
+    email: string;
+    picture: string;
 }
 /**
- * Represents the possible error codes from the token endpoint.
+ * Represents the possible error codes from the userInfo endpoint.
  * For more information look at:
- * https://tools.ietf.org/html/rfc6749#section-5.2
+ * http://openid.net/specs/openid-connect-core-1_0.html#UserInfoError
  */
-export declare type ErrorType = 'invalid_request' | 'invalid_client' | 'invalid_grant' | 'unauthorized_client' | 'unsupported_grant_type' | 'invalid_scope';
+export declare type UserInfoErrorType = 'invalid_token';
 /**
- * Represents the TokenError as a JSON Object.
+ * Represents the UserInfoError as a JSON Object.
  */
-export interface TokenErrorJson {
-    error: ErrorType;
+export interface UserInfoErrorJson {
+    error: UserInfoErrorType;
     error_description?: string;
-    error_uri?: string;
 }
 /**
- * Represents the Token Response type.
+ * Represents the UserInfo Response type.
  * For more information look at:
- * https://tools.ietf.org/html/rfc6749#section-5.1
+ * http://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
+ *
+ * TODO: UserInfo response vlidation as of
+ * http://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponseValidation
  */
-export declare class TokenResponse {
-    accessToken: string;
-    idToken?: string | undefined;
-    refreshToken?: string | undefined;
-    scope?: string | undefined;
-    tokenType: TokenType;
-    issuedAt: number;
-    expiresIn?: number | undefined;
-    constructor(accessToken: string, idToken?: string | undefined, refreshToken?: string | undefined, scope?: string | undefined, tokenType?: TokenType, issuedAt?: number, expiresIn?: number | undefined);
-    toJson(): TokenResponseJson;
-    isValid(): boolean;
-    static fromJson(input: TokenResponseJson): TokenResponse;
+export declare class UserInfoResponse {
+    sub: string;
+    name: string;
+    given_name: string;
+    family_name: string;
+    preferred_username: string;
+    email: string;
+    picture: string;
+    constructor(sub: string, name: string, given_name: string, family_name: string, preferred_username: string, email: string, picture: string);
+    toJson(): UserInfoResponseJson;
+    static fromJson(input: UserInfoResponseJson): UserInfoResponse;
 }
 /**
- * Represents the Token Error type.
+ * Represents the UserInfo Error type.
  * For more information look at:
- * https://tools.ietf.org/html/rfc6749#section-5.2
+ * http://openid.net/specs/openid-connect-core-1_0.html#UserInfoError
  */
-export declare class TokenError {
-    readonly error: ErrorType;
+export declare class UserInfoError {
+    readonly error: UserInfoErrorType;
     readonly errorDescription?: string | undefined;
-    readonly errorUri?: string | undefined;
-    constructor(error: ErrorType, errorDescription?: string | undefined, errorUri?: string | undefined);
-    toJson(): TokenErrorJson;
-    static fromJson(input: TokenErrorJson): TokenError;
+    constructor(error: UserInfoErrorType, errorDescription?: string | undefined);
+    toJson(): UserInfoErrorJson;
+    static fromJson(input: UserInfoErrorJson): UserInfoError;
 }

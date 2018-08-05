@@ -1,107 +1,89 @@
-export type TokenType = 'bearer';
-
 /**
- * Represents the TokenResponse as a JSON Object.
+ * Represents the UserInfoResponse as a JSON Object.
  */
-export interface TokenResponseJson {
-  access_token: string;
-  id_token?: string;      /* https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse */
-  token_type?: TokenType; /* treating token type as optional, as its going to be inferred. */
-  issued_at?: number;     /* when was it issued ? */
-  expires_in?: number;    /* lifetime in seconds. */
-  refresh_token?: string;
-  scope?: string;
+export interface UserInfoResponseJson {
+  sub: string;
+  name: string; /* http://openid.net/specs/openid-connect-core-1_0.html#UserInfo */
+  given_name: string;
+  family_name: string;
+  preferred_username: string;
+  email: string;
+  picture: string;
 }
 
 /**
- * Represents the possible error codes from the token endpoint.
+ * Represents the possible error codes from the userInfo endpoint.
  * For more information look at:
- * https://tools.ietf.org/html/rfc6749#section-5.2
+ * http://openid.net/specs/openid-connect-core-1_0.html#UserInfoError
  */
-export type ErrorType = 'invalid_request'|'invalid_client'|'invalid_grant'|'unauthorized_client'|
-    'unsupported_grant_type'|'invalid_scope';
+export type UserInfoErrorType = 'invalid_token';
 
 /**
- * Represents the TokenError as a JSON Object.
+ * Represents the UserInfoError as a JSON Object.
  */
-export interface TokenErrorJson {
-  error: ErrorType;
+export interface UserInfoErrorJson {
+  error: UserInfoErrorType;
   error_description?: string;
-  error_uri?: string;
 }
 
 /**
- * Returns the instant of time in seconds.
- */
-const nowInSeconds = () => Math.round(new Date().getTime() / 1000);
-
-/**
- * Represents the Token Response type.
+ * Represents the UserInfo Response type.
  * For more information look at:
- * https://tools.ietf.org/html/rfc6749#section-5.1
+ * http://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
+ *
+ * TODO: UserInfo response vlidation as of
+ * http://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponseValidation
  */
-export class TokenResponse {
+export class UserInfoResponse {
   constructor(
-      public accessToken: string,
-      public idToken?: string,
-      public refreshToken?: string,
-      public scope?: string,
-      public tokenType: TokenType = 'bearer',
-      public issuedAt: number = nowInSeconds(),
-      public expiresIn?: number) {}
+      public sub: string,
+      public name: string,
+      public given_name: string,
+      public family_name: string,
+      public preferred_username: string,
+      public email: string,
+      public picture: string) {}
 
-  toJson(): TokenResponseJson {
+  toJson(): UserInfoResponseJson {
     return {
-      access_token: this.accessToken,
-      id_token: this.idToken,
-      refresh_token: this.refreshToken,
-      scope: this.scope,
-      token_type: this.tokenType,
-      issued_at: this.issuedAt,
-      expires_in: this.expiresIn
+      sub: this.sub,
+      name: this.name,
+      given_name: this.given_name,
+      family_name: this.family_name,
+      preferred_username: this.preferred_username,
+      email: this.email,
+      picture: this.picture
     };
   }
 
-  isValid(): boolean {
-    if (this.expiresIn) {
-      let now = nowInSeconds();
-      return now < this.issuedAt + this.expiresIn;
-    } else {
-      return true;
-    }
-  }
-
-  static fromJson(input: TokenResponseJson): TokenResponse {
-    const issuedAt = !input.issued_at ? nowInSeconds() : input.issued_at;
-    return new TokenResponse(
-        input.access_token,
-        input.id_token,
-        input.refresh_token,
-        input.scope,
-        input.token_type,
-        issuedAt,
-        input.expires_in)
+  static fromJson(input: UserInfoResponseJson): UserInfoResponse {
+    return new UserInfoResponse(
+        input.sub,
+        input.name,
+        input.given_name,
+        input.family_name,
+        input.preferred_username,
+        input.email,
+        input.picture)
   }
 }
 
 /**
- * Represents the Token Error type.
+ * Represents the UserInfo Error type.
  * For more information look at:
- * https://tools.ietf.org/html/rfc6749#section-5.2
+ * http://openid.net/specs/openid-connect-core-1_0.html#UserInfoError
  */
-export class TokenError {
-  constructor(
-      public readonly error: ErrorType,
-      public readonly errorDescription?: string,
-      public readonly errorUri?: string) {}
+export class UserInfoError {
+  constructor(public readonly error: UserInfoErrorType, public readonly errorDescription?: string) {
+  }
 
-  toJson(): TokenErrorJson {
+  toJson(): UserInfoErrorJson {
     return {
-      error: this.error, error_description: this.errorDescription, error_uri: this.errorUri
+      error: this.error, error_description: this.errorDescription
     }
   }
 
-  static fromJson(input: TokenErrorJson) {
-    return new TokenError(input.error, input.error_description, input.error_uri);
+  static fromJson(input: UserInfoErrorJson) {
+    return new UserInfoError(input.error, input.error_description);
   }
 }
