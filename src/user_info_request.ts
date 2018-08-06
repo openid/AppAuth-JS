@@ -5,7 +5,6 @@ import {StringMap} from './types';
  */
 export interface UserInfoRequestJson {
   access_token?: string;
-  schema: string;
   extras?: StringMap;
 }
 
@@ -13,16 +12,16 @@ export interface UserInfoRequestJson {
 /**
  * Represents an User Info request.
  * For more information look at:
- * https://tools.ietf.org/html/rfc6749#section-4.1.3 (TODO: Have to update the section)
+ * http://openid.net/specs/openid-connect-core-1_0.html#UserInfoRequest
  */
 export class UserInfoRequest {
-  constructor(public schema: string, public accessToken?: string, public extras?: StringMap) {}
+  constructor(public accessToken?: string, public extras?: StringMap) {}
 
   /**
    * Serializes a UserInfoRequest to a JavaScript object.
    */
   toJson(): UserInfoRequestJson {
-    return {access_token: this.accessToken, schema: this.schema, extras: this.extras};
+    return {access_token: this.accessToken, extras: this.extras};
   }
 
   toStringMap(): StringMap {
@@ -42,7 +41,7 @@ export class UserInfoRequest {
   }
 
   static fromJson(input: UserInfoRequestJson): UserInfoRequest {
-    return new UserInfoRequest(input.schema, input.access_token, input.extras);
+    return new UserInfoRequest(input.access_token, input.extras);
   }
 
   setExtrasField(key: string, value: string) {

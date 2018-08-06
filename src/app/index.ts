@@ -28,7 +28,6 @@ import { EndSessionRequestHandler, EndSessionNotifier } from '../end_session_req
 import { EndSessionRequest } from '../end_session_request';
 import { cryptoGenerateRandom } from '../crypto_utils';
 import { UserInfoRequestHandler, BaseUserInfoRequestHandler } from '../user_info_request_handler';
-import { UserInfoRequest } from '../user_info_request';
 
 /**
  * The wrapper appication.
@@ -253,8 +252,7 @@ export class App {
   }
 
   makeUserInfoRequest() {
-    var userInfoRequest = new UserInfoRequest("openid");
-    this.userInfoRequestHandler.performUserInfoRequest(this.configuration, userInfoRequest)
+    this.userInfoRequestHandler.performUserInfoRequest(this.configuration)
     .then(userInfoResponse => {
       this.showMessage(JSON.stringify(userInfoResponse.toJson()));
     });

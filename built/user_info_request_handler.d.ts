@@ -12,7 +12,7 @@ export interface UserInfoRequestHandler {
     /**
      * Makes an UserInfo request.
      */
-    performUserInfoRequest(configuration: AuthorizationServiceConfiguration, request: UserInfoRequest): Promise<UserInfoResponse>;
+    performUserInfoRequest(configuration: AuthorizationServiceConfiguration, request?: UserInfoRequest): Promise<UserInfoResponse>;
 }
 /**
  * The default user info request handler.
@@ -23,5 +23,5 @@ export declare class BaseUserInfoRequestHandler implements UserInfoRequestHandle
     readonly utils: QueryStringUtils;
     constructor(storageBackend?: StorageBackend);
     private isUserInfoResponse;
-    performUserInfoRequest(configuration: AuthorizationServiceConfiguration, request: UserInfoRequest): Promise<UserInfoResponse>;
+    performUserInfoRequest(configuration: AuthorizationServiceConfiguration, request?: UserInfoRequest): Promise<UserInfoResponse>;
 }

@@ -19,7 +19,7 @@ export interface UserInfoRequestHandler {
    */
   performUserInfoRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: UserInfoRequest): Promise<UserInfoResponse>;
+      request?: UserInfoRequest): Promise<UserInfoResponse>;
 }
 
 /**
@@ -42,16 +42,18 @@ export class BaseUserInfoRequestHandler implements UserInfoRequestHandler {
 
   performUserInfoRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: UserInfoRequest): Promise<UserInfoResponse> {
+      request?: UserInfoRequest): Promise<UserInfoResponse> {
     return this.storageBackend.getItem(AUTHORIZATION_RESPONSE_HANDLE_KEY).then(result => {
       var tokenResponseJson = JSON.parse(result!);
       var tokenResponse = TokenResponse.fromJson(tokenResponseJson);
 
       let userInfoResponse = this.requestor.xhr<UserInfoResponseJson|UserInfoErrorJson>({
-        url: configuration.userInfoEndpoint + '?schema=' + request.schema,
+        url: configuration.userInfoEndpoint,
         method: 'GET',
         dataType: 'json',
-        headers: {'Authorization': 'Bearer ' + tokenResponse.accessToken}
+        headers: {
+          'Authorization': 'Bearer ' + tokenResponse.accessToken
+        }
       });
 
       return userInfoResponse.then(response => {
