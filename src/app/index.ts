@@ -113,6 +113,15 @@ export class App {
 
     this.notifier = new AuthorizationNotifier();
     this.authorizationHandler = new RedirectRequestHandler();
+
+    this.pkceTokenRequestHandler = new PKCETokenRequestHandler(this.authorizationHandler, this.configuration, this.userStore);
+
+    this.endSessionNotifier = new EndSessionNotifier();
+    // uses a redirect flow
+    this.endSessionHandler = new EndSessionRedirectRequestHandler();
+  }
+
+  init(authorizationListenerCallback?: Function, endSessionListenerCallback?: Function) {
     // set notifier to deliver responses
     this.authorizationHandler.setAuthorizationNotifier(this.notifier);
     // set a listener to listen for authorization responses
@@ -123,7 +132,7 @@ export class App {
 
         if (this.configuration.toJson().oauth_flow_type == FLOW_TYPE_PKCE && response.code) {
           let tokenRequestExtras = {
-            client_secret: (clientSecret == null ? '' : clientSecret),
+            client_secret: (this.clientSecret == null ? '' : this.clientSecret),
             state: response.state
           };
           let request = new TokenRequest(
@@ -137,19 +146,18 @@ export class App {
               this.configuration, request);
         }
       }
+      if(authorizationListenerCallback) {
+        authorizationListenerCallback(request, response, error);
+      }
     });
-    this.pkceTokenRequestHandler = new PKCETokenRequestHandler(this.authorizationHandler, this.configuration, this.userStore);
 
-    this.endSessionNotifier = new EndSessionNotifier();
-    // uses a redirect flow
-    this.endSessionHandler = new EndSessionRedirectRequestHandler();
     // set notifier to deliver responses
     this.endSessionHandler.setEndSessionNotifier(this.endSessionNotifier);
     // set a listener to listen for authorization responses
     this.endSessionNotifier.setEndSessionListener((request, response, error) => {
       console.log('Authorization request complete ', request, response, error);
-      if (response) {
-        //endSessionListenerCallback(request, response, error);
+      if(endSessionListenerCallback) {
+        endSessionListenerCallback(request, response, error);
       }
     });
   }
@@ -169,16 +177,20 @@ export class App {
       });
   }
 
-  makeAuthorizationRequest() {
+  makeAuthorizationRequest(state?: string, nonce?: string) {
 
     // generater state
-    var state = App.generateState();
+    if(!state) {
+      state = App.generateState();
+    }
 
     // create a request
     var request;
     if (this.configuration.toJson().oauth_flow_type == FLOW_TYPE_IMPLICIT) {
       // generater nonce
-      var nonce = App.generateNonce();
+      if(!nonce) {
+        nonce = App.generateNonce();
+      }
 
       request = new AuthorizationRequest(
           this.clientId,
@@ -203,7 +215,7 @@ export class App {
     }
   }
 
-  checkForAuthorizationResponse() {
+  checkForAuthorizationResponse(authcompletionCallback?: Function) {
     var isAuthRequestComplete = false;
     switch (this.configuration.toJson().oauth_flow_type) {
       case FLOW_TYPE_IMPLICIT:
@@ -224,11 +236,17 @@ export class App {
     } else {
       this.endSessionHandler.completeEndSessionRequestIfPossible();
     }
+
+    if(authcompletionCallback) {
+      authcompletionCallback();
+    }
   }
 
-  makeLogoutRequest() {
+  makeLogoutRequest(state?: string) {
     // generater state
-    var state = App.generateState();
+    if(!state) {
+      state = App.generateState();
+    }
 
     this.userStore.getItem(AUTHORIZATION_RESPONSE_HANDLE_KEY).then(result => {
       if (result != null) {
@@ -239,7 +257,7 @@ export class App {
     });
   }
 
-  idTokenHandler(result: string, state: string): void {
+  idTokenHandler(result: string, state?: string): void {
     var authResponse = JSON.parse(result);
     var idTokenHint = authResponse.id_token;
 
