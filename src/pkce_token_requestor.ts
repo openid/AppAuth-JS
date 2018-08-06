@@ -32,7 +32,7 @@ export class PKCETokenRequestHandler {
 
   /**
    * Perform PKCE authrization request
-   * 
+   *
    * @param configuration request configs
    * @param request auth request
    */
@@ -45,7 +45,7 @@ export class PKCETokenRequestHandler {
 
   /**
    * Perform PKCE authrization token request
-   * 
+   *
    * @param configuration request configs
    * @param request token request
    */
@@ -59,10 +59,10 @@ export class PKCETokenRequestHandler {
       request.setExtrasField('code_challenge_method', this.verifier.method);
 
       this.tokenHandler.performTokenRequest(this.configuration, request)
-          .then(tokenResponseJson => {
+          .then(tokenResponse => {
             this.storageBackend.removeItem(AUTHORIZATION_RESPONSE_HANDLE_KEY).then(() => {
               this.storageBackend.setItem(
-                  AUTHORIZATION_RESPONSE_HANDLE_KEY, JSON.stringify(tokenResponseJson));
+                  AUTHORIZATION_RESPONSE_HANDLE_KEY, JSON.stringify(tokenResponse.toJson()));
             });
           })
           .catch((err) => {
