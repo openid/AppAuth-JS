@@ -19,6 +19,9 @@ export * from './token_request';
 export * from './token_request_handler';
 export * from './token_response';
 export * from './types';
+export * from './user_info_request_handler';
+export * from './user_info_request';
+export * from './user_info_response';
 export * from './xhr';
 
 export * from './app/index';
