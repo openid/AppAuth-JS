@@ -49,11 +49,10 @@ export class BaseUserInfoRequestHandler implements UserInfoRequestHandler {
 
       let userInfoResponse = this.requestor.xhr<UserInfoResponseJson|UserInfoErrorJson>({
         url: configuration.userInfoEndpoint,
-        method: 'GET',
+        method: 'POST',
         dataType: 'json',
-        headers: {
-          'Authorization': 'Bearer ' + tokenResponse.accessToken
-        }
+        crossDomain: true,
+        headers: {'Authorization': 'Bearer ' + tokenResponse.accessToken}
       });
 
       return userInfoResponse.then(response => {

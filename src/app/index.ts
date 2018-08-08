@@ -270,9 +270,9 @@ export class App {
   }
 
   makeUserInfoRequest() {
-    this.userInfoRequestHandler.performUserInfoRequest(this.configuration)
+    return this.userInfoRequestHandler.performUserInfoRequest(this.configuration)
     .then(userInfoResponse => {
-      this.showMessage(JSON.stringify(userInfoResponse.toJson()));
+      return userInfoResponse.toJson();
     });
   }
 
