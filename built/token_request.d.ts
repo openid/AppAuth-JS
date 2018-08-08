@@ -31,4 +31,5 @@ export declare class TokenRequest {
     toJson(): TokenRequestJson;
     toStringMap(): StringMap;
     static fromJson(input: TokenRequestJson): TokenRequest;
+    setExtrasField(key: string, value: string): void;
 }

@@ -17,23 +17,27 @@ import {AuthorizationResponse} from './authorization_response';
 describe('Authorization Response Tests', () => {
   const code = 'code';
   const state = 'state';
+  const id_token = 'id_token';
 
   it('Constructing an Authorization Response should work', () => {
-    let response = new AuthorizationResponse(code, state);
+    let response = new AuthorizationResponse(code, state, id_token);
     expect(response).not.toBeNull();
     expect(response.code).toBe(code);
     expect(response.state).toBe(state);
+    expect(response.id_token).toBe(id_token);
   });
 
   it('toJson() and fromJson() should work', () => {
-    let response = new AuthorizationResponse(code, state);
+    let response = new AuthorizationResponse(code, state, id_token);
     let json = response.toJson();
     expect(json).not.toBeNull();
     expect(json.code).toBe(code);
     expect(json.state).toBe(state);
+    expect(response.id_token).toBe(id_token);
     let newResponse = AuthorizationResponse.fromJson(json);
     expect(newResponse).not.toBeNull();
     expect(newResponse.code).toBe(code);
     expect(newResponse.state).toBe(state);
+    expect(response.id_token).toBe(id_token);
   });
 });

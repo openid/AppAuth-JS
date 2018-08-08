@@ -15,156 +15,305 @@
 // Represents the test web app that uses the AppAuthJS library.
 
 import {AuthorizationRequest} from '../authorization_request';
-import {AuthorizationListener, AuthorizationNotifier, AuthorizationRequestHandler} from '../authorization_request_handler';
-import {AuthorizationResponse} from '../authorization_response';
+import {AuthorizationNotifier, AuthorizationRequestHandler} from '../authorization_request_handler';
 import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
 import {log} from '../logger';
 import {RedirectRequestHandler} from '../redirect_based_handler';
-import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../token_request';
-import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_handler';
-import {TokenError, TokenResponse} from '../token_response';
-
-
-/* Some interface declarations for Material design lite. */
-
-/**
- * Snackbar options.
- */
-declare interface SnackBarOptions {
-  message: string;
-  timeout?: number;
-}
+import {GRANT_TYPE_AUTHORIZATION_CODE, TokenRequest} from '../token_request';
+import { FLOW_TYPE_IMPLICIT, FLOW_TYPE_PKCE, AUTHORIZATION_RESPONSE_HANDLE_KEY } from '../types';
+import { PKCETokenRequestHandler } from '../pkce_token_requestor';
+import { LocalStorageBackend, StorageBackend } from '../storage';
+import { EndSessionRedirectRequestHandler } from '../end_session_redirect_based_handler';
+import { EndSessionRequestHandler, EndSessionNotifier } from '../end_session_request_handler';
+import { EndSessionRequest } from '../end_session_request';
+import { cryptoGenerateRandom } from '../crypto_utils';
+import { UserInfoRequestHandler, BaseUserInfoRequestHandler } from '../user_info_request_handler';
 
 /**
- * Interface that defines the MDL Material Snack Bar API.
- */
-declare interface MaterialSnackBar { showSnackbar: (options: SnackBarOptions) => void; }
-
-/* an example open id connect provider */
-const openIdConnectUrl = 'https://accounts.google.com';
-
-/* example client configuration */
-const clientId = '511828570984-7nmej36h9j2tebiqmpqh835naet4vci4.apps.googleusercontent.com';
-const redirectUri = 'http://localhost:8000/app/redirect.html';
-const scope = 'openid';
-
-/**
- * The Test application.
+ * The wrapper appication.
  */
 export class App {
+
+  /* client configuration */
+  private authorizeUrl: string;
+  private tokenUrl: string;
+  private revokeUrl: string;
+  private logoutUrl: string;
+  private userInfoUrl: string;
+
+  private clientId: string;
+  private clientSecret: string;
+  private redirectUri: string;
+  private scope: string;
+  private postLogoutRedirectUri: string;
+
+  private discoveryUri: string;
+
+  private userStore: StorageBackend;
+  private flowTypeInternal: string;
+
   private notifier: AuthorizationNotifier;
   private authorizationHandler: AuthorizationRequestHandler;
-  private tokenHandler: TokenRequestHandler;
+  private pkceTokenRequestHandler: PKCETokenRequestHandler;
+  private userInfoRequestHandler: UserInfoRequestHandler;
 
-  // state
-  private configuration: AuthorizationServiceConfiguration|undefined;
-  private code: string|undefined;
-  private tokenResponse: TokenResponse|undefined;
+  private endSessionNotifier: EndSessionNotifier;
+  private endSessionHandler: EndSessionRequestHandler;
 
-  constructor(public snackbar: Element) {
+  private configuration: AuthorizationServiceConfiguration;
+
+  constructor({
+    authorizeUrl = '',
+    tokenUrl = '',
+    revokeUrl = '',
+    logoutUrl = '',
+    userInfoUrl = '',
+    flowType = "IMPLICIT",
+    userStore = "LOCAL_STORAGE",
+    clientId = '511828570984-7nmej36h9j2tebiqmpqh835naet4vci4.apps.googleusercontent.com',
+    clientSecret = '',
+    redirectUri = 'http://localhost:8080/app/',
+    scope = 'openid',
+    postLogoutRedirectUri = 'http://localhost:8080/app/',
+    discoveryUri = 'https://accounts.google.com'
+  } = {}) {
+
+    this.authorizeUrl = authorizeUrl;
+    this.tokenUrl = tokenUrl;
+    this.revokeUrl = revokeUrl;
+    this.logoutUrl = logoutUrl;
+    this.userInfoUrl = userInfoUrl;
+
+    this.flowTypeInternal = FLOW_TYPE_IMPLICIT;
+    if(flowType == "PKCE") {
+        this.flowTypeInternal = FLOW_TYPE_PKCE;
+    }
+
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
+    this.scope = scope;
+    this.redirectUri = redirectUri;
+    this.postLogoutRedirectUri = postLogoutRedirectUri;
+    this.discoveryUri = discoveryUri;
+
+    if(userStore == "LOCAL_STORAGE") {
+      this.userStore = new LocalStorageBackend();
+    } else {
+      console.log('Session storage is not currently supported on underlying platform.');
+      this.userStore = new LocalStorageBackend();
+    }
+
+    this.configuration = new AuthorizationServiceConfiguration(
+      this.flowTypeInternal,
+      authorizeUrl,
+      tokenUrl,
+      revokeUrl,
+      logoutUrl,
+      userInfoUrl);
+
     this.notifier = new AuthorizationNotifier();
     this.authorizationHandler = new RedirectRequestHandler();
-    this.tokenHandler = new BaseTokenRequestHandler();
+
+    this.pkceTokenRequestHandler = new PKCETokenRequestHandler(this.authorizationHandler, this.configuration, this.userStore);
+    this.userInfoRequestHandler = new BaseUserInfoRequestHandler(this.userStore);
+
+    this.endSessionNotifier = new EndSessionNotifier();
+    // uses a redirect flow
+    this.endSessionHandler = new EndSessionRedirectRequestHandler();
+  }
+
+  init(authorizationListenerCallback?: Function, endSessionListenerCallback?: Function) {
     // set notifier to deliver responses
     this.authorizationHandler.setAuthorizationNotifier(this.notifier);
     // set a listener to listen for authorization responses
     this.notifier.setAuthorizationListener((request, response, error) => {
       log('Authorization request complete ', request, response, error);
       if (response) {
-        this.code = response.code;
         this.showMessage(`Authorization Code ${response.code}`);
+
+        if (this.configuration.toJson().oauth_flow_type == FLOW_TYPE_PKCE && response.code) {
+          let tokenRequestExtras = {
+            client_secret: (this.clientSecret == null ? '' : this.clientSecret),
+            state: response.state
+          };
+          let request = new TokenRequest(
+              this.clientId,
+              this.redirectUri,
+              GRANT_TYPE_AUTHORIZATION_CODE,
+              response.code,
+              undefined,
+              tokenRequestExtras);
+          this.pkceTokenRequestHandler.performPKCEAuthorizationTokenRequest(
+              this.configuration, request);
+        }
+      }
+      if(authorizationListenerCallback) {
+        authorizationListenerCallback(request, response, error);
+      }
+    });
+
+    // set notifier to deliver responses
+    this.endSessionHandler.setEndSessionNotifier(this.endSessionNotifier);
+    // set a listener to listen for authorization responses
+    this.endSessionNotifier.setEndSessionListener((request, response, error) => {
+      console.log('Authorization request complete ', request, response, error);
+      if(endSessionListenerCallback) {
+        endSessionListenerCallback(request, response, error);
       }
     });
   }
 
-  showMessage(message: string) {
-    const snackbar = (this.snackbar as any)['MaterialSnackbar'] as MaterialSnackBar;
-    snackbar.showSnackbar({message: message});
-  }
-
   fetchServiceConfiguration() {
-    AuthorizationServiceConfiguration.fetchFromIssuer(openIdConnectUrl)
-        .then(response => {
-          log('Fetched service configuration', response);
-          this.configuration = response;
-          this.showMessage('Completed fetching configuration');
-        })
-        .catch(error => {
-          log('Something bad happened', error);
-          this.showMessage(`Something bad happened ${error}`)
-        });
+
+    AuthorizationServiceConfiguration.fetchFromIssuer(this.discoveryUri)
+      .then(response => {
+        log('Fetched service configuration', response);
+        response.oauthFlowType = this.flowTypeInternal;
+        this.showMessage('Completed fetching configuration');
+        this.configuration = response;
+      })
+      .catch(error => {
+        log('Something bad happened', error);
+        this.showMessage(`Something bad happened ${error}`)
+      });
   }
 
-  makeAuthorizationRequest() {
+  makeAuthorizationRequest(state?: string, nonce?: string) {
+
+    // generater state
+    if(!state) {
+      state = App.generateState();
+    }
+
     // create a request
-    let request = new AuthorizationRequest(
-        clientId,
-        redirectUri,
-        scope,
-        AuthorizationRequest.RESPONSE_TYPE_CODE,
-        undefined, /* state */
-        {'prompt': 'consent', 'access_type': 'offline'});
+    var request;
+    if (this.configuration.toJson().oauth_flow_type == FLOW_TYPE_IMPLICIT) {
+      // generater nonce
+      if(!nonce) {
+        nonce = App.generateNonce();
+      }
 
-    if (this.configuration) {
+      request = new AuthorizationRequest(
+          this.clientId,
+          this.redirectUri,
+          this.scope,
+          AuthorizationRequest.RESPONSE_TYPE_ID_TOKEN,
+          state,
+          {'prompt': 'consent', 'access_type': 'online', 'nonce': nonce});
+      // make the authorization request
       this.authorizationHandler.performAuthorizationRequest(this.configuration, request);
+
+    } else if (this.configuration.toJson().oauth_flow_type == FLOW_TYPE_PKCE) {
+      let authRequestExtras = {prompt: 'consent', access_type: 'online'};
+      request = new AuthorizationRequest(
+          this.clientId,
+          this.redirectUri,
+          this.scope,
+          AuthorizationRequest.RESPONSE_TYPE_CODE,
+          state, /* state */
+          authRequestExtras);
+      this.pkceTokenRequestHandler.performPKCEAuthorizationCodeRequest(this.configuration, request);
+    }
+  }
+
+  checkForAuthorizationResponse(authcompletionCallback?: Function) {
+    var isAuthRequestComplete = false;
+    switch (this.configuration.toJson().oauth_flow_type) {
+      case FLOW_TYPE_IMPLICIT:
+        var params = this.parseQueryString(location, true);
+        isAuthRequestComplete = params.hasOwnProperty('id_token');
+        break;
+      case FLOW_TYPE_PKCE:
+        var params = this.parseQueryString(location, false);
+        isAuthRequestComplete = params.hasOwnProperty('code');
+        break;
+      default:
+        var params = this.parseQueryString(location, true);
+        isAuthRequestComplete = params.hasOwnProperty('id_token');
+    }
+
+    if (isAuthRequestComplete) {
+      this.authorizationHandler.completeAuthorizationRequestIfPossible();
     } else {
-      this.showMessage(
-          'Fetch Authorization Service configuration, before you make the authorization request.');
+      this.endSessionHandler.completeEndSessionRequestIfPossible();
+    }
+
+    if(authcompletionCallback) {
+      authcompletionCallback();
     }
   }
 
-  makeTokenRequest() {
-    if (!this.configuration) {
-      this.showMessage('Please fetch service configuration.');
-      return;
+  makeLogoutRequest(state?: string) {
+    // generater state
+    if(!state) {
+      state = App.generateState();
     }
 
-    let request: TokenRequest|null = null;
-    if (this.code) {
-      // use the code to make the token request.
-      request = new TokenRequest(
-          clientId, redirectUri, GRANT_TYPE_AUTHORIZATION_CODE, this.code, undefined);
-    } else if (this.tokenResponse) {
-      // use the token response to make a request for an access token
-      request = new TokenRequest(
-          clientId, redirectUri, GRANT_TYPE_REFRESH_TOKEN, undefined,
-          this.tokenResponse.refreshToken);
-    }
-
-    if (request) {
-      this.tokenHandler.performTokenRequest(this.configuration, request)
-          .then(response => {
-            let isFirstRequest = false;
-            if (this.tokenResponse) {
-              // copy over new fields
-              this.tokenResponse.accessToken = response.accessToken;
-              this.tokenResponse.issuedAt = response.issuedAt;
-              this.tokenResponse.expiresIn = response.expiresIn;
-              this.tokenResponse.tokenType = response.tokenType;
-              this.tokenResponse.scope = response.scope;
-            } else {
-              isFirstRequest = true;
-              this.tokenResponse = response;
-            }
-
-            // unset code, so we can do refresh token exchanges subsequently
-            this.code = undefined;
-            if (isFirstRequest) {
-              this.showMessage(`Obtained a refresh token ${response.refreshToken}`);
-            } else {
-              this.showMessage(`Obtained an access token ${response.accessToken}.`);
-            }
-
-          })
-          .catch(error => {
-            log('Something bad happened', error);
-            this.showMessage(`Something bad happened ${error}`)
-          });
-    }
+    this.userStore.getItem(AUTHORIZATION_RESPONSE_HANDLE_KEY).then(result => {
+      if (result != null) {
+        this.idTokenHandler(result, state);
+      } else {
+        console.log('Authorization response is not found in local or session storage');
+      }
+    });
   }
 
-  checkForAuthorizationResponse() {
-    this.authorizationHandler.completeAuthorizationRequestIfPossible();
+  idTokenHandler(result: string, state?: string): void {
+    var authResponse = JSON.parse(result);
+    var idTokenHint = authResponse.id_token;
+
+    let request = new EndSessionRequest(
+        idTokenHint, this.postLogoutRedirectUri, state /* state */, {client_id: this.clientId});
+
+    // make the authorization request
+    this.endSessionHandler.performEndSessionRequest(this.configuration, request);
+  }
+
+  makeUserInfoRequest() {
+    return this.userInfoRequestHandler.performUserInfoRequest(this.configuration)
+    .then(userInfoResponse => {
+      return userInfoResponse.toJson();
+    });
+  }
+
+  showMessage(message: string) {
+    console.log(message);
+  }
+
+  static generateNonce() {
+    var nonceLen = 8;
+    return cryptoGenerateRandom(nonceLen);
+  }
+
+  static generateState() {
+    var stateLen = 8;
+    return cryptoGenerateRandom(stateLen);
+  }
+
+  parseQueryString(location: Location, splitByHash: boolean): Object {
+    var urlParams;
+    if (splitByHash) {
+      urlParams = location.hash;
+    } else {
+      urlParams = location.search;
+    }
+
+    let result: {[key: string]: string} = {};
+    // if anything starts with ?, # or & remove it
+    urlParams = urlParams.trim().replace(/^(\?|#|&)/, '');
+    let params = urlParams.split('&');
+    for (let i = 0; i < params.length; i += 1) {
+      let param = params[i];  // looks something like a=b
+      let parts = param.split('=');
+      if (parts.length >= 2) {
+        let key = decodeURIComponent(parts.shift()!);
+        let value = parts.length > 0 ? parts.join('=') : null;
+        if (value) {
+          result[key] = decodeURIComponent(value);
+        }
+      }
+    }
+    return result;
   }
 }
 

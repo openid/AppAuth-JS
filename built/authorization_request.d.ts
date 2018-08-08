@@ -23,6 +23,7 @@ export declare class AuthorizationRequest {
     responseType: string;
     extras?: StringMap | undefined;
     static RESPONSE_TYPE_CODE: string;
+    static RESPONSE_TYPE_ID_TOKEN: string;
     state: string;
     /**
      * Constructs a new AuthorizationRequest.
@@ -38,4 +39,8 @@ export declare class AuthorizationRequest {
      * Creates a new instance of AuthorizationRequest.
      */
     static fromJson(input: AuthorizationRequestJson): AuthorizationRequest;
+    /**
+     * Adds additional extra fields to the AuthorizationRequest.
+     */
+    setExtrasField(key: string, value: string): void;
 }

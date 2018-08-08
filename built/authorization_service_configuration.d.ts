@@ -3,6 +3,7 @@ import { Requestor } from './xhr';
  * Represents AuthorizationServiceConfiguration as a JSON object.
  */
 export interface AuthorizationServiceConfigurationJson {
+    oauth_flow_type: string;
     authorization_endpoint: string;
     token_endpoint: string;
     revocation_endpoint: string;
@@ -15,15 +16,17 @@ export interface AuthorizationServiceConfigurationJson {
  * More information at https://openid.net/specs/openid-connect-discovery-1_0-17.html
  */
 export declare class AuthorizationServiceConfiguration {
+    oauthFlowType: string;
     authorizationEndpoint: string;
     tokenEndpoint: string;
     revocationEndpoint: string;
     endSessionEndpoint?: string | undefined;
     userInfoEndpoint?: string | undefined;
-    constructor(authorizationEndpoint: string, tokenEndpoint: string, revocationEndpoint: string, // for Revoking Access Tokens
+    constructor(oauthFlowType: string, authorizationEndpoint: string, tokenEndpoint: string, revocationEndpoint: string, // for Revoking Access Tokens
     endSessionEndpoint?: string | undefined, // for OpenID session management
     userInfoEndpoint?: string | undefined);
     toJson(): {
+        oauth_flow_type: string;
         authorization_endpoint: string;
         token_endpoint: string;
         revocation_endpoint: string;

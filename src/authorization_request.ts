@@ -47,6 +47,7 @@ const newState = function(generateRandom: RandomGenerator): string {
  */
 export class AuthorizationRequest {
   static RESPONSE_TYPE_CODE = 'code';
+  static RESPONSE_TYPE_ID_TOKEN = 'id_token';
 
   state: string;
   /**
@@ -90,5 +91,14 @@ export class AuthorizationRequest {
         input.response_type,
         input.state,
         input.extras);
+  }
+
+  /**
+   * Adds additional extra fields to the AuthorizationRequest.
+   */
+  setExtrasField(key: string, value: string) {
+    if (this.extras) {
+      this.extras[key] = value;
+    }
   }
 }

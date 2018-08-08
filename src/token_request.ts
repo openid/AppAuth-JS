@@ -95,4 +95,10 @@ export class TokenRequest {
         input.refresh_token,
         input.extras);
   }
+
+  setExtrasField(key: string, value: string) {
+    if (this.extras) {
+      this.extras[key] = value;
+    }
+  }
 }

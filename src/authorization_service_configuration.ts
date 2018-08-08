@@ -12,6 +12,7 @@
  * limitations under the License.
  */
 
+import {FLOW_TYPE_IMPLICIT} from './types';
 import {JQueryRequestor, Requestor} from './xhr';
 
 
@@ -19,6 +20,7 @@ import {JQueryRequestor, Requestor} from './xhr';
  * Represents AuthorizationServiceConfiguration as a JSON object.
  */
 export interface AuthorizationServiceConfigurationJson {
+  oauth_flow_type: string;
   authorization_endpoint: string;
   token_endpoint: string;
   revocation_endpoint: string;
@@ -45,6 +47,7 @@ const OPENID_CONFIGURATION = 'openid-configuration';
  */
 export class AuthorizationServiceConfiguration {
   constructor(
+      public oauthFlowType: string = FLOW_TYPE_IMPLICIT,
       public authorizationEndpoint: string,
       public tokenEndpoint: string,
       public revocationEndpoint: string,   // for Revoking Access Tokens
@@ -53,6 +56,7 @@ export class AuthorizationServiceConfiguration {
 
   toJson() {
     return {
+      oauth_flow_type: this.oauthFlowType,
       authorization_endpoint: this.authorizationEndpoint,
       token_endpoint: this.tokenEndpoint,
       revocation_endpoint: this.revocationEndpoint,
@@ -63,6 +67,7 @@ export class AuthorizationServiceConfiguration {
 
   static fromJson(json: AuthorizationServiceConfigurationJson): AuthorizationServiceConfiguration {
     return new AuthorizationServiceConfiguration(
+        json.oauth_flow_type,
         json.authorization_endpoint,
         json.token_endpoint,
         json.revocation_endpoint,

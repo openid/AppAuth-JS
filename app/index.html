@@ -20,7 +20,8 @@
     <div class="card mdl-card mdl-shadow--2dp">
       <button class="mdl-button mdl-js-button mdl-button--raised" id="fetchConfig">Fetch Configuration</button>
       <button class="mdl-button mdl-js-button mdl-button--raised" id="authorize">Make Authorization Request</button>
-      <button class="mdl-button mdl-js-button mdl-button--raised" id="makeTokenRequest">Make Token Request</button>
+      <button class="mdl-button mdl-js-button mdl-button--raised" id="makeUserInfoRequest">Make User Info Request</button>
+      <button class="mdl-button mdl-js-button mdl-button--raised" id="makeLogoutRequest">Logout Request</button>
     </div>
     <!-- snackbar -->
     <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
@@ -40,13 +41,26 @@
   <!-- scripts -->
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-  <script src="../built/app/bundle.js"></script>
+  <script src="bundle.js"></script>
   <script type="text/javascript">
+
     var application = null;
     var init = function () {
-      application = new App(document.querySelector('#snackbar'));
+      application = new App({
+    'authorizeUrl': 'https://localhost:9443/oauth2/authorize',
+    'tokenUrl': 'https://localhost:9443/oauth2/token',
+    'revokeUrl': 'https://localhost:9443/oauth2/revoke',
+    'logoutUrl': 'https://localhost:9443/oidc/logout',
+    'userInfoUrl': 'https://localhost:9443/oauth2/userinfo',
+    'flowType': "PKCE",
+    'userStore': "LOCAL_STORAGE",
+    'clientId': '0Ob7gGlPWWoCMx4qrGNSWjRgnMwa',
+    'clientSecret': '4jjZU5nke4iovlq5seaSPVxnqBMa',
+    'redirectUri': 'http://localhost:8080/app/',
+    'scope': 'openid',
+    'postLogoutRedirectUri': 'http://localhost:8080/app/'
+  });
+  application.init();
       // check for authorization response if available.
       application.checkForAuthorizationResponse();
 
@@ -64,10 +78,17 @@
         event.preventDefault();
       });
 
-      // token request handler
-      var makeTokenRequest = document.querySelector('#makeTokenRequest');
-      makeTokenRequest.addEventListener('click', function () {
-        application.makeTokenRequest();
+      // userInfo request handler
+      var makeUserInfoRequest = document.querySelector('#makeUserInfoRequest');
+      makeUserInfoRequest.addEventListener('click', function () {
+        application.makeUserInfoRequest();
+        event.preventDefault();
+      });
+
+      // logout request handler
+      var makeLogoutRequest = document.querySelector('#makeLogoutRequest');
+      makeLogoutRequest.addEventListener('click', function () {
+        application.makeLogoutRequest();
         event.preventDefault();
       });
     };
