@@ -163,8 +163,8 @@ export class App {
     }
   }
 
-  checkForAuthorizationResponse() {
-    this.authorizationHandler.completeAuthorizationRequestIfPossible();
+  checkForAuthorizationResponse(responseType: string) {
+    this.authorizationHandler.completeAuthorizationRequestIfPossible(responseType);
   }
 }
 

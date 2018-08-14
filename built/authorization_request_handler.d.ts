@@ -45,7 +45,7 @@ export declare abstract class AuthorizationRequestHandler {
     /**
      * Completes the authorization request if necessary & when possible.
      */
-    completeAuthorizationRequestIfPossible(): Promise<void>;
+    completeAuthorizationRequestIfPossible(responseType: string): Promise<void>;
     /**
      * Sets the default Authorization Service notifier.
      */
@@ -59,5 +59,5 @@ export declare abstract class AuthorizationRequestHandler {
      * The handler returns a `Promise<AuthorizationRequestResponse>` if ready, or a `Promise<null>`
      * if not ready.
      */
-    protected abstract completeAuthorizationRequest(): Promise<AuthorizationRequestResponse | null>;
+    protected abstract completeAuthorizationRequest(responseType: string): Promise<AuthorizationRequestResponse | null>;
 }

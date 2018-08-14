@@ -57,18 +57,33 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
       }
 
       const url = Url.parse(httpRequest.url);
-      const searchParams = new Url.URLSearchParams(url.query || '');
+
+      var searchParams;
+      switch(request.responseType) {
+
+        case AuthorizationRequest.RESPONSE_TYPE_CODE:
+          searchParams = new Url.URLSearchParams(url.query || '');
+          break;
+
+        case AuthorizationRequest.RESPONSE_TYPE_ID_TOKEN:
+          searchParams = new Url.URLSearchParams(url.hash || '');
+          break;
+
+        default:
+          searchParams = new Url.URLSearchParams(url.hash || '');
+      }
 
       const state = searchParams.get('state') || undefined;
       const code = searchParams.get('code');
+      const idToken = searchParams.get('id_token');
       const error = searchParams.get('error');
 
-      if (!state && !code && !error) {
+      if (!state && !code && !idToken && !error) {
         // ignore irrelevant requests (e.g. favicon.ico)
         return;
       }
 
-      log('Handling Authorization Request ', searchParams, state, code, error);
+      log('Handling Authorization Request ', searchParams, state, code, idToken, error);
       let authorizationResponse: AuthorizationResponse|null = null;
       let authorizationError: AuthorizationError|null = null;
       if (error) {
@@ -78,7 +93,7 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         const errorDescription = searchParams.get('error_description') || undefined;
         authorizationError = new AuthorizationError(error, errorDescription, errorUri, state);
       } else {
-        authorizationResponse = new AuthorizationResponse(code!, state!);
+        authorizationResponse = new AuthorizationResponse(code!, idToken!, state!);
       }
       const completeResponse = {
         request,
@@ -98,7 +113,7 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         // resolve pending promise
         resolve(result as AuthorizationRequestResponse);
         // complete authorization flow
-        this.completeAuthorizationRequestIfPossible();
+        this.completeAuthorizationRequestIfPossible(request.responseType);
       });
     });
 
