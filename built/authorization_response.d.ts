@@ -3,6 +3,7 @@
  */
 export interface AuthorizationResponseJson {
     code: string;
+    id_token: string;
     state: string;
 }
 /**
@@ -21,8 +22,9 @@ export interface AuthorizationErrorJson {
  */
 export declare class AuthorizationResponse {
     code: string;
+    id_token: string;
     state: string;
-    constructor(code: string, state: string);
+    constructor(code: string, id_token: string, state: string);
     toJson(): AuthorizationResponseJson;
     static fromJson(json: AuthorizationResponseJson): AuthorizationResponse;
 }

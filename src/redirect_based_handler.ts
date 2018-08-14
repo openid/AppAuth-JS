@@ -79,7 +79,8 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
    * Attempts to introspect the contents of storage backend and completes the
    * request.
    */
-  protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse|null> {
+  protected completeAuthorizationRequest(responseType: string):
+      Promise<AuthorizationRequestResponse|null> {
     // TODO(rahulrav@): handle authorization errors.
     return this.storageBackend.getItem(AUTHORIZATION_REQUEST_HANDLE_KEY).then(handle => {
       if (handle) {
@@ -94,9 +95,23 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
             .then(request => {
               // check redirect_uri and state
               let currentUri = `${this.locationLike.origin}${this.locationLike.pathname}`;
-              let queryParams = this.utils.parse(this.locationLike, true /* use hash */);
+              var queryParams;
+              switch (responseType) {
+                case AuthorizationRequest.RESPONSE_TYPE_CODE:
+                  queryParams = this.utils.parse(this.locationLike, true /* use hash */);
+                  break;
+
+                case AuthorizationRequest.RESPONSE_TYPE_ID_TOKEN:
+                  queryParams = this.utils.parse(this.locationLike, false /* use ? */);
+                  break;
+
+                default:
+                  queryParams = this.utils.parse(this.locationLike, true /* use hash */);
+                  break;
+              }
               let state: string|undefined = queryParams['state'];
               let code: string|undefined = queryParams['code'];
+              let idToken: string|undefined = queryParams['id_token'];
               let error: string|undefined = queryParams['error'];
               log('Potential authorization request ', currentUri, queryParams, state, code, error);
               let shouldNotify = state === request.state;
@@ -110,7 +125,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
                   authorizationError =
                       new AuthorizationError(error, errorDescription, errorUri, state);
                 } else {
-                  authorizationResponse = new AuthorizationResponse(code, state!);
+                  authorizationResponse = new AuthorizationResponse(code, idToken!, state!);
                 }
                 // cleanup state
                 return Promise
