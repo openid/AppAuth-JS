@@ -11,6 +11,7 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import {StringMap} from './types';
 
 /**
  * Supported token types
@@ -59,6 +60,26 @@ export class RevokeTokenRequest {
 
     return json;
   }
+
+
+  toStringMap(): StringMap {
+    let map: StringMap = {token: this.token};
+
+    if (this.tokenTypeHint) {
+      map['token_type_hint'] = this.tokenTypeHint;
+    }
+
+    if (this.clientId) {
+      map['client_id'] = this.clientId;
+    }
+
+    if (this.clientSecret) {
+      map['client_secret'] = this.clientSecret;
+    }
+
+    return map;
+  }
+
 
   static fromJson(input: RevokeTokenRequestJson): RevokeTokenRequest {
     return new RevokeTokenRequest(
