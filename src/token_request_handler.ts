@@ -57,7 +57,6 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
     let revokeTokenResponse = this.requestor.xhr<boolean>({
       url: configuration.revocationEndpoint,
       method: 'POST',
-      dataType: 'json',  // adding implicit dataType
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       data: this.utils.stringify(request.toStringMap())
     });
@@ -72,7 +71,6 @@ export class BaseTokenRequestHandler implements TokenRequestHandler {
     let tokenResponse = this.requestor.xhr<TokenResponseJson|TokenErrorJson>({
       url: configuration.tokenEndpoint,
       method: 'POST',
-      dataType: 'json',  // adding implicit dataType
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       data: this.utils.stringify(request.toStringMap())
     });
