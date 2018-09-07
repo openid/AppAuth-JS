@@ -14,7 +14,6 @@
 
 import {LocationLike, StringMap} from './types';
 
-
 /**
  * Query String Utilities.
  */
@@ -36,7 +35,7 @@ export class BasicQueryStringUtils implements QueryStringUtils {
   parseQueryString(query: string): StringMap {
     let result: StringMap = {};
     // if anything starts with ?, # or & remove it
-    query = query.trim().replace(/^(\?|#|&)/, '');
+    query = query.trim().replace(/^(.*\?|#|&)/, '');
     let params = query.split('&');
     for (let i = 0; i < params.length; i += 1) {
       let param = params[i];  // looks something like a=b
