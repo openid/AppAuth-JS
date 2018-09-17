@@ -9,12 +9,12 @@ export declare type TokenType = 'bearer' | 'mac';
  */
 export interface TokenResponseJson {
     access_token: string;
-    id_token?: string;
     token_type?: TokenType;
-    issued_at?: number;
     expires_in?: number;
     refresh_token?: string;
     scope?: string;
+    id_token?: string;
+    issued_at?: number;
 }
 /**
  * Represents the possible error codes from the token endpoint.
@@ -31,22 +31,25 @@ export interface TokenErrorJson {
     error_uri?: string;
 }
 /**
+ * Returns the instant of time in seconds.
+ */
+export declare const nowInSeconds: () => number;
+/**
  * Represents the Token Response type.
  * For more information look at:
  * https://tools.ietf.org/html/rfc6749#section-5.1
  */
 export declare class TokenResponse {
     accessToken: string;
-    idToken?: string | undefined;
-    refreshToken?: string | undefined;
-    scope?: string | undefined;
     tokenType: TokenType;
+    expiresIn: number | undefined;
+    refreshToken: string | undefined;
+    scope: string | undefined;
+    idToken: string | undefined;
     issuedAt: number;
-    expiresIn?: number | undefined;
-    constructor(accessToken: string, idToken?: string | undefined, refreshToken?: string | undefined, scope?: string | undefined, tokenType?: TokenType, issuedAt?: number, expiresIn?: number | undefined);
+    constructor(response: TokenResponseJson);
     toJson(): TokenResponseJson;
-    isValid(): boolean;
-    static fromJson(input: TokenResponseJson): TokenResponse;
+    isValid(buffer?: number): boolean;
 }
 /**
  * Represents the Token Error type.
@@ -54,10 +57,9 @@ export declare class TokenResponse {
  * https://tools.ietf.org/html/rfc6749#section-5.2
  */
 export declare class TokenError {
-    readonly error: ErrorType;
-    readonly errorDescription?: string | undefined;
-    readonly errorUri?: string | undefined;
-    constructor(error: ErrorType, errorDescription?: string | undefined, errorUri?: string | undefined);
+    error: ErrorType;
+    errorDescription: string | undefined;
+    errorUri: string | undefined;
+    constructor(tokenError: TokenErrorJson);
     toJson(): TokenErrorJson;
-    static fromJson(input: TokenErrorJson): TokenError;
 }

@@ -24,12 +24,12 @@ export type TokenType = 'bearer'|'mac';
  */
 export interface TokenResponseJson {
   access_token: string;
-  id_token?: string;      /* https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse */
   token_type?: TokenType; /* treating token type as optional, as its going to be inferred. */
-  issued_at?: number;     /* when was it issued ? */
   expires_in?: number;    /* lifetime in seconds. */
   refresh_token?: string;
   scope?: string;
+  id_token?: string;  /* https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse */
+  issued_at?: number; /* when was it issued ? */
 }
 
 /**
@@ -49,10 +49,13 @@ export interface TokenErrorJson {
   error_uri?: string;
 }
 
+// constants
+const AUTH_EXPIRY_BUFFER = 10 * 60;  // 10 mins in seconds
+
 /**
  * Returns the instant of time in seconds.
  */
-const nowInSeconds = () => Math.round(new Date().getTime() / 1000);
+export const nowInSeconds = () => Math.round(new Date().getTime() / 1000);
 
 /**
  * Represents the Token Response type.
@@ -60,14 +63,23 @@ const nowInSeconds = () => Math.round(new Date().getTime() / 1000);
  * https://tools.ietf.org/html/rfc6749#section-5.1
  */
 export class TokenResponse {
-  constructor(
-      public accessToken: string,
-      public idToken?: string,
-      public refreshToken?: string,
-      public scope?: string,
-      public tokenType: TokenType = 'bearer',
-      public issuedAt: number = nowInSeconds(),
-      public expiresIn?: number) {}
+  accessToken: string;
+  tokenType: TokenType;
+  expiresIn: number|undefined;
+  refreshToken: string|undefined;
+  scope: string|undefined;
+  idToken: string|undefined;
+  issuedAt: number;
+
+  constructor(response: TokenResponseJson) {
+    this.accessToken = response.access_token;
+    this.tokenType = response.token_type || 'bearer';
+    this.expiresIn = response.expires_in;
+    this.refreshToken = response.refresh_token;
+    this.scope = response.scope;
+    this.idToken = response.id_token;
+    this.issuedAt = response.issued_at || nowInSeconds();
+  }
 
   toJson(): TokenResponseJson {
     return {
@@ -81,25 +93,13 @@ export class TokenResponse {
     };
   }
 
-  isValid(): boolean {
+  isValid(buffer: number = AUTH_EXPIRY_BUFFER): boolean {
     if (this.expiresIn) {
       let now = nowInSeconds();
-      return now < this.issuedAt + this.expiresIn;
+      return now < this.issuedAt + this.expiresIn + buffer;
     } else {
       return true;
     }
-  }
-
-  static fromJson(input: TokenResponseJson): TokenResponse {
-    const issuedAt = !input.issued_at ? nowInSeconds() : input.issued_at;
-    return new TokenResponse(
-        input.access_token,
-        input.id_token,
-        input.refresh_token,
-        input.scope,
-        input.token_type,
-        issuedAt,
-        input.expires_in)
   }
 }
 
@@ -109,18 +109,19 @@ export class TokenResponse {
  * https://tools.ietf.org/html/rfc6749#section-5.2
  */
 export class TokenError {
-  constructor(
-      public readonly error: ErrorType,
-      public readonly errorDescription?: string,
-      public readonly errorUri?: string) {}
+  error: ErrorType;
+  errorDescription: string|undefined;
+  errorUri: string|undefined;
+
+  constructor(tokenError: TokenErrorJson) {
+    this.error = tokenError.error;
+    this.errorDescription = tokenError.error_description;
+    this.errorUri = tokenError.error_uri;
+  }
 
   toJson(): TokenErrorJson {
     return {
       error: this.error, error_description: this.errorDescription, error_uri: this.errorUri
     }
-  }
-
-  static fromJson(input: TokenErrorJson) {
-    return new TokenError(input.error, input.error_description, input.error_uri);
   }
 }

@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {GRANT_TYPE_AUTHORIZATION_CODE, TokenRequest, TokenRequestJson} from './token_request';
+import {GRANT_TYPE_AUTHORIZATION_CODE, TokenRequest} from './token_request';
 import {StringMap} from './types';
 
 describe('Token Request tests', () => {
@@ -21,8 +21,14 @@ describe('Token Request tests', () => {
   const code = 'some_code';
   const extras: StringMap = {'key': 'value'};
 
-  let request: TokenRequest = new TokenRequest(
-      clientId, redirectUri, GRANT_TYPE_AUTHORIZATION_CODE, code, undefined, extras);
+  let request: TokenRequest = new TokenRequest({
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    grant_type: GRANT_TYPE_AUTHORIZATION_CODE,
+    code: code,
+    refresh_token: undefined,
+    extras: extras
+  });
 
   it('Basic Token Request Tests', () => {
     expect(request).not.toBeNull();
@@ -38,7 +44,7 @@ describe('Token Request tests', () => {
   it('To Json() and from Json() should work', () => {
     let json = JSON.parse(JSON.stringify(request.toJson()));
     expect(json).not.toBeNull();
-    let newRequest = TokenRequest.fromJson(json);
+    let newRequest = new TokenRequest(json);
     expect(newRequest).not.toBeNull();
     expect(newRequest.clientId).toBe(clientId);
     expect(newRequest.redirectUri).toBe(redirectUri);

@@ -36,14 +36,16 @@ export interface AuthorizationErrorJson {
  * https://tools.ietf.org/html/rfc6749#section-4.1.2
  */
 export class AuthorizationResponse {
-  constructor(public code: string, public state: string) {}
+  code: string;
+  state: string;
+
+  constructor(response: AuthorizationResponseJson) {
+    this.code = response.code;
+    this.state = response.state;
+  }
 
   toJson(): AuthorizationResponseJson {
     return {code: this.code, state: this.state};
-  }
-
-  static fromJson(json: AuthorizationResponseJson): AuthorizationResponse {
-    return new AuthorizationResponse(json.code, json.state);
   }
 }
 
@@ -53,11 +55,17 @@ export class AuthorizationResponse {
  * https://tools.ietf.org/html/rfc6749#section-4.1.2.1
  */
 export class AuthorizationError {
-  constructor(
-      public error: string,
-      public errorDescription?: string,
-      public errorUri?: string,
-      public state?: string) {}
+  error: string;
+  errorDescription?: string;
+  errorUri?: string;
+  state?: string;
+
+  constructor(error: AuthorizationErrorJson) {
+    this.error = error.error;
+    this.errorDescription = error.error_description;
+    this.errorUri = error.error_uri;
+    this.state = error.state;
+  }
 
   toJson(): AuthorizationErrorJson {
     return {
@@ -66,9 +74,5 @@ export class AuthorizationError {
       error_uri: this.errorUri,
       state: this.state
     };
-  }
-
-  static fromJson(json: AuthorizationErrorJson): AuthorizationError {
-    return new AuthorizationError(json.error, json.error_description, json.error_uri, json.state);
   }
 }
