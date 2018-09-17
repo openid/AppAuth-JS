@@ -18,17 +18,12 @@ import {StringMap} from './types';
 /**
  * Represents an AuthorizationRequest as JSON.
  */
-
-// NOTE:
-// Both redirect_uri and state are actually optional.
-// However AppAuth is more opionionated, and requires you to use both.
-
 export interface AuthorizationRequestJson {
   response_type: string;
   client_id: string;
   redirect_uri: string;
-  state: string;
   scope: string;
+  state?: string;
   extras?: StringMap;
 }
 
@@ -46,23 +41,32 @@ const newState = function(generateRandom: RandomGenerator): string {
  * https://tools.ietf.org/html/rfc6749#section-4.1.1
  */
 export class AuthorizationRequest {
+  static RESPONSE_TYPE_TOKEN = 'token';
   static RESPONSE_TYPE_CODE = 'code';
 
+  // NOTE:
+  // Both redirect_uri and state are actually optional.
+  // However AppAuth is more opionionated, and requires you to use both.
+
+  clientId: string;
+  redirectUri: string;
+  scope: string;
+  responseType: string;
   state: string;
+  extras?: StringMap;
+
   /**
    * Constructs a new AuthorizationRequest.
    * Use a `undefined` value for the `state` parameter, to generate a random
    * state for CSRF protection.
    */
-  constructor(
-      public clientId: string,
-      public redirectUri: string,
-      public scope: string,
-      public responseType: string = AuthorizationRequest.RESPONSE_TYPE_CODE,
-      state?: string,
-      public extras?: StringMap,
-      generateRandom = cryptoGenerateRandom) {
-    this.state = state || newState(generateRandom);
+  constructor(request: AuthorizationRequestJson, generateRandom = cryptoGenerateRandom) {
+    this.clientId = request.client_id;
+    this.redirectUri = request.redirect_uri;
+    this.scope = request.scope;
+    this.responseType = request.response_type || AuthorizationRequest.RESPONSE_TYPE_CODE;
+    this.state = request.state || newState(generateRandom);
+    this.extras = request.extras;
   }
 
   /**
@@ -77,18 +81,5 @@ export class AuthorizationRequest {
       state: this.state,
       extras: this.extras
     };
-  }
-
-  /**
-   * Creates a new instance of AuthorizationRequest.
-   */
-  static fromJson(input: AuthorizationRequestJson): AuthorizationRequest {
-    return new AuthorizationRequest(
-        input.client_id,
-        input.redirect_uri,
-        input.scope,
-        input.response_type,
-        input.state,
-        input.extras);
   }
 }

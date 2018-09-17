@@ -15,8 +15,7 @@
 // Represents a Node application, that uses the AppAuthJS library.
 
 import {AuthorizationRequest} from '../authorization_request';
-import {AuthorizationNotifier, AuthorizationRequestHandler, AuthorizationRequestResponse, BUILT_IN_PARAMETERS} from '../authorization_request_handler';
-import {AuthorizationResponse} from '../authorization_response';
+import {AuthorizationNotifier, AuthorizationRequestHandler} from '../authorization_request_handler';
 import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
 import {log} from '../logger';
 import {NodeBasedHandler} from '../node_support/node_request_handler';
@@ -24,7 +23,6 @@ import {NodeRequestor} from '../node_support/node_requestor';
 import {RevokeTokenRequest} from '../revoke_token_request';
 import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../token_request';
 import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_handler';
-import {TokenError, TokenResponse} from '../token_response';
 
 const PORT = 32111;
 
@@ -75,13 +73,14 @@ export class App {
 
   makeAuthorizationRequest(configuration: AuthorizationServiceConfiguration) {
     // create a request
-    let request = new AuthorizationRequest(
-        clientId,
-        redirectUri,
-        scope,
-        AuthorizationRequest.RESPONSE_TYPE_CODE,
-        undefined, /* state */
-        {'prompt': 'consent', 'access_type': 'offline'});
+    let request = new AuthorizationRequest({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      scope: scope,
+      response_type: AuthorizationRequest.RESPONSE_TYPE_CODE,
+      state: undefined,
+      extras: {'prompt': 'consent', 'access_type': 'offline'}
+    });
 
     log('Making authorization request ', configuration, request);
     this.authorizationHandler.performAuthorizationRequest(configuration, request);
@@ -89,8 +88,14 @@ export class App {
 
   makeRefreshTokenRequest(configuration: AuthorizationServiceConfiguration, code: string) {
     // use the code to make the token request.
-    let request =
-        new TokenRequest(clientId, redirectUri, GRANT_TYPE_AUTHORIZATION_CODE, code, undefined);
+    let request = new TokenRequest({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      grant_type: GRANT_TYPE_AUTHORIZATION_CODE,
+      code: code,
+      refresh_token: undefined,
+      extras: undefined
+    });
 
     return this.tokenHandler.performTokenRequest(configuration, request).then(response => {
       log(`Refresh Token is ${response.refreshToken}`);
@@ -99,8 +104,14 @@ export class App {
   }
 
   makeAccessTokenRequest(configuration: AuthorizationServiceConfiguration, refreshToken: string) {
-    let request =
-        new TokenRequest(clientId, redirectUri, GRANT_TYPE_REFRESH_TOKEN, undefined, refreshToken);
+    let request = new TokenRequest({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      grant_type: GRANT_TYPE_REFRESH_TOKEN,
+      code: undefined,
+      refresh_token: refreshToken,
+      extras: undefined
+    });
 
     return this.tokenHandler.performTokenRequest(configuration, request).then(response => {
       log(`Access Token is ${response.accessToken}, Id Token is ${response.idToken}`);
@@ -109,7 +120,9 @@ export class App {
   }
 
   makeRevokeTokenRequest(configuration: AuthorizationServiceConfiguration, refreshToken: string) {
-    let request = new RevokeTokenRequest(refreshToken);
+    let request = new RevokeTokenRequest({
+      token: refreshToken
+    });
 
     return this.tokenHandler.performRevokeTokenRequest(configuration, request).then(response => {
       log('revoked refreshToken');

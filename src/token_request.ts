@@ -35,14 +35,21 @@ export interface TokenRequestJson {
  * https://tools.ietf.org/html/rfc6749#section-4.1.3
  */
 export class TokenRequest {
-  constructor(
-      public clientId: string,
-      public redirectUri: string,
-      // TODO(rahulrav@): Add the ability to infer grant types.
-      public grantType: string,
-      public code?: string,
-      public refreshToken?: string,
-      public extras?: StringMap) {}
+  clientId: string;
+  redirectUri: string;
+  grantType: string;
+  code: string|undefined;
+  refreshToken: string|undefined;
+  extras: StringMap|undefined
+
+  constructor(request: TokenRequestJson) {
+    this.clientId = request.client_id;
+    this.redirectUri = request.redirect_uri;
+    this.grantType = request.grant_type;
+    this.code = request.code;
+    this.refreshToken = request.refresh_token;
+    this.extras = request.extras;
+  }
 
   /**
    * Serializes a TokenRequest to a JavaScript object.
@@ -82,17 +89,6 @@ export class TokenRequest {
         }
       }
     }
-
     return map;
-  }
-
-  static fromJson(input: TokenRequestJson): TokenRequest {
-    return new TokenRequest(
-        input.client_id,
-        input.redirect_uri,
-        input.grant_type,
-        input.code,
-        input.refresh_token,
-        input.extras);
   }
 }

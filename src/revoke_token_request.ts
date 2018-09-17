@@ -1,3 +1,5 @@
+import {StringMap} from './types';
+
 /*
  * Copyright 2017 Google Inc.
  *
@@ -33,35 +35,38 @@ export interface RevokeTokenRequestJson {
  * https://tools.ietf.org/html/rfc7009#section-2.1
  */
 export class RevokeTokenRequest {
-  constructor(
-      public token: string,
-      public tokenTypeHint?: TokenTypeHint,
-      public clientId?: string,
-      public clientSecret?: string) {}
+  token: string;
+  tokenTypeHint: TokenTypeHint|undefined;
+  clientId: string|undefined;
+  clientSecret: string|undefined;
+
+  constructor(request: RevokeTokenRequestJson) {
+    this.token = request.token;
+    this.tokenTypeHint = request.token_type_hint;
+    this.clientId = request.client_id;
+    this.clientSecret = request.client_secret;
+  }
 
   /**
    * Serializes a TokenRequest to a JavaScript object.
    */
   toJson(): RevokeTokenRequestJson {
     let json: RevokeTokenRequestJson = {token: this.token};
-
     if (this.tokenTypeHint) {
       json['token_type_hint'] = this.tokenTypeHint;
     }
-
     if (this.clientId) {
       json['client_id'] = this.clientId;
     }
-
     if (this.clientSecret) {
       json['client_secret'] = this.clientSecret;
     }
-
     return json;
   }
 
-  static fromJson(input: RevokeTokenRequestJson): RevokeTokenRequest {
-    return new RevokeTokenRequest(
-        input.token, input.token_type_hint, input.client_id, input.client_secret);
+  toStringMap(): StringMap {
+    let json = this.toJson();
+    // :(
+    return (json as any);
   }
 }

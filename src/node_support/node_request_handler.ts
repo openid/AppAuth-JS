@@ -1,5 +1,13 @@
-import {RandomGenerator} from '../crypto_utils';
-import {nodeCryptoGenerateRandom} from './crypto_utils';
+import * as EventEmitter from 'events';
+import * as Http from 'http';
+import * as Url from 'url';
+import { AuthorizationRequest } from '../authorization_request';
+import { AuthorizationRequestHandler, AuthorizationRequestResponse } from '../authorization_request_handler';
+import { AuthorizationError, AuthorizationResponse } from '../authorization_response';
+import { AuthorizationServiceConfiguration } from '../authorization_service_configuration';
+import { log } from '../logger';
+import { BasicQueryStringUtils, QueryStringUtils } from '../query_string_utils';
+import { nodeCryptoGenerateRandom } from './crypto_utils';
 /*
  * Copyright 2017 Google Inc.
  *
@@ -16,16 +24,6 @@ import {nodeCryptoGenerateRandom} from './crypto_utils';
 
 // TypeScript typings for `opener` are not correct and do not export it as module
 import opener = require('opener');
-import * as Http from 'http';
-import * as Url from 'url';
-import {Request, ServerOptions, Server, ResponseToolkit} from 'hapi';
-import * as EventEmitter from 'events';
-import {BasicQueryStringUtils, QueryStringUtils} from '../query_string_utils';
-import {AuthorizationRequest, AuthorizationRequestJson} from '../authorization_request';
-import {AuthorizationRequestHandler, AuthorizationRequestResponse, BUILT_IN_PARAMETERS} from '../authorization_request_handler';
-import {AuthorizationError, AuthorizationResponse, AuthorizationResponseJson, AuthorizationErrorJson} from '../authorization_response'
-import {AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson} from '../authorization_service_configuration';
-import {log} from '../logger';
 
 class ServerEventsEmitter extends EventEmitter {
   static ON_UNABLE_TO_START = 'unable_to_start';
@@ -76,9 +74,17 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         // get additional optional info.
         const errorUri = searchParams.get('error_uri') || undefined;
         const errorDescription = searchParams.get('error_description') || undefined;
-        authorizationError = new AuthorizationError(error, errorDescription, errorUri, state);
+        authorizationError = new AuthorizationError({
+          error: error,
+          error_description: errorDescription,
+          error_uri: errorUri,
+          state: state
+        });
       } else {
-        authorizationResponse = new AuthorizationResponse(code!, state!);
+        authorizationResponse = new AuthorizationResponse({
+          code: code!,
+          state: state!
+        });
       }
       const completeResponse = {
         request,
@@ -103,10 +109,8 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
     });
 
     const server = Http.createServer(requestHandler);
-
     try {
       server.listen(this.httpServerPort);
-
       const url = this.buildRequestUrl(configuration, request);
       log('Making a request to ', request, url);
       opener(url);

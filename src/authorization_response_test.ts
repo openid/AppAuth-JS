@@ -19,19 +19,19 @@ describe('Authorization Response Tests', () => {
   const state = 'state';
 
   it('Constructing an Authorization Response should work', () => {
-    let response = new AuthorizationResponse(code, state);
+    let response = new AuthorizationResponse({code: code, state: state});
     expect(response).not.toBeNull();
     expect(response.code).toBe(code);
     expect(response.state).toBe(state);
   });
 
   it('toJson() and fromJson() should work', () => {
-    let response = new AuthorizationResponse(code, state);
+    let response = new AuthorizationResponse({code: code, state: state});
     let json = response.toJson();
     expect(json).not.toBeNull();
     expect(json.code).toBe(code);
     expect(json.state).toBe(state);
-    let newResponse = AuthorizationResponse.fromJson(json);
+    let newResponse = new AuthorizationResponse(json);
     expect(newResponse).not.toBeNull();
     expect(newResponse.code).toBe(code);
     expect(newResponse.state).toBe(state);

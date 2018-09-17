@@ -44,12 +44,19 @@ const OPENID_CONFIGURATION = 'openid-configuration';
  * More information at https://openid.net/specs/openid-connect-discovery-1_0-17.html
  */
 export class AuthorizationServiceConfiguration {
-  constructor(
-      public authorizationEndpoint: string,
-      public tokenEndpoint: string,
-      public revocationEndpoint: string,   // for Revoking Access Tokens
-      public endSessionEndpoint?: string,  // for OpenID session management
-      public userInfoEndpoint?: string) {}
+  authorizationEndpoint: string;
+  tokenEndpoint: string;
+  revocationEndpoint: string;
+  userInfoEndpoint?: string;
+  endSessionEndpoint?: string;
+
+  constructor(request: AuthorizationServiceConfigurationJson) {
+    this.authorizationEndpoint = request.authorization_endpoint;
+    this.tokenEndpoint = request.token_endpoint;
+    this.revocationEndpoint = request.revocation_endpoint;
+    this.userInfoEndpoint = request.userinfo_endpoint;
+    this.endSessionEndpoint = request.end_session_endpoint;
+  }
 
   toJson() {
     return {
@@ -61,15 +68,6 @@ export class AuthorizationServiceConfiguration {
     };
   }
 
-  static fromJson(json: AuthorizationServiceConfigurationJson): AuthorizationServiceConfiguration {
-    return new AuthorizationServiceConfiguration(
-        json.authorization_endpoint,
-        json.token_endpoint,
-        json.revocation_endpoint,
-        json.end_session_endpoint,
-        json.userinfo_endpoint);
-  }
-
   static fetchFromIssuer(openIdIssuerUrl: string, requestor?: Requestor):
       Promise<AuthorizationServiceConfiguration> {
     const fullUrl = `${openIdIssuerUrl}/${WELL_KNOWN_PATH}/${OPENID_CONFIGURATION}`;
@@ -78,6 +76,6 @@ export class AuthorizationServiceConfiguration {
 
     return requestorToUse
         .xhr<AuthorizationServiceConfigurationJson>({url: fullUrl, dataType: 'json'})
-        .then(json => AuthorizationServiceConfiguration.fromJson(json));
+        .then(json => new AuthorizationServiceConfiguration(json));
   }
 }

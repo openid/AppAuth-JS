@@ -13,7 +13,7 @@
  */
 
 import {BasicQueryStringUtils} from './query_string_utils';
-import {LocationLike, StringMap} from './types';
+import {LocationLike} from './types';
 
 const MOCK_LOCATION_UNDEFINED = 'undefined';
 

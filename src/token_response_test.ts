@@ -19,7 +19,7 @@ describe('Token Response tests', () => {
   const idToken = 'idToken';
 
   it('Basic Token Response Tests', () => {
-    let response = new TokenResponse(accessToken);
+    let response = new TokenResponse({access_token: accessToken});
     expect(response).not.toBeNull();
     expect(response.accessToken).toBe(accessToken);
     expect(response.idToken).toBeFalsy();
@@ -31,30 +31,30 @@ describe('Token Response tests', () => {
   });
 
   it('Test response token validity', () => {
-    let response = new TokenResponse(
-        accessToken,
-        idToken,
-        undefined /* refresh token */,
-        undefined /* scope */,
-        'bearer',
-        1 /* issued at */,
-        1000 /* expires in*/
-    );
+    let response = new TokenResponse({
+      access_token: accessToken,
+      token_type: 'bearer',
+      expires_in: 1000,
+      refresh_token: undefined,
+      scope: undefined,
+      id_token: idToken,
+      issued_at: 1
+    });
 
     expect(response).not.toBeNull();
     expect(response.accessToken).toBe(accessToken);
     expect(response.idToken).toBe(idToken);
     expect(response.tokenType).toBe('bearer');
     expect(response.issuedAt).toBeTruthy();
-    expect(response.isValid()).toBe(false);
+    expect(response.isValid(0)).toBe(false);
     expect(response.refreshToken).toBeFalsy();
     expect(response.scope).toBeFalsy();
   });
 
   it('To Json() and from Json() should work', () => {
-    let response = new TokenResponse(accessToken, idToken);
+    let response = new TokenResponse({access_token: accessToken, id_token: idToken});
     let json = JSON.parse(JSON.stringify(response.toJson()));
-    let newResponse = TokenResponse.fromJson(json);
+    let newResponse = new TokenResponse(json);
     expect(newResponse).not.toBeNull();
     expect(newResponse.accessToken).toBe(accessToken);
     expect(newResponse.idToken).toBe(idToken);
@@ -66,7 +66,7 @@ describe('Token Response tests', () => {
   });
 
   it('Basic Token Error Tests', () => {
-    let error = new TokenError('invalid_client');
+    let error = new TokenError({error: 'invalid_client'});
     expect(error).toBeTruthy();
     expect(error.error).toBe('invalid_client');
     expect(error.errorDescription).toBeFalsy();
@@ -74,9 +74,9 @@ describe('Token Response tests', () => {
   });
 
   it('To Json and from JSON should work for errors', () => {
-    let error = new TokenError('invalid_client');
+    let error = new TokenError({error: 'invalid_client'});
     let json = JSON.parse(JSON.stringify(error.toJson()));
-    let newError = TokenError.fromJson(json);
+    let newError = new TokenError(json);
     expect(newError).toBeTruthy();
     expect(newError.error).toBe('invalid_client');
     expect(newError.errorDescription).toBeFalsy();
