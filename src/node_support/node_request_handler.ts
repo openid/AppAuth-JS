@@ -1,13 +1,3 @@
-import * as EventEmitter from 'events';
-import * as Http from 'http';
-import * as Url from 'url';
-import { AuthorizationRequest } from '../authorization_request';
-import { AuthorizationRequestHandler, AuthorizationRequestResponse } from '../authorization_request_handler';
-import { AuthorizationError, AuthorizationResponse } from '../authorization_response';
-import { AuthorizationServiceConfiguration } from '../authorization_service_configuration';
-import { log } from '../logger';
-import { BasicQueryStringUtils, QueryStringUtils } from '../query_string_utils';
-import { nodeCryptoGenerateRandom } from './crypto_utils';
 /*
  * Copyright 2017 Google Inc.
  *
@@ -21,6 +11,19 @@ import { nodeCryptoGenerateRandom } from './crypto_utils';
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import * as EventEmitter from 'events';
+import * as Http from 'http';
+import * as Url from 'url';
+import {AuthorizationRequest} from '../authorization_request';
+import {AuthorizationRequestHandler, AuthorizationRequestResponse} from '../authorization_request_handler';
+import {AuthorizationError, AuthorizationResponse} from '../authorization_response';
+import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
+import {Crypto} from '../crypto_utils';
+import {log} from '../logger';
+import {BasicQueryStringUtils, QueryStringUtils} from '../query_string_utils';
+import {NodeCrypto} from './crypto_utils';
+
 
 // TypeScript typings for `opener` are not correct and do not export it as module
 import opener = require('opener');
@@ -38,8 +41,8 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
       // default to port 8000
       public httpServerPort = 8000,
       utils: QueryStringUtils = new BasicQueryStringUtils(),
-      generateRandom = nodeCryptoGenerateRandom) {
-    super(utils, generateRandom);
+      crypto: Crypto = new NodeCrypto()) {
+    super(utils, crypto);
   }
 
   performAuthorizationRequest(
@@ -74,17 +77,10 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         // get additional optional info.
         const errorUri = searchParams.get('error_uri') || undefined;
         const errorDescription = searchParams.get('error_description') || undefined;
-        authorizationError = new AuthorizationError({
-          error: error,
-          error_description: errorDescription,
-          error_uri: errorUri,
-          state: state
-        });
+        authorizationError = new AuthorizationError(
+            {error: error, error_description: errorDescription, error_uri: errorUri, state: state});
       } else {
-        authorizationResponse = new AuthorizationResponse({
-          code: code!,
-          state: state!
-        });
+        authorizationResponse = new AuthorizationResponse({code: code!, state: state!});
       }
       const completeResponse = {
         request,
@@ -108,16 +104,19 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
       });
     });
 
-    const server = Http.createServer(requestHandler);
-    try {
-      server.listen(this.httpServerPort);
-      const url = this.buildRequestUrl(configuration, request);
-      log('Making a request to ', request, url);
-      opener(url);
-    } catch (error) {
-      log('Something bad happened ', error);
-      emitter.emit(ServerEventsEmitter.ON_UNABLE_TO_START);
-    }
+    let server: Http.Server;
+    request.setupCodeVerifier()
+        .then(() => {
+          server = Http.createServer(requestHandler);
+          server.listen(this.httpServerPort);
+          const url = this.buildRequestUrl(configuration, request);
+          log('Making a request to ', request, url);
+          opener(url);
+        })
+        .catch((error) => {
+          log('Something bad happened ', error);
+          emitter.emit(ServerEventsEmitter.ON_UNABLE_TO_START);
+        });
   }
 
   protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse|null> {

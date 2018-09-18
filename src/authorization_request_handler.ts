@@ -15,7 +15,7 @@
 import {AuthorizationRequest} from './authorization_request';
 import {AuthorizationError, AuthorizationResponse} from './authorization_response';
 import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
-import {RandomGenerator} from './crypto_utils';
+import {Crypto} from './crypto_utils';
 import {log} from './logger';
 import {QueryStringUtils} from './query_string_utils';
 import {StringMap} from './types';
@@ -73,7 +73,7 @@ export const BUILT_IN_PARAMETERS = ['redirect_uri', 'client_id', 'response_type'
  * using various methods (iframe / popup / different process etc.).
  */
 export abstract class AuthorizationRequestHandler {
-  constructor(public utils: QueryStringUtils, protected generateRandom: RandomGenerator) {}
+  constructor(public utils: QueryStringUtils, protected crypto: Crypto) {}
 
   // notifier send the response back to the client.
   protected notifier: AuthorizationNotifier|null = null;

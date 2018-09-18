@@ -81,6 +81,11 @@ this.tokenHandler = new BaseTokenRequestHandler();
 let request: TokenRequest|null = null;
 
 if (this.code) {
+  let extras: StringMap|undefined = undefined;
+  if (this.request && this.request.internal) {
+    extras = {};
+    extras['code_verifier'] = this.request.internal['code_verifier'];
+  }
   // use the code to make the token request.
   request = new TokenRequest({
       client_id: clientId,
@@ -88,7 +93,7 @@ if (this.code) {
       grant_type: GRANT_TYPE_AUTHORIZATION_CODE,
       code: this.code,
       refresh_token: undefined,
-      extras: undefined
+      extras: extras
     });
 } else if (this.tokenResponse) {
   // use the token response to make a request for an access token

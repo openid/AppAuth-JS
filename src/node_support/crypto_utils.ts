@@ -13,12 +13,16 @@
  */
 
 import * as crypto from 'crypto';
+import { bufferToString, Crypto, urlSafe } from '../crypto_utils';
 
-import {bufferToString, RandomGenerator} from '../crypto_utils';
+export class NodeCrypto implements Crypto {
+  generateRandom(size: number): string {
+    const bytes = crypto.randomBytes(size);
+    return bufferToString(new Uint8Array(bytes.buffer));
+  }
 
-const DEFAULT_SIZE = 1; /** size in bytes */
-
-export const nodeCryptoGenerateRandom: RandomGenerator = (sizeInBytes = DEFAULT_SIZE) => {
-  const bytes = crypto.randomBytes(sizeInBytes);
-  return bufferToString(new Uint8Array(bytes.buffer));
-};
+  deriveChallenge(code: string): Promise<string> {
+    const hash = crypto.createHash('sha256').update(code).digest();
+    return Promise.resolve(urlSafe(new Uint8Array(hash.buffer)));
+  }
+}

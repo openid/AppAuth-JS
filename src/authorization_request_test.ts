@@ -64,19 +64,23 @@ describe('AuthorizationRequest Tests', () => {
     expect(request.extras).toEqual(extras);
   });
 
-  it('To Json() and from Json() should work', () => {
-    let json = JSON.parse(JSON.stringify(request.toJson()));
-    expect(json).not.toBeNull();
-    let newRequest = new AuthorizationRequest(json);
-    expect(newRequest).not.toBeNull();
-    expect(newRequest.responseType).toBe(AuthorizationRequest.RESPONSE_TYPE_CODE);
-    expect(newRequest.clientId).toBe(clientId);
-    expect(newRequest.redirectUri).toBe(redirectUri);
-    expect(newRequest.scope).toBe(scope);
-    expect(newRequest.state).toBe(state);
-    expect(newRequest.extras).toBeTruthy();
-    expect(newRequest.extras!['key']).toBe('value');
-    expect(newRequest.extras).toEqual(extras);
+  it('To Json() and from Json() should work', (done: DoneFn) => {
+    request.toJson().then(result => {
+      let json = JSON.parse(JSON.stringify(result));
+      expect(json).not.toBeNull();
+      let newRequest = new AuthorizationRequest(json);
+      expect(newRequest).not.toBeNull();
+      expect(newRequest.responseType).toBe(AuthorizationRequest.RESPONSE_TYPE_CODE);
+      expect(newRequest.clientId).toBe(clientId);
+      expect(newRequest.redirectUri).toBe(redirectUri);
+      expect(newRequest.scope).toBe(scope);
+      expect(newRequest.state).toBe(state);
+      expect(newRequest.extras).toBeTruthy();
+      expect(newRequest.extras!['key']).toBe('value');
+      expect(newRequest.extras).toEqual(request.extras);
+      expect(newRequest.internal).toEqual(request.internal);
+      done();
+    });
   });
 
   it('Expect cryptographic newState() to populate state', () => {

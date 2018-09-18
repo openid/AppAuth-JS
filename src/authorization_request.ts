@@ -12,7 +12,8 @@
  * limitations under the License.
  */
 
-import {cryptoGenerateRandom, RandomGenerator} from './crypto_utils';
+import {Crypto, DefaultCrypto} from './crypto_utils';
+import {log} from './logger';
 import {StringMap} from './types';
 
 /**
@@ -25,14 +26,15 @@ export interface AuthorizationRequestJson {
   scope: string;
   state?: string;
   extras?: StringMap;
+  internal?: StringMap;
 }
 
 /**
  * Generates a cryptographically random new state. Useful for CSRF protection.
  */
-const BYTES_LENGTH = 10;  // 10 bytes
-const newState = function(generateRandom: RandomGenerator): string {
-  return generateRandom(BYTES_LENGTH);
+const SIZE = 10;  // 10 bytes
+const newState = function(crypto: Crypto): string {
+  return crypto.generateRandom(SIZE);
 };
 
 /**
@@ -54,32 +56,65 @@ export class AuthorizationRequest {
   responseType: string;
   state: string;
   extras?: StringMap;
-
+  internal?: StringMap;
   /**
    * Constructs a new AuthorizationRequest.
    * Use a `undefined` value for the `state` parameter, to generate a random
    * state for CSRF protection.
    */
-  constructor(request: AuthorizationRequestJson, generateRandom = cryptoGenerateRandom) {
+  constructor(
+      request: AuthorizationRequestJson,
+      private crypto: Crypto = new DefaultCrypto(),
+      private usePkce: boolean = true) {
     this.clientId = request.client_id;
     this.redirectUri = request.redirect_uri;
     this.scope = request.scope;
     this.responseType = request.response_type || AuthorizationRequest.RESPONSE_TYPE_CODE;
-    this.state = request.state || newState(generateRandom);
+    this.state = request.state || newState(crypto);
     this.extras = request.extras;
+    // read internal properties if available
+    this.internal = request.internal;
+  }
+
+  setupCodeVerifier(): Promise<void> {
+    if (!this.usePkce) {
+      return Promise.resolve();
+    } else {
+      const codeVerifier = this.crypto.generateRandom(128);
+      const challenge: Promise<string|undefined> =
+          this.crypto.deriveChallenge(codeVerifier).catch(error => {
+            log('Unable to generate PKCE challenge. Not using PKCE', error);
+            return undefined;
+          });
+      return challenge.then(result => {
+        if (result) {
+          // keep track of the code used.
+          this.internal = this.internal || {};
+          this.internal['code_verifier'] = codeVerifier;
+          this.extras = this.extras || {};
+          this.extras['code_challenge'] = result;
+          // We always use S256. Plain is not good enough.
+          this.extras['code_challenge_method'] = 'S256';
+        }
+      });
+    }
   }
 
   /**
    * Serializes the AuthorizationRequest to a JavaScript Object.
    */
-  toJson(): AuthorizationRequestJson {
-    return {
-      response_type: this.responseType,
-      client_id: this.clientId,
-      redirect_uri: this.redirectUri,
-      scope: this.scope,
-      state: this.state,
-      extras: this.extras
-    };
+  toJson(): Promise<AuthorizationRequestJson> {
+    // Always make sure that the code verifier is setup when toJson() is called.
+    return this.setupCodeVerifier().then(() => {
+      return {
+        response_type: this.responseType,
+        client_id: this.clientId,
+        redirect_uri: this.redirectUri,
+        scope: this.scope,
+        state: this.state,
+        extras: this.extras,
+        internal: this.internal
+      };
+    });
   }
 }

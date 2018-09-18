@@ -1,7 +1,7 @@
 import { AuthorizationRequest } from './authorization_request';
 import { AuthorizationError, AuthorizationResponse } from './authorization_response';
 import { AuthorizationServiceConfiguration } from './authorization_service_configuration';
-import { RandomGenerator } from './crypto_utils';
+import { Crypto } from './crypto_utils';
 import { QueryStringUtils } from './query_string_utils';
 /**
  * This type represents a lambda that can take an AuthorizationRequest,
@@ -35,8 +35,8 @@ export declare const BUILT_IN_PARAMETERS: string[];
  */
 export declare abstract class AuthorizationRequestHandler {
     utils: QueryStringUtils;
-    protected generateRandom: RandomGenerator;
-    constructor(utils: QueryStringUtils, generateRandom: RandomGenerator);
+    protected crypto: Crypto;
+    constructor(utils: QueryStringUtils, crypto: Crypto);
     protected notifier: AuthorizationNotifier | null;
     /**
      * A utility method to be able to build the authorization request URL.
