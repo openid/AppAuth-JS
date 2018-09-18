@@ -69,7 +69,7 @@ export class DefaultCrypto implements Crypto {
   }
 
   deriveChallenge(code: string): Promise<string> {
-    if (code.length < 43 && code.length > 128) {
+    if (code.length < 43 || code.length > 128) {
       return Promise.reject(new AppAuthError('Invalid code length.'));
     }
     if (!HAS_SUBTLE_CRYPTO) {
