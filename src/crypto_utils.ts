@@ -21,9 +21,6 @@ const HAS_SUBTLE_CRYPTO = HAS_CRYPTO && !!(window.crypto.subtle as any);
 const HAS_TEXT_ENCODER = typeof window !== 'undefined' && !!(TextEncoder);
 const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-// btoa() actually accepts a Uint8Array
-declare function btoa(buffer: Uint8Array): string;
-
 export function bufferToString(buffer: Uint8Array) {
   let state = [];
   for (let i = 0; i < buffer.byteLength; i += 1) {
