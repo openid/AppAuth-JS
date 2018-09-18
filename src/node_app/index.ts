@@ -14,15 +14,18 @@
 
 // Represents a Node application, that uses the AppAuthJS library.
 
-import {AuthorizationRequest} from '../authorization_request';
-import {AuthorizationNotifier, AuthorizationRequestHandler} from '../authorization_request_handler';
-import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
-import {log} from '../logger';
-import {NodeBasedHandler} from '../node_support/node_request_handler';
-import {NodeRequestor} from '../node_support/node_requestor';
-import {RevokeTokenRequest} from '../revoke_token_request';
-import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../token_request';
-import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_handler';
+import { AuthorizationRequest } from '../authorization_request';
+import { AuthorizationNotifier, AuthorizationRequestHandler } from '../authorization_request_handler';
+import { AuthorizationResponse } from '../authorization_response';
+import { AuthorizationServiceConfiguration } from '../authorization_service_configuration';
+import { log } from '../logger';
+import { NodeCrypto } from '../node_support';
+import { NodeRequestor } from '../node_support/node_requestor';
+import { NodeBasedHandler } from '../node_support/node_request_handler';
+import { RevokeTokenRequest } from '../revoke_token_request';
+import { GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest } from '../token_request';
+import { BaseTokenRequestHandler, TokenRequestHandler } from '../token_request_handler';
+import { StringMap } from '../types';
 
 const PORT = 32111;
 
@@ -56,7 +59,7 @@ export class App {
     this.notifier.setAuthorizationListener((request, response, error) => {
       log('Authorization request complete ', request, response, error);
       if (response) {
-        this.makeRefreshTokenRequest(this.configuration!, response.code)
+        this.makeRefreshTokenRequest(this.configuration!, request, response)
             .then(result => this.makeAccessTokenRequest(this.configuration!, result.refreshToken!))
             .then(() => log('All done.'));
       }
@@ -80,24 +83,33 @@ export class App {
       response_type: AuthorizationRequest.RESPONSE_TYPE_CODE,
       state: undefined,
       extras: {'prompt': 'consent', 'access_type': 'offline'}
-    });
+    }, new NodeCrypto());
 
     log('Making authorization request ', configuration, request);
     this.authorizationHandler.performAuthorizationRequest(configuration, request);
   }
 
-  makeRefreshTokenRequest(configuration: AuthorizationServiceConfiguration, code: string) {
-    // use the code to make the token request.
-    let request = new TokenRequest({
+  makeRefreshTokenRequest(
+      configuration: AuthorizationServiceConfiguration,
+      request: AuthorizationRequest,
+      response: AuthorizationResponse) {
+    
+    let extras: StringMap|undefined = undefined;
+    if (request && request.internal) {
+      extras = {};
+      extras['code_verifier'] = request.internal['code_verifier'];
+    }
+
+    let tokenRequest = new TokenRequest({
       client_id: clientId,
       redirect_uri: redirectUri,
       grant_type: GRANT_TYPE_AUTHORIZATION_CODE,
-      code: code,
+      code: response.code,
       refresh_token: undefined,
-      extras: undefined
+      extras: extras
     });
 
-    return this.tokenHandler.performTokenRequest(configuration, request).then(response => {
+    return this.tokenHandler.performTokenRequest(configuration, tokenRequest).then(response => {
       log(`Refresh Token is ${response.refreshToken}`);
       return response;
     });
@@ -120,9 +132,7 @@ export class App {
   }
 
   makeRevokeTokenRequest(configuration: AuthorizationServiceConfiguration, refreshToken: string) {
-    let request = new RevokeTokenRequest({
-      token: refreshToken
-    });
+    let request = new RevokeTokenRequest({token: refreshToken});
 
     return this.tokenHandler.performRevokeTokenRequest(configuration, request).then(response => {
       log('revoked refreshToken');

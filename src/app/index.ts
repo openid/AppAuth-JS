@@ -22,6 +22,8 @@ import {RedirectRequestHandler} from '../redirect_based_handler';
 import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../token_request';
 import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_handler';
 import {TokenResponse} from '../token_response';
+import { AuthorizationResponse } from '../authorization_response';
+import { StringMap } from '../types';
 
 /* Some interface declarations for Material design lite. */
 
@@ -58,6 +60,8 @@ export class App {
 
   // state
   private configuration: AuthorizationServiceConfiguration|undefined;
+  private request: AuthorizationRequest|undefined;
+  private response: AuthorizationResponse|undefined;
   private code: string|undefined;
   private tokenResponse: TokenResponse|undefined;
 
@@ -71,6 +75,8 @@ export class App {
     this.notifier.setAuthorizationListener((request, response, error) => {
       log('Authorization request complete ', request, response, error);
       if (response) {
+        this.request = request;
+        this.response = response;
         this.code = response.code;
         this.showMessage(`Authorization Code ${response.code}`);
       }
@@ -122,6 +128,11 @@ export class App {
 
     let request: TokenRequest|null = null;
     if (this.code) {
+      let extras: StringMap|undefined = undefined;
+      if (this.request && this.request.internal) {
+        extras = {};
+        extras['code_verifier'] = this.request.internal['code_verifier'];
+      }
       // use the code to make the token request.
       request = new TokenRequest({
         client_id: clientId,
@@ -129,7 +140,7 @@ export class App {
         grant_type: GRANT_TYPE_AUTHORIZATION_CODE,
         code: this.code,
         refresh_token: undefined,
-        extras: undefined
+        extras: extras
       });
     } else if (this.tokenResponse) {
       // use the token response to make a request for an access token

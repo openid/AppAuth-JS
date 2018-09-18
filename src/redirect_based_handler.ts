@@ -16,7 +16,7 @@ import {AuthorizationRequest} from './authorization_request';
 import {AuthorizationRequestHandler, AuthorizationRequestResponse} from './authorization_request_handler';
 import {AuthorizationError, AuthorizationResponse} from './authorization_response'
 import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
-import {cryptoGenerateRandom} from './crypto_utils';
+import {Crypto, DefaultCrypto} from './crypto_utils';
 import {log} from './logger';
 import {BasicQueryStringUtils} from './query_string_utils';
 import {LocalStorageBackend, StorageBackend} from './storage';
@@ -50,19 +50,22 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
       public storageBackend: StorageBackend = new LocalStorageBackend(),
       utils = new BasicQueryStringUtils(),
       public locationLike: LocationLike = window.location,
-      generateRandom = cryptoGenerateRandom) {
-    super(utils, generateRandom);
+      crypto: Crypto = new DefaultCrypto()) {
+    super(utils, crypto);
   }
 
   performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
       request: AuthorizationRequest) {
-    let handle = this.generateRandom();
+    const handle = this.crypto.generateRandom(10);
+
     // before you make request, persist all request related data in local storage.
-    let persisted = Promise.all([
+    const persisted = Promise.all([
       this.storageBackend.setItem(AUTHORIZATION_REQUEST_HANDLE_KEY, handle),
-      this.storageBackend.setItem(
-          authorizationRequestKey(handle), JSON.stringify(request.toJson())),
+      // Calling toJson() adds in the code & challenge when possible
+      request.toJson().then(
+          result =>
+              this.storageBackend.setItem(authorizationRequestKey(handle), JSON.stringify(result))),
       this.storageBackend.setItem(
           authorizationServiceConfigurationKey(handle), JSON.stringify(configuration.toJson())),
     ]);
