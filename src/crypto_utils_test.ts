@@ -25,7 +25,7 @@ describe('Crypto Utils Tests.', () => {
     challenge
         .then(result => {
           expect(result).toBeTruthy();
-          // Not == in the base64 encoded result.
+          // No `==` in the base64 encoded result.
           expect(result.indexOf('=') < 0);
           done();
         })
