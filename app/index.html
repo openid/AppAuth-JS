@@ -52,21 +52,21 @@
 
       // fetch configuration handler
       var fetchConfiguration = document.querySelector('#fetchConfig');
-      fetchConfiguration.addEventListener('click', function () {
+      fetchConfiguration.addEventListener('click', function (event) {
         application.fetchServiceConfiguration();
         event.preventDefault();
       });
 
       // authorize request handler
       var authorize = document.querySelector('#authorize');
-      authorize.addEventListener('click', function () {
+      authorize.addEventListener('click', function (event) {
         application.makeAuthorizationRequest();
         event.preventDefault();
       });
 
       // token request handler
       var makeTokenRequest = document.querySelector('#makeTokenRequest');
-      makeTokenRequest.addEventListener('click', function () {
+      makeTokenRequest.addEventListener('click', function (event) {
         application.makeTokenRequest();
         event.preventDefault();
       });
