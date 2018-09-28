@@ -23,7 +23,8 @@ export const GRANT_TYPE_REFRESH_TOKEN = 'refresh_token';
 export interface TokenRequestJson {
   grant_type: string;
   code?: string;
-  refresh_token?: string, redirect_uri: string;
+  refresh_token?: string;
+  redirect_uri: string;
   client_id: string;
   extras?: StringMap;
 }
