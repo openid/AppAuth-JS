@@ -18,7 +18,6 @@ import {AppAuthError} from './errors';
 
 const HAS_CRYPTO = typeof window !== 'undefined' && !!(window.crypto as any);
 const HAS_SUBTLE_CRYPTO = HAS_CRYPTO && !!(window.crypto.subtle as any);
-const HAS_TEXT_ENCODER = typeof window !== 'undefined' && !!(TextEncoder);
 const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 export function bufferToString(buffer: Uint8Array) {
@@ -33,6 +32,19 @@ export function bufferToString(buffer: Uint8Array) {
 export function urlSafe(buffer: Uint8Array): string {
   const encoded = base64.fromByteArray(new Uint8Array(buffer));
   return encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
+
+// adapted from source: http://stackoverflow.com/a/11058858
+// this is used in place of TextEncode as the api is not yet
+// well supported: https://caniuse.com/#search=TextEncoder
+export function textEncodeLite(str: string) {
+  const buf = new ArrayBuffer(str.length);
+  const bufView = new Uint8Array(buf);
+
+  for (let i = 0; i < str.length; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return bufView;
 }
 
 export interface Crypto {
@@ -72,13 +84,9 @@ export class DefaultCrypto implements Crypto {
     if (!HAS_SUBTLE_CRYPTO) {
       return Promise.reject(new AppAuthError('window.crypto.subtle is unavailable.'));
     }
-    if (!HAS_TEXT_ENCODER) {
-      return Promise.reject(new AppAuthError('TextEncoder is unavailable.'));
-    }
 
-    const encoder = new TextEncoder();
     return new Promise((resolve, reject) => {
-      crypto.subtle.digest('SHA-256', encoder.encode(code)).then(buffer => {
+      crypto.subtle.digest('SHA-256', textEncodeLite(code)).then(buffer => {
         return resolve(urlSafe(new Uint8Array(buffer)));
       }, error => reject(error));
     });

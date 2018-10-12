@@ -1,5 +1,6 @@
 export declare function bufferToString(buffer: Uint8Array): string;
 export declare function urlSafe(buffer: Uint8Array): string;
+export declare function textEncodeLite(str: string): Uint8Array;
 export interface Crypto {
     /**
      * Generate a random string
