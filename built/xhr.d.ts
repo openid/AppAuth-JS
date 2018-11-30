@@ -1,4 +1,3 @@
-/// <reference types="jquery" />
 /**
  * An class that abstracts away the ability to make an XMLHttpRequest.
  */
