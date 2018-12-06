@@ -11,6 +11,12 @@ export declare class JQueryRequestor extends Requestor {
     xhr<T>(settings: JQueryAjaxSettings): Promise<T>;
 }
 /**
+ * Uses fetch API to make Ajax requests
+ */
+export declare class FetchRequestor extends Requestor {
+    xhr<T>(settings: JQueryAjaxSettings): Promise<T>;
+}
+/**
  * Should be used only in the context of testing. Just uses the underlying
  * Promise to mock the behavior of the Requestor.
  */
