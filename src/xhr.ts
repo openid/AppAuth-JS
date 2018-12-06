@@ -78,8 +78,9 @@ export class FetchRequestor extends Requestor {
 
     const isJsonDataType = settings.dataType && settings.dataType.toLowerCase() === 'json';
 
-    // Set 'Accept' header value for json requests (Taken from  
-    // https://github.com/jquery/jquery/blob/e0d941156900a6bff7c098c8ea7290528e468cf8/src/ajax.js#L644 )
+    // Set 'Accept' header value for json requests (Taken from
+    // https://github.com/jquery/jquery/blob/e0d941156900a6bff7c098c8ea7290528e468cf8/src/ajax.js#L644
+    // )
     if (isJsonDataType) {
       requestInit.headers['Accept'] = 'application/json, text/javascript, */*; q=0.01';
     }
