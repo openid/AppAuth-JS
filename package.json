@@ -28,7 +28,7 @@
     "compile": "node_modules/.bin/tsc",
     "prepare": "npm run-script --silent build-app",
     "format": "node_modules/.bin/clang-format -i -style=file --glob=src/**.ts",
-    "clean": "rm -rf built",
+    "clean": "rimraf -rf built",
     "pretest": "npm run-script --silent compile",
     "test": "node_modules/.bin/karma start karma.conf --browsers=Chrome --single-run=false --debug",
     "pregzipSize": "npm run-script --silent minify",
@@ -59,6 +59,7 @@
     "karma-browserify": "^5.3.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^2.0.1",
+    "rimraf": "^2.6.3",
     "typescript": "^3.2.1",
     "watchify": "^3.11.0"
   },
