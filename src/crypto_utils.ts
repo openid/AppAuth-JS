@@ -71,7 +71,7 @@ export class DefaultCrypto implements Crypto {
     } else {
       // fall back to Math.random() if nothing else is available
       for (let i = 0; i < size; i += 1) {
-        buffer[i] = Math.random();
+        buffer[i] = (Math.random() * CHARSET.length) | 0;
       }
     }
     return bufferToString(buffer);

@@ -15,8 +15,8 @@
 import {DefaultCrypto} from './crypto_utils';
 
 describe('Crypto Utils Tests.', () => {
-  const CODE = new Array(5).join('challenge');
-  const EXPECTED_BASE64 = '1u8ZrKrpPII7DIos9KyTQdCZPt8nfzRod5xTCu88Lmk';
+  const CODE = new Array(6).join('challenge');
+  const EXPECTED_BASE64 = 'MYdqq2Vt_ZLMAWpXXsjGIrlxrCF2e4ZP4SxDf7cm_tg';
   const crypto = new DefaultCrypto();
 
   it('produces the right challenge for a valid code', (done: DoneFn) => {
@@ -27,6 +27,20 @@ describe('Crypto Utils Tests.', () => {
           expect(result).toBeTruthy();
           // No `==` in the base64 encoded result.
           expect(result.indexOf('=') < 0);
+          done();
+        })
+        .catch(error => {
+          fail(error);
+          done();
+        });
+  });
+
+  it('generateRandom produces different values', (done: DoneFn) => {
+    const code1 = crypto.generateRandom(10);
+    const code2 = crypto.generateRandom(10);
+    Promise.all([code1, code2])
+        .then(result => {
+          expect(result[0]).not.toEqual(result[1]);
           done();
         })
         .catch(error => {
