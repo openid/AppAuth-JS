@@ -82,7 +82,8 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
    * Attempts to introspect the contents of storage backend and completes the
    * request.
    */
-  protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse|null> {
+  protected completeAuthorizationRequest(useHash: boolean = true):
+      Promise<AuthorizationRequestResponse|null> {
     // TODO(rahulrav@): handle authorization errors.
     return this.storageBackend.getItem(AUTHORIZATION_REQUEST_HANDLE_KEY).then(handle => {
       if (handle) {
@@ -97,7 +98,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
             .then(request => {
               // check redirect_uri and state
               let currentUri = `${this.locationLike.origin}${this.locationLike.pathname}`;
-              let queryParams = this.utils.parse(this.locationLike, true /* use hash */);
+              let queryParams = this.utils.parse(this.locationLike, useHash);
               let state: string|undefined = queryParams['state'];
               let code: string|undefined = queryParams['code'];
               let error: string|undefined = queryParams['error'];

@@ -18,5 +18,5 @@ export declare class RedirectRequestHandler extends AuthorizationRequestHandler 
      * Attempts to introspect the contents of storage backend and completes the
      * request.
      */
-    protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse | null>;
+    protected completeAuthorizationRequest(useHash?: boolean): Promise<AuthorizationRequestResponse | null>;
 }
