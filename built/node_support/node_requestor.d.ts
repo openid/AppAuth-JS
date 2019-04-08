@@ -1,3 +1,4 @@
+/// <reference types="jquery" />
 import { Requestor } from '../xhr';
 /**
  * A Node.js HTTP client.
