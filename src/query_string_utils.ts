@@ -20,13 +20,13 @@ import {LocationLike, StringMap} from './types';
  */
 export interface QueryStringUtils {
   stringify(input: StringMap): string;
-  parse(query: LocationLike, useHash?: boolean): StringMap;
+  parse(query: LocationLike): StringMap;
   parseQueryString(query: string): StringMap;
 }
 
 export class BasicQueryStringUtils implements QueryStringUtils {
-  parse(input: LocationLike, useHash?: boolean) {
-    if (useHash) {
+  parse(input: LocationLike) {
+    if (input.hash) {
       return this.parseQueryString(input.hash);
     } else {
       return this.parseQueryString(input.search);

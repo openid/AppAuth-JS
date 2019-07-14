@@ -97,7 +97,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
             .then(request => {
               // check redirect_uri and state
               let currentUri = `${this.locationLike.origin}${this.locationLike.pathname}`;
-              let queryParams = this.utils.parse(this.locationLike, true /* use hash */);
+              let queryParams = this.utils.parse(this.locationLike);
               let state: string|undefined = queryParams['state'];
               let code: string|undefined = queryParams['code'];
               let error: string|undefined = queryParams['error'];
