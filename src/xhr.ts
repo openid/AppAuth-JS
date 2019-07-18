@@ -88,7 +88,7 @@ export class FetchRequestor extends Requestor {
     return fetch(url.toString(), requestInit).then(response => {
       if (response.status >= 200 && response.status < 300) {
         const contentType = response.headers.get('content-type');
-        if (isJsonDataType || (contentType && contentType.includes('application/json'))) {
+        if (isJsonDataType || (contentType && contentType.indexOf('application/json') !== -1)) {
           return response.json();
         } else {
           return response.text();
