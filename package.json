@@ -1,6 +1,6 @@
 {
   "name": "@openid/appauth",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "A general purpose OAuth client.",
   "author": "The OpenID Foundation",
   "license": "Apache-2.0",
