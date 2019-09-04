@@ -50,7 +50,7 @@ export interface TokenErrorJson {
 }
 
 // constants
-const AUTH_EXPIRY_BUFFER = 10 * 60;  // 10 mins in seconds
+const AUTH_EXPIRY_BUFFER = 10 * 60 * -1;  // 10 mins in seconds
 
 /**
  * Returns the instant of time in seconds.
