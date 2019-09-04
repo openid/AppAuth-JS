@@ -15,7 +15,7 @@
 import * as EventEmitter from 'events';
 import * as Http from 'http';
 import * as Url from 'url';
-import {AuthorizationRequest} from '../authorization_request';
+import {AuthorizationRequest, AuthorizationOpenerOptions} from '../authorization_request';
 import {AuthorizationRequestHandler, AuthorizationRequestResponse} from '../authorization_request_handler';
 import {AuthorizationError, AuthorizationResponse} from '../authorization_response';
 import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
@@ -27,6 +27,7 @@ import {NodeCrypto} from './crypto_utils';
 
 // TypeScript typings for `opener` are not correct and do not export it as module
 import opener = require('opener');
+import { options } from 'joi';
 
 class ServerEventsEmitter extends EventEmitter {
   static ON_UNABLE_TO_START = 'unable_to_start';
@@ -47,7 +48,8 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
 
   performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest) {
+      request: AuthorizationRequest,
+      options: AuthorizationOpenerOptions = { hasCustomOpener: false }) {
     // use opener to launch a web browser and start the authorization flow.
     // start a web server to handle the authorization response.
     const emitter = new ServerEventsEmitter();
@@ -105,13 +107,16 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
     });
 
     let server: Http.Server;
-    request.setupCodeVerifier()
+    return request.setupCodeVerifier()
         .then(() => {
           server = Http.createServer(requestHandler);
           server.listen(this.httpServerPort);
           const url = this.buildRequestUrl(configuration, request);
           log('Making a request to ', request, url);
-          opener(url);
+          if (!options.hasCustomOpener) {
+            opener(url);
+          }
+          return url;
         })
         .catch((error) => {
           log('Something bad happened ', error);

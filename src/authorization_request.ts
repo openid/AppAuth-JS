@@ -29,6 +29,13 @@ export interface AuthorizationRequestJson {
   internal?: StringMap;
 }
 
+/**z
+ * Represents an aditionla options to perform custom AuthorizationRequest.
+ */
+export interface AuthorizationOpenerOptions {
+  hasCustomOpener?: boolean;
+}
+
 /**
  * Generates a cryptographically random new state. Useful for CSRF protection.
  */

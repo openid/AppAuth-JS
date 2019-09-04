@@ -12,6 +12,12 @@ export interface AuthorizationRequestJson {
     extras?: StringMap;
     internal?: StringMap;
 }
+/**z
+ * Represents an aditionla options to perform custom AuthorizationRequest.
+ */
+export interface AuthorizationOpenerOptions {
+    hasCustomOpener?: boolean;
+}
 /**
  * Represents the AuthorizationRequest.
  * For more information look at
