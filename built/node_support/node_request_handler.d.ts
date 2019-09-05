@@ -1,3 +1,5 @@
+/// <reference types="node" />
+import * as Http from 'http';
 import { AuthorizationRequest, AuthorizationOpenerOptions } from '../authorization_request';
 import { AuthorizationRequestHandler, AuthorizationRequestResponse } from '../authorization_request_handler';
 import { AuthorizationServiceConfiguration } from '../authorization_service_configuration';
@@ -7,6 +9,9 @@ export declare class NodeBasedHandler extends AuthorizationRequestHandler {
     httpServerPort: number;
     authorizationPromise: Promise<AuthorizationRequestResponse | null> | null;
     constructor(httpServerPort?: number, utils?: QueryStringUtils, crypto?: Crypto);
-    performAuthorizationRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest, options?: AuthorizationOpenerOptions): Promise<string | void>;
+    performAuthorizationRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest, options?: AuthorizationOpenerOptions): Promise<void | {
+        url: string;
+        server: Http.Server;
+    }>;
     protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse | null>;
 }

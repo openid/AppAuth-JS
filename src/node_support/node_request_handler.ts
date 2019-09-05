@@ -116,7 +116,7 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
           if (!options.hasCustomOpener) {
             opener(url);
           }
-          return url;
+          return { url, server };
         })
         .catch((error) => {
           log('Something bad happened ', error);
