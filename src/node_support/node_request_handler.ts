@@ -108,11 +108,17 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
     request.setupCodeVerifier()
         .then(() => {
           server = Http.createServer(requestHandler);
-          server.listen(this.httpServerPort);
-          const url = this.buildRequestUrl(configuration, request);
-          log('Making a request to ', request, url);
-          opener(url);
-          emitter.emit(ServerEventsEmitter.ON_START);
+          server.listen(this.httpServerPort, () => {
+            const url = this.buildRequestUrl(configuration, request);
+            log('Making a request to ', request, url);
+            opener(url);
+            emitter.emit(ServerEventsEmitter.ON_START);
+          });
+
+          server.on('error', (error: Error) => {
+            log('Something bad happened ', error);
+            emitter.emit(ServerEventsEmitter.ON_UNABLE_TO_START, error);
+          });
         })
         .catch((error) => {
           log('Something bad happened ', error);
