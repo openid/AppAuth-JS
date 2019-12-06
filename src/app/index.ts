@@ -113,7 +113,11 @@ export class App {
     });
 
     if (this.configuration) {
-      this.authorizationHandler.performAuthorizationRequest(this.configuration, request);
+      this.authorizationHandler.performAuthorizationRequest(this.configuration, request)
+        .catch(error => {
+          log('Something bad happened', error);
+          this.showMessage(`Something bad happened ${error}`)
+        });
     } else {
       this.showMessage(
           'Fetch Authorization Service configuration, before you make the authorization request.');

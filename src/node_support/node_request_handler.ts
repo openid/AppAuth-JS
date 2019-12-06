@@ -15,6 +15,7 @@
 import * as EventEmitter from 'events';
 import * as Http from 'http';
 import * as Url from 'url';
+import {AppAuthError} from '../errors';
 import {AuthorizationRequest} from '../authorization_request';
 import {AuthorizationRequestHandler, AuthorizationRequestResponse} from '../authorization_request_handler';
 import {AuthorizationError, AuthorizationResponse} from '../authorization_response';
@@ -29,6 +30,7 @@ import {NodeCrypto} from './crypto_utils';
 import opener = require('opener');
 
 class ServerEventsEmitter extends EventEmitter {
+  static ON_START = 'start';
   static ON_UNABLE_TO_START = 'unable_to_start';
   static ON_AUTHORIZATION_RESPONSE = 'authorization_response';
 }
@@ -91,10 +93,8 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
       response.end('Close your browser to continue');
     };
 
-    this.authorizationPromise = new Promise<AuthorizationRequestResponse>((resolve, reject) => {
-      emitter.once(ServerEventsEmitter.ON_UNABLE_TO_START, () => {
-        reject(`Unable to create HTTP server at port ${this.httpServerPort}`);
-      });
+    this.authorizationPromise = new Promise<AuthorizationRequestResponse|null>((resolve) => {
+      emitter.once(ServerEventsEmitter.ON_UNABLE_TO_START, () => resolve(null));
       emitter.once(ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE, (result: any) => {
         server.close();
         // resolve pending promise
@@ -112,11 +112,23 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
           const url = this.buildRequestUrl(configuration, request);
           log('Making a request to ', request, url);
           opener(url);
+          emitter.emit(ServerEventsEmitter.ON_START);
         })
         .catch((error) => {
           log('Something bad happened ', error);
-          emitter.emit(ServerEventsEmitter.ON_UNABLE_TO_START);
+          emitter.emit(ServerEventsEmitter.ON_UNABLE_TO_START, error);
         });
+
+    return new Promise<null>((resolve, reject) => {
+      emitter.once(ServerEventsEmitter.ON_UNABLE_TO_START, (error) => {
+        reject(new AppAuthError(
+          `Unable to create HTTP server at port ${this.httpServerPort}`,
+          {origError: error}
+        ));
+      });
+
+      emitter.once(ServerEventsEmitter.ON_START, () => resolve(null));
+    });
   }
 
   protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse|null> {
