@@ -57,7 +57,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
   performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
       request: AuthorizationRequest) {
-    return new Promise<null>((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const handle = this.crypto.generateRandom(10);
 
       // before you make request, persist all request related data in local storage.
@@ -77,7 +77,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
             let url = this.buildRequestUrl(configuration, request);
             log('Making a request to ', request, url);
             this.locationLike.assign(url);
-            resolve(null);
+            resolve();
           })
           .catch(error => reject(error));
     });

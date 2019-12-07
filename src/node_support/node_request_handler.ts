@@ -125,7 +125,7 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
           emitter.emit(ServerEventsEmitter.ON_UNABLE_TO_START, error);
         });
 
-    return new Promise<null>((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       emitter.once(ServerEventsEmitter.ON_UNABLE_TO_START, (error) => {
         reject(new AppAuthError(
           `Unable to create HTTP server at port ${this.httpServerPort}`,
@@ -133,7 +133,7 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         ));
       });
 
-      emitter.once(ServerEventsEmitter.ON_START, () => resolve(null));
+      emitter.once(ServerEventsEmitter.ON_START, () => resolve());
     });
   }
 
