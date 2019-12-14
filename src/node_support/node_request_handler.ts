@@ -93,15 +93,22 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
       response.end('Close your browser to continue');
     };
 
-    this.authorizationPromise = new Promise<AuthorizationRequestResponse|null>((resolve) => {
-      emitter.once(ServerEventsEmitter.ON_UNABLE_TO_START, () => resolve(null));
+    this.authorizationPromise = new Promise<AuthorizationRequestResponse|null>((resolve, reject) => {
+      emitter.once(ServerEventsEmitter.ON_UNABLE_TO_START, (error) => reject(error));
       emitter.once(ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE, (result: any) => {
         server.close();
         // resolve pending promise
         resolve(result as AuthorizationRequestResponse);
         // complete authorization flow
-        this.completeAuthorizationRequestIfPossible();
+        this.completeAuthorizationRequestIfPossible()
+          .catch(error => {
+            log('Could not complete authorization request', error);
+          });
       });
+    });
+
+    this.authorizationPromise.catch(error => {
+      log('Something bad happened ', error);
     });
 
     let server: Http.Server;
@@ -116,12 +123,10 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
           });
 
           server.on('error', (error: Error) => {
-            log('Something bad happened ', error);
             emitter.emit(ServerEventsEmitter.ON_UNABLE_TO_START, error);
           });
         })
         .catch((error) => {
-          log('Something bad happened ', error);
           emitter.emit(ServerEventsEmitter.ON_UNABLE_TO_START, error);
         });
 
