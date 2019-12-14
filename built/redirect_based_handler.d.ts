@@ -13,7 +13,7 @@ export declare class RedirectRequestHandler extends AuthorizationRequestHandler 
     storageBackend: StorageBackend;
     locationLike: LocationLike;
     constructor(storageBackend?: StorageBackend, utils?: BasicQueryStringUtils, locationLike?: LocationLike, crypto?: Crypto);
-    performAuthorizationRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest): void;
+    performAuthorizationRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest): Promise<void>;
     /**
      * Attempts to introspect the contents of storage backend and completes the
      * request.

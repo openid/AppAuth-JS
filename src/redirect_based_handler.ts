@@ -57,24 +57,29 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
   performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
       request: AuthorizationRequest) {
-    const handle = this.crypto.generateRandom(10);
+    return new Promise<void>((resolve, reject) => {
+      const handle = this.crypto.generateRandom(10);
 
-    // before you make request, persist all request related data in local storage.
-    const persisted = Promise.all([
-      this.storageBackend.setItem(AUTHORIZATION_REQUEST_HANDLE_KEY, handle),
-      // Calling toJson() adds in the code & challenge when possible
-      request.toJson().then(
-          result =>
-              this.storageBackend.setItem(authorizationRequestKey(handle), JSON.stringify(result))),
-      this.storageBackend.setItem(
-          authorizationServiceConfigurationKey(handle), JSON.stringify(configuration.toJson())),
-    ]);
+      // before you make request, persist all request related data in local storage.
+      const persisted = Promise.all([
+        this.storageBackend.setItem(AUTHORIZATION_REQUEST_HANDLE_KEY, handle),
+        // Calling toJson() adds in the code & challenge when possible
+        request.toJson().then(
+            result => this.storageBackend.setItem(
+                authorizationRequestKey(handle), JSON.stringify(result))),
+        this.storageBackend.setItem(
+            authorizationServiceConfigurationKey(handle), JSON.stringify(configuration.toJson())),
+      ]);
 
-    persisted.then(() => {
-      // make the redirect request
-      let url = this.buildRequestUrl(configuration, request);
-      log('Making a request to ', request, url);
-      this.locationLike.assign(url);
+      persisted
+          .then(() => {
+            // make the redirect request
+            let url = this.buildRequestUrl(configuration, request);
+            log('Making a request to ', request, url);
+            this.locationLike.assign(url);
+            resolve();
+          })
+          .catch(error => reject(error));
     });
   }
 

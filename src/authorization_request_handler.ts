@@ -143,10 +143,11 @@ export abstract class AuthorizationRequestHandler {
 
   /**
    * Makes an authorization request.
+   * Returns a `Promise<void>`, when the request was sent succesfully.
    */
   abstract performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest): void;
+      request: AuthorizationRequest): Promise<void>;
 
   /**
    * Checks if an authorization flow can be completed, and completes it.
