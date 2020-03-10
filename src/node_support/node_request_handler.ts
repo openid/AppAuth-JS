@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import * as EventEmitter from 'events';
+import {EventEmitter} from 'events';
 import * as Http from 'http';
 import * as Url from 'url';
 import {AuthorizationRequest} from '../authorization_request';
