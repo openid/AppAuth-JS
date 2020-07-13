@@ -1,0 +1,15 @@
+---
+version: "3"
+services:
+  development: &base
+    image: node:12.16.1 # match what is in .nvmrc
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: ["npm","run-script","docker-compose"]
+      # ["tail", "-f", "/dev/null"]
+
+  test:
+    <<: *base
+    image: circleci/node:12.16-browsers
+    command: ["npm", "test"]

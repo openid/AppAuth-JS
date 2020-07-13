@@ -34,7 +34,8 @@
     "pregzipSize": "npm run-script --silent minify",
     "gzipSize": "gzip -c built/app/bundle_minified.js | wc -c",
     "prewatch": "npm run-script --silent format",
-    "watch": "node_modules/.bin/tsc --watch &"
+    "watch": "node_modules/.bin/tsc --watch &",
+    "docker-compose": "npm install && npm run-script compile && node_modules/.bin/tsc --watch"
   },
   "keywords": [
     "OAuth",
