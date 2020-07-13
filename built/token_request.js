@@ -23,6 +23,7 @@ exports.GRANT_TYPE_REFRESH_TOKEN = 'refresh_token';
 var TokenRequest = /** @class */ (function () {
     function TokenRequest(request) {
         this.clientId = request.client_id;
+        this.clientSecret = request.client_secret;
         this.redirectUri = request.redirect_uri;
         this.grantType = request.grant_type;
         this.code = request.code;
@@ -39,6 +40,7 @@ var TokenRequest = /** @class */ (function () {
             refresh_token: this.refreshToken,
             redirect_uri: this.redirectUri,
             client_id: this.clientId,
+            client_secret: this.clientSecret,
             extras: this.extras
         };
     };
@@ -46,6 +48,7 @@ var TokenRequest = /** @class */ (function () {
         var map = {
             grant_type: this.grantType,
             client_id: this.clientId,
+            client_secret: this.clientSecret,
             redirect_uri: this.redirectUri
         };
         if (this.code) {

@@ -16,11 +16,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var token_request_1 = require("./token_request");
 describe('Token Request tests', function () {
     var clientId = 'client_id';
+    var clientSecret = 'client_secret';
     var redirectUri = 'http://my/redirect_uri';
     var code = 'some_code';
     var extras = { 'key': 'value' };
     var request = new token_request_1.TokenRequest({
         client_id: clientId,
+        client_secret: clientSecret,
         redirect_uri: redirectUri,
         grant_type: token_request_1.GRANT_TYPE_AUTHORIZATION_CODE,
         code: code,
@@ -30,6 +32,7 @@ describe('Token Request tests', function () {
     it('Basic Token Request Tests', function () {
         expect(request).not.toBeNull();
         expect(request.clientId).toBe(clientId);
+        expect(newRequest.clientSecret).toBe(clientSecret);
         expect(request.redirectUri).toBe(redirectUri);
         expect(request.code).toBe(code);
         expect(request.grantType).toBe(token_request_1.GRANT_TYPE_AUTHORIZATION_CODE);
@@ -43,6 +46,7 @@ describe('Token Request tests', function () {
         var newRequest = new token_request_1.TokenRequest(json);
         expect(newRequest).not.toBeNull();
         expect(newRequest.clientId).toBe(clientId);
+        expect(newRequest.clientSecret).toBe(clientSecret);
         expect(newRequest.redirectUri).toBe(redirectUri);
         expect(newRequest.code).toBe(code);
         expect(newRequest.grantType).toBe(token_request_1.GRANT_TYPE_AUTHORIZATION_CODE);

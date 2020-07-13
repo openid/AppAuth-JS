@@ -10,6 +10,7 @@ export interface TokenRequestJson {
     refresh_token?: string;
     redirect_uri: string;
     client_id: string;
+    client_secret?: string;
     extras?: StringMap;
 }
 /**
@@ -19,6 +20,7 @@ export interface TokenRequestJson {
  */
 export declare class TokenRequest {
     clientId: string;
+    clientSecret: string | undefined;
     redirectUri: string;
     grantType: string;
     code: string | undefined;
