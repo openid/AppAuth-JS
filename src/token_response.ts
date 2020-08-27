@@ -25,7 +25,7 @@ export type TokenType = 'bearer'|'mac';
 export interface TokenResponseJson {
   access_token: string;
   token_type?: TokenType; /* treating token type as optional, as its going to be inferred. */
-  expires_in?: number;    /* lifetime in seconds. */
+  expires_in?: string;    /* lifetime in seconds. */
   refresh_token?: string;
   scope?: string;
   id_token?: string;  /* https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse */
@@ -65,7 +65,7 @@ export const nowInSeconds = () => Math.round(new Date().getTime() / 1000);
 export class TokenResponse {
   accessToken: string;
   tokenType: TokenType;
-  expiresIn: number|undefined;
+  expiresIn: string|undefined;
   refreshToken: string|undefined;
   scope: string|undefined;
   idToken: string|undefined;
@@ -96,7 +96,7 @@ export class TokenResponse {
   isValid(buffer: number = AUTH_EXPIRY_BUFFER): boolean {
     if (this.expiresIn) {
       let now = nowInSeconds();
-      return now < this.issuedAt + this.expiresIn + buffer;
+      return now < this.issuedAt + parseInt(this.expiresIn, 10) + buffer;
     } else {
       return true;
     }
