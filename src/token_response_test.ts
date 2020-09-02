@@ -34,7 +34,7 @@ describe('Token Response tests', () => {
     let response = new TokenResponse({
       access_token: accessToken,
       token_type: 'bearer',
-      expires_in: 1000,
+      expires_in: '1000',
       refresh_token: undefined,
       scope: undefined,
       id_token: idToken,

@@ -25,7 +25,7 @@ export type TokenType = 'bearer'|'mac';
 export interface TokenResponseJson {
   access_token: string;
   token_type?: TokenType; /* treating token type as optional, as its going to be inferred. */
-  expires_in?: number;    /* lifetime in seconds. */
+  expires_in?: string;    /* lifetime in seconds. */
   refresh_token?: string;
   scope?: string;
   id_token?: string;  /* https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse */
@@ -74,7 +74,9 @@ export class TokenResponse {
   constructor(response: TokenResponseJson) {
     this.accessToken = response.access_token;
     this.tokenType = response.token_type || 'bearer';
-    this.expiresIn = response.expires_in;
+    if (response.expires_in) {
+      this.expiresIn = parseInt(response.expires_in, 10);
+    }
     this.refreshToken = response.refresh_token;
     this.scope = response.scope;
     this.idToken = response.id_token;
@@ -89,7 +91,7 @@ export class TokenResponse {
       scope: this.scope,
       token_type: this.tokenType,
       issued_at: this.issuedAt,
-      expires_in: this.expiresIn
+      expires_in: this.expiresIn?.toString()
     };
   }
 

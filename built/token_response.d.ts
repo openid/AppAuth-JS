@@ -10,7 +10,7 @@ export declare type TokenType = 'bearer' | 'mac';
 export interface TokenResponseJson {
     access_token: string;
     token_type?: TokenType;
-    expires_in?: number;
+    expires_in?: string;
     refresh_token?: string;
     scope?: string;
     id_token?: string;
