@@ -7,7 +7,7 @@ import { QueryStringUtils } from './query_string_utils';
  * This type represents a lambda that can take an AuthorizationRequest,
  * and an AuthorizationResponse as arguments.
  */
-export declare type AuthorizationListener = (request: AuthorizationRequest, response: AuthorizationResponse | null, error: AuthorizationError | null) => void;
+export declare type AuthorizationListener = (request: AuthorizationRequest | undefined, response: AuthorizationResponse | null, error: AuthorizationError | null) => void;
 /**
  * Represents a structural type holding both authorization request and response.
  */
@@ -26,7 +26,7 @@ export declare class AuthorizationNotifier {
     /**
      * The authorization complete callback.
      */
-    onAuthorizationComplete(request: AuthorizationRequest, response: AuthorizationResponse | null, error: AuthorizationError | null): void;
+    onAuthorizationComplete(request: AuthorizationRequest | undefined, response: AuthorizationResponse | null, error: AuthorizationError | null): void;
 }
 export declare const BUILT_IN_PARAMETERS: string[];
 /**

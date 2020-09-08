@@ -91,7 +91,7 @@ export class App {
 
   makeRefreshTokenRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest,
+      request: AuthorizationRequest|undefined,
       response: AuthorizationResponse) {
     
     let extras: StringMap|undefined = undefined;

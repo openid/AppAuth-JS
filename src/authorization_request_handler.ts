@@ -26,7 +26,7 @@ import {StringMap} from './types';
  * and an AuthorizationResponse as arguments.
  */
 export type AuthorizationListener =
-    (request: AuthorizationRequest,
+    (request: AuthorizationRequest|undefined,
      response: AuthorizationResponse|null,
      error: AuthorizationError|null) => void;
 
@@ -54,7 +54,7 @@ export class AuthorizationNotifier {
    * The authorization complete callback.
    */
   onAuthorizationComplete(
-      request: AuthorizationRequest,
+      request: AuthorizationRequest|undefined,
       response: AuthorizationResponse|null,
       error: AuthorizationError|null): void {
     if (this.listener) {
@@ -124,11 +124,24 @@ export abstract class AuthorizationRequestHandler {
           No delivery of result will be possible`)
     }
     return this.completeAuthorizationRequest().then(result => {
-      if (!result) {
+      let request = undefined;
+      let response = null;
+      let error = null;
+
+      if (result) {
+        request = result.request;
+        response = result.response;
+        error = result.error;
+      } else {
         log(`No result is available yet.`);
+        error = new AuthorizationError({
+          error: 'No result is available yet.',
+          error_description: 'No result is available yet.'
+        });
       }
-      if (result && this.notifier) {
-        this.notifier.onAuthorizationComplete(result.request, result.response, result.error);
+
+      if (this.notifier) {
+        this.notifier.onAuthorizationComplete(request, response, error);
       }
     });
   }
