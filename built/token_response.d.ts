@@ -12,6 +12,7 @@ export interface TokenResponseJson {
     token_type?: TokenType;
     expires_in?: string;
     refresh_token?: string;
+    refresh_expires_in?: string;
     scope?: string;
     id_token?: string;
     issued_at?: number;
@@ -44,12 +45,15 @@ export declare class TokenResponse {
     tokenType: TokenType;
     expiresIn: number | undefined;
     refreshToken: string | undefined;
+    refreshExpiresIn: number | undefined;
     scope: string | undefined;
     idToken: string | undefined;
     issuedAt: number;
     constructor(response: TokenResponseJson);
     toJson(): TokenResponseJson;
     isValid(buffer?: number): boolean;
+    isRefreshTokenValid(buffer?: number): boolean;
+    private isNotExpired;
 }
 /**
  * Represents the Token Error type.

@@ -27,6 +27,7 @@ export interface TokenResponseJson {
   token_type?: TokenType; /* treating token type as optional, as its going to be inferred. */
   expires_in?: string;    /* lifetime in seconds. */
   refresh_token?: string;
+  refresh_expires_in?: string; /* lifetime in seconds. */
   scope?: string;
   id_token?: string;  /* https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse */
   issued_at?: number; /* when was it issued ? */
@@ -67,6 +68,7 @@ export class TokenResponse {
   tokenType: TokenType;
   expiresIn: number|undefined;
   refreshToken: string|undefined;
+  refreshExpiresIn: number|undefined;
   scope: string|undefined;
   idToken: string|undefined;
   issuedAt: number;
@@ -78,6 +80,9 @@ export class TokenResponse {
       this.expiresIn = parseInt(response.expires_in, 10);
     }
     this.refreshToken = response.refresh_token;
+    if (response.refresh_expires_in) {
+      this.refreshExpiresIn = parseInt(response.refresh_expires_in, 10);
+    }
     this.scope = response.scope;
     this.idToken = response.id_token;
     this.issuedAt = response.issued_at || nowInSeconds();
@@ -91,14 +96,23 @@ export class TokenResponse {
       scope: this.scope,
       token_type: this.tokenType,
       issued_at: this.issuedAt,
-      expires_in: this.expiresIn?.toString()
+      expires_in: this.expiresIn?.toString(),
+      refresh_expires_in: this.refreshExpiresIn?.toString()
     };
   }
 
   isValid(buffer: number = AUTH_EXPIRY_BUFFER): boolean {
-    if (this.expiresIn) {
+    return this.isNotExpired(this.expiresIn, buffer);
+  }
+
+  isRefreshTokenValid(buffer: number = AUTH_EXPIRY_BUFFER): boolean {
+    return this.isNotExpired(this.refreshExpiresIn, buffer);
+  }
+
+  private isNotExpired(expiresIn: number|undefined, buffer: number = AUTH_EXPIRY_BUFFER): boolean {
+    if (expiresIn) {
       let now = nowInSeconds();
-      return now < this.issuedAt + this.expiresIn + buffer;
+      return now < this.issuedAt + expiresIn + buffer;
     } else {
       return true;
     }

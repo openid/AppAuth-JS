@@ -17,6 +17,7 @@ import {TokenError, TokenResponse} from './token_response';
 describe('Token Response tests', () => {
   const accessToken = 'accessToken';
   const idToken = 'idToken';
+  const refreshToken = 'refreshToken';
 
   it('Basic Token Response Tests', () => {
     let response = new TokenResponse({access_token: accessToken});
@@ -48,6 +49,29 @@ describe('Token Response tests', () => {
     expect(response.issuedAt).toBeTruthy();
     expect(response.isValid(0)).toBe(false);
     expect(response.refreshToken).toBeFalsy();
+    expect(response.scope).toBeFalsy();
+  });
+
+  it('Test response refresh token validity', () => {
+    let response = new TokenResponse({
+      access_token: accessToken,
+      token_type: 'bearer',
+      expires_in: '300',
+      refresh_token: refreshToken,
+      refresh_expires_in: '1800',
+      scope: undefined,
+      id_token: idToken,
+      issued_at: 1
+    });
+
+    expect(response).not.toBeNull();
+    expect(response.accessToken).toBe(accessToken);
+    expect(response.idToken).toBe(idToken);
+    expect(response.tokenType).toBe('bearer');
+    expect(response.issuedAt).toBeTruthy();
+    expect(response.isValid(0)).toBe(false);
+    expect(response.refreshToken).toBe(refreshToken);
+    expect(response.isRefreshTokenValid(0)).toBe(false);
     expect(response.scope).toBeFalsy();
   });
 
