@@ -90,11 +90,9 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
       } as AuthorizationRequestResponse;
       emitter.emit(ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE, completeResponse);
       if(options && options.redirectUri) {
-        // var html = '<html><head><script>window.location.replace("https://test.bandlab.com/404")</script></head></html>';
         response.writeHead(302, {
             'Location': options.redirectUri
         });
-        // response.write(html);
         response.end();
       } else {
           response.end('Close your browser to continue');
