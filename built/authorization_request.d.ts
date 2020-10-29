@@ -13,6 +13,12 @@ export interface AuthorizationRequestJson {
     internal?: StringMap;
 }
 /**
+ * Represents additional options for AuthorizationRequest.
+ */
+export interface AuthorizationRequestOptions {
+    redirectUri: string;
+}
+/**
  * Represents the AuthorizationRequest.
  * For more information look at
  * https://tools.ietf.org/html/rfc6749#section-4.1.1

@@ -30,6 +30,13 @@ export interface AuthorizationRequestJson {
 }
 
 /**
+ * Represents additional options for AuthorizationRequest.
+ */
+export interface AuthorizationRequestOptions {
+  redirectUri: string;
+}
+
+/**
  * Generates a cryptographically random new state. Useful for CSRF protection.
  */
 const SIZE = 10;  // 10 bytes

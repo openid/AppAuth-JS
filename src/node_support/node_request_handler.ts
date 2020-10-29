@@ -15,7 +15,7 @@
 import {EventEmitter} from 'events';
 import * as Http from 'http';
 import * as Url from 'url';
-import {AuthorizationRequest} from '../authorization_request';
+import {AuthorizationRequest, AuthorizationRequestOptions} from '../authorization_request';
 import {AuthorizationRequestHandler, AuthorizationRequestResponse} from '../authorization_request_handler';
 import {AuthorizationError, AuthorizationResponse} from '../authorization_response';
 import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
@@ -47,7 +47,8 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
 
   performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest) {
+      request: AuthorizationRequest,
+      options?: AuthorizationRequestOptions) {
     // use opener to launch a web browser and start the authorization flow.
     // start a web server to handle the authorization response.
     const emitter = new ServerEventsEmitter();
@@ -88,7 +89,16 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         error: authorizationError
       } as AuthorizationRequestResponse;
       emitter.emit(ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE, completeResponse);
-      response.end('Close your browser to continue');
+      if(options && options.redirectUri) {
+        // var html = '<html><head><script>window.location.replace("https://test.bandlab.com/404")</script></head></html>';
+        response.writeHead(302, {
+            'Location': options.redirectUri
+        });
+        // response.write(html);
+        response.end();
+      } else {
+          response.end('Close your browser to continue');
+      }
     };
 
     this.authorizationPromise = new Promise<AuthorizationRequestResponse>((resolve, reject) => {
