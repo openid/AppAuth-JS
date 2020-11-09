@@ -89,10 +89,14 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         error: authorizationError
       } as AuthorizationRequestResponse;
       emitter.emit(ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE, completeResponse);
-      if(options && options.redirectUri) {
-        response.writeHead(302, {
+      if(options && (options.redirectPage || options.redirectUri)) {
+        if(options.redirectPage) {
+          response.write(options.redirectPage);
+        } else if(options.redirectUri) {
+          response.writeHead(302, {
             'Location': options.redirectUri
-        });
+          });
+        }
         response.end();
       } else {
           response.end('Close your browser to continue');
