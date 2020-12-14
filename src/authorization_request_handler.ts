@@ -90,6 +90,9 @@ export abstract class AuthorizationRequestHandler {
       'redirect_uri': request.redirectUri,
       'client_id': request.clientId,
       'response_type': request.responseType,
+      // Only 'fragment' response_mode is supported, as query strings tend to up in Referer headers.
+      // See: https://github.com/openid/AppAuth-JS/issues/137
+      'response_mode': 'fragment',
       'state': request.state,
       'scope': request.scope
     };
