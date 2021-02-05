@@ -23,17 +23,23 @@ import {Requestor} from '../xhr';
 const https = require('follow-redirects').https;
 const http = require('follow-redirects').http;
 
+let options: any;
 /**
  * A Node.js HTTP client.
  */
 export class NodeRequestor extends Requestor {
+
+  public SetCustomOptions(customOptions:any){
+    Object.assign(options, customOptions);
+  }
+
   xhr<T>(settings: JQueryAjaxSettings): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       // implementing a subset that is required.
       const url = Url.parse(settings.url!);
       const data = settings.data;
 
-      const options = {
+      options = {
         hostname: url.hostname,
         port: url.port,
         path: url.path,
