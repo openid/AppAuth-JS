@@ -28,7 +28,7 @@
     "compile": "node_modules/.bin/tsc",
     "prepare": "npm run-script --silent build-app",
     "format": "node_modules/.bin/clang-format -i -style=file --glob=src/**.ts",
-    "clean": "rm -rf built",
+    "clean": "node -e \"require('recursive-fs').rmdirr(require('path').resolve('built'), ()=>{})\"",
     "pretest": "npm run-script --silent compile",
     "test": "node_modules/.bin/karma start karma.conf --browsers=Chrome --single-run=false --debug",
     "pregzipSize": "npm run-script --silent minify",
@@ -58,6 +58,7 @@
     "karma-browserify": "^7.0.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-jasmine": "^4.0.1",
+    "recursive-fs": "^2.1.0",
     "typescript": "^4.0.2",
     "watchify": "^3.11.1"
   },
