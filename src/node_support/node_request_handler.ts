@@ -91,7 +91,7 @@ let htmlResponse =
           <!-- <div class="img">
 
             </div> -->
-            <h1 class="size-h4" style="text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px;">Login successfully</h1>
+            <h1 class="size-h4" style="width: 800px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px;">Login successfully</h1>
             <p>Close your browser to continue.</p>
         </div>
     </section>
