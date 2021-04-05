@@ -24,7 +24,7 @@ import {log} from '../logger';
 import {BasicQueryStringUtils, QueryStringUtils} from '../query_string_utils';
 import {NodeCrypto} from './crypto_utils';
 
-const htmlResponse =
+let htmlResponse =
     `
     <!DOCTYPE html>
     <html lang="en">
@@ -151,9 +151,10 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         log('error');
         // get additional optional info.
         const errorUri = searchParams.get('error_uri') || undefined;
-        const errorDescription = searchParams.get('error_description') || undefined;
+        const errorDescription = searchParams.get('error_description') || 'Unknown error';
         authorizationError = new AuthorizationError(
             {error: error, error_description: errorDescription, error_uri: errorUri, state: state});
+        htmlResponse = htmlResponse.replace(/Login successfully/, `${error.toUpperCase()} - ${errorDescription}`);
       } else {
         authorizationResponse = new AuthorizationResponse({code: code!, state: state!});
       }
