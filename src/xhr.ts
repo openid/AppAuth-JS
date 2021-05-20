@@ -85,7 +85,7 @@ export class FetchRequestor extends Requestor {
       requestInit.headers['Accept'] = 'application/json, text/javascript, */*; q=0.01';
     }
 
-    return fetch(url.toString(), requestInit).then(response => {
+    return fetch(url.toString(), requestInit).then(async response => {
       if (response.status >= 200 && response.status < 300) {
         const contentType = response.headers.get('content-type');
         if (isJsonDataType || (contentType && contentType.indexOf('application/json') !== -1)) {
@@ -94,7 +94,13 @@ export class FetchRequestor extends Requestor {
           return response.text();
         }
       } else {
-        return Promise.reject(new AppAuthError(response.status.toString(), response.statusText));
+        // Extract the response's body if possible as usually contains useful error info
+        let body = '';
+        try {
+            body = await response.text();
+            body = JSON.parse(body);
+        } catch {}
+        return Promise.reject(new AppAuthError(`${response.status} ${response.statusText}`, body));
       }
     });
   }
