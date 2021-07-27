@@ -70,7 +70,22 @@ export class AuthorizationServiceConfiguration {
 
   static fetchFromIssuer(openIdIssuerUrl: string, requestor?: Requestor):
       Promise<AuthorizationServiceConfiguration> {
-    const fullUrl = `${openIdIssuerUrl}/${WELL_KNOWN_PATH}/${OPENID_CONFIGURATION}`;
+    const searchForQueryParams = function(url: string) {
+      let result;
+      let queryOr: any = url.split('/');
+      let query = queryOr[queryOr.length - 1].split('?');
+      if (query.length > 1) {
+        queryOr.splice(queryOr.length - 1, 1);
+        queryOr = queryOr.join('/');
+        result = [queryOr, `?${query[query.lenght - 1]}`];
+      } else {
+        result = [url, ''];
+      }
+
+      return result;
+    };
+    const newUrl = searchForQueryParams(openIdIssuerUrl);
+    const fullUrl = `${newUrl[0]}/${WELL_KNOWN_PATH}/${OPENID_CONFIGURATION}${newUrl[1]}`;
 
     const requestorToUse = requestor || new JQueryRequestor();
 
