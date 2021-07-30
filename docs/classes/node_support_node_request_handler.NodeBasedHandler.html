@@ -1,0 +1,505 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>NodeBasedHandler | @openid/appauth</title>
+	<meta name="description" content="Documentation for @openid/appauth">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">@openid/appauth</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">@openid/appauth</a>
+				</li>
+				<li>
+					<a href="../modules/node_support_node_request_handler.html">node_support/node_request_handler</a>
+				</li>
+				<li>
+					<a href="node_support_node_request_handler.NodeBasedHandler.html">NodeBasedHandler</a>
+				</li>
+			</ul>
+			<h1>Class NodeBasedHandler</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="authorization_request_handler.AuthorizationRequestHandler.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationRequestHandler</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">NodeBasedHandler</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="node_support_node_request_handler.NodeBasedHandler.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="node_support_node_request_handler.NodeBasedHandler.html#authorizationPromise" class="tsd-kind-icon">authorization<wbr>Promise</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="node_support_node_request_handler.NodeBasedHandler.html#crypto" class="tsd-kind-icon">crypto</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="node_support_node_request_handler.NodeBasedHandler.html#httpServerPort" class="tsd-kind-icon">http<wbr>Server<wbr>Port</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="node_support_node_request_handler.NodeBasedHandler.html#notifier" class="tsd-kind-icon">notifier</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="node_support_node_request_handler.NodeBasedHandler.html#utils" class="tsd-kind-icon">utils</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="node_support_node_request_handler.NodeBasedHandler.html#buildRequestUrl" class="tsd-kind-icon">build<wbr>Request<wbr>Url</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="node_support_node_request_handler.NodeBasedHandler.html#completeAuthorizationRequest" class="tsd-kind-icon">complete<wbr>Authorization<wbr>Request</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="node_support_node_request_handler.NodeBasedHandler.html#completeAuthorizationRequestIfPossible" class="tsd-kind-icon">complete<wbr>Authorization<wbr>Request<wbr>IfPossible</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="node_support_node_request_handler.NodeBasedHandler.html#performAuthorizationRequest" class="tsd-kind-icon">perform<wbr>Authorization<wbr>Request</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="node_support_node_request_handler.NodeBasedHandler.html#setAuthorizationNotifier" class="tsd-kind-icon">set<wbr>Authorization<wbr>Notifier</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Node<wbr>Based<wbr>Handler<span class="tsd-signature-symbol">(</span>httpServerPort<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, utils<span class="tsd-signature-symbol">?: </span><a href="../interfaces/query_string_utils.QueryStringUtils.html" class="tsd-signature-type" data-tsd-kind="Interface">QueryStringUtils</a>, crypto<span class="tsd-signature-symbol">?: </span><a href="../interfaces/crypto_utils.Crypto.html" class="tsd-signature-type" data-tsd-kind="Interface">Crypto</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="node_support_node_request_handler.NodeBasedHandler.html" class="tsd-signature-type" data-tsd-kind="Class">NodeBasedHandler</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="authorization_request_handler.AuthorizationRequestHandler.html">AuthorizationRequestHandler</a>.<a href="authorization_request_handler.AuthorizationRequestHandler.html#constructor">constructor</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/node_support/node_request_handler.ts#L40">node_support/node_request_handler.ts:40</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>httpServerPort: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 8000</span></h5>
+								</li>
+								<li>
+									<h5>utils: <a href="../interfaces/query_string_utils.QueryStringUtils.html" class="tsd-signature-type" data-tsd-kind="Interface">QueryStringUtils</a><span class="tsd-signature-symbol"> = ...</span></h5>
+								</li>
+								<li>
+									<h5>crypto: <a href="../interfaces/crypto_utils.Crypto.html" class="tsd-signature-type" data-tsd-kind="Interface">Crypto</a><span class="tsd-signature-symbol"> = ...</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="node_support_node_request_handler.NodeBasedHandler.html" class="tsd-signature-type" data-tsd-kind="Class">NodeBasedHandler</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="authorizationPromise" class="tsd-anchor"></a>
+					<h3>authorization<wbr>Promise</h3>
+					<div class="tsd-signature tsd-kind-icon">authorization<wbr>Promise<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/authorization_request_handler.AuthorizationRequestResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthorizationRequestResponse</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = null</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/node_support/node_request_handler.ts#L38">node_support/node_request_handler.ts:38</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="crypto" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> crypto</h3>
+					<div class="tsd-signature tsd-kind-icon">crypto<span class="tsd-signature-symbol">:</span> <a href="../interfaces/crypto_utils.Crypto.html" class="tsd-signature-type" data-tsd-kind="Interface">Crypto</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="authorization_request_handler.AuthorizationRequestHandler.html">AuthorizationRequestHandler</a>.<a href="authorization_request_handler.AuthorizationRequestHandler.html#crypto">crypto</a></p>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="httpServerPort" class="tsd-anchor"></a>
+					<h3>http<wbr>Server<wbr>Port</h3>
+					<div class="tsd-signature tsd-kind-icon">http<wbr>Server<wbr>Port<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 8000</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="notifier" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> notifier</h3>
+					<div class="tsd-signature tsd-kind-icon">notifier<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="authorization_request_handler.AuthorizationNotifier.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationNotifier</a><span class="tsd-signature-symbol"> = null</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="authorization_request_handler.AuthorizationRequestHandler.html">AuthorizationRequestHandler</a>.<a href="authorization_request_handler.AuthorizationRequestHandler.html#notifier">notifier</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/authorization_request_handler.ts#L79">authorization_request_handler.ts:79</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="utils" class="tsd-anchor"></a>
+					<h3>utils</h3>
+					<div class="tsd-signature tsd-kind-icon">utils<span class="tsd-signature-symbol">:</span> <a href="../interfaces/query_string_utils.QueryStringUtils.html" class="tsd-signature-type" data-tsd-kind="Interface">QueryStringUtils</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="authorization_request_handler.AuthorizationRequestHandler.html">AuthorizationRequestHandler</a>.<a href="authorization_request_handler.AuthorizationRequestHandler.html#utils">utils</a></p>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="buildRequestUrl" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> build<wbr>Request<wbr>Url</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Request<wbr>Url<span class="tsd-signature-symbol">(</span>configuration<span class="tsd-signature-symbol">: </span><a href="authorization_service_configuration.AuthorizationServiceConfiguration.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationServiceConfiguration</a>, request<span class="tsd-signature-symbol">: </span><a href="authorization_request.AuthorizationRequest.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationRequest</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="authorization_request_handler.AuthorizationRequestHandler.html">AuthorizationRequestHandler</a>.<a href="authorization_request_handler.AuthorizationRequestHandler.html#buildRequestUrl">buildRequestUrl</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/authorization_request_handler.ts#L84">authorization_request_handler.ts:84</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A utility method to be able to build the authorization request URL.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>configuration: <a href="authorization_service_configuration.AuthorizationServiceConfiguration.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationServiceConfiguration</a></h5>
+								</li>
+								<li>
+									<h5>request: <a href="authorization_request.AuthorizationRequest.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationRequest</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+					<a name="completeAuthorizationRequest" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> complete<wbr>Authorization<wbr>Request</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">complete<wbr>Authorization<wbr>Request<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/authorization_request_handler.AuthorizationRequestResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthorizationRequestResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="authorization_request_handler.AuthorizationRequestHandler.html">AuthorizationRequestHandler</a>.<a href="authorization_request_handler.AuthorizationRequestHandler.html#completeAuthorizationRequest">completeAuthorizationRequest</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/node_support/node_request_handler.ts#L122">node_support/node_request_handler.ts:122</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Checks if an authorization flow can be completed, and completes it.
+										The handler returns a <code>Promise&lt;AuthorizationRequestResponse&gt;</code> if ready, or a <code>Promise&lt;null&gt;</code>
+									if not ready.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/authorization_request_handler.AuthorizationRequestResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthorizationRequestResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="completeAuthorizationRequestIfPossible" class="tsd-anchor"></a>
+					<h3>complete<wbr>Authorization<wbr>Request<wbr>IfPossible</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">complete<wbr>Authorization<wbr>Request<wbr>IfPossible<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="authorization_request_handler.AuthorizationRequestHandler.html">AuthorizationRequestHandler</a>.<a href="authorization_request_handler.AuthorizationRequestHandler.html#completeAuthorizationRequestIfPossible">completeAuthorizationRequestIfPossible</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/authorization_request_handler.ts#L118">authorization_request_handler.ts:118</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Completes the authorization request if necessary &amp; when possible.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<a name="performAuthorizationRequest" class="tsd-anchor"></a>
+					<h3>perform<wbr>Authorization<wbr>Request</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">perform<wbr>Authorization<wbr>Request<span class="tsd-signature-symbol">(</span>configuration<span class="tsd-signature-symbol">: </span><a href="authorization_service_configuration.AuthorizationServiceConfiguration.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationServiceConfiguration</a>, request<span class="tsd-signature-symbol">: </span><a href="authorization_request.AuthorizationRequest.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationRequest</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="authorization_request_handler.AuthorizationRequestHandler.html">AuthorizationRequestHandler</a>.<a href="authorization_request_handler.AuthorizationRequestHandler.html#performAuthorizationRequest">performAuthorizationRequest</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/node_support/node_request_handler.ts#L48">node_support/node_request_handler.ts:48</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Makes an authorization request.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>configuration: <a href="authorization_service_configuration.AuthorizationServiceConfiguration.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationServiceConfiguration</a></h5>
+								</li>
+								<li>
+									<h5>request: <a href="authorization_request.AuthorizationRequest.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationRequest</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="setAuthorizationNotifier" class="tsd-anchor"></a>
+					<h3>set<wbr>Authorization<wbr>Notifier</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Authorization<wbr>Notifier<span class="tsd-signature-symbol">(</span>notifier<span class="tsd-signature-symbol">: </span><a href="authorization_request_handler.AuthorizationNotifier.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationNotifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="authorization_request_handler.AuthorizationRequestHandler.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationRequestHandler</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="authorization_request_handler.AuthorizationRequestHandler.html">AuthorizationRequestHandler</a>.<a href="authorization_request_handler.AuthorizationRequestHandler.html#setAuthorizationNotifier">setAuthorizationNotifier</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/authorization_request_handler.ts#L139">authorization_request_handler.ts:139</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the default Authorization Service notifier.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>notifier: <a href="authorization_request_handler.AuthorizationNotifier.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationNotifier</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="authorization_request_handler.AuthorizationRequestHandler.html" class="tsd-signature-type" data-tsd-kind="Class">AuthorizationRequestHandler</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Modules</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/app.html">app</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/authorization_request.html">authorization_<wbr>request</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/authorization_request_handler.html">authorization_<wbr>request_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/authorization_response.html">authorization_<wbr>response</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/authorization_service_configuration.html">authorization_<wbr>service_<wbr>configuration</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/crypto_utils.html">crypto_<wbr>utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/errors.html">errors</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/flags.html">flags</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/index.html">index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/logger.html">logger</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/node_app.html">node_<wbr>app</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/node_support.html">node_<wbr>support</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/node_support_crypto_utils.html">node_<wbr>support/crypto_<wbr>utils</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/node_support_node_request_handler.html">node_<wbr>support/node_<wbr>request_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/node_support_node_requestor.html">node_<wbr>support/node_<wbr>requestor</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/query_string_utils.html">query_<wbr>string_<wbr>utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/redirect_based_handler.html">redirect_<wbr>based_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/revoke_token_request.html">revoke_<wbr>token_<wbr>request</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/storage.html">storage</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/token_request.html">token_<wbr>request</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/token_request_handler.html">token_<wbr>request_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/token_response.html">token_<wbr>response</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/types.html">types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/xhr.html">xhr</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="node_support_node_request_handler.NodeBasedHandler.html" class="tsd-kind-icon">Node<wbr>Based<wbr>Handler</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#authorizationPromise" class="tsd-kind-icon">authorization<wbr>Promise</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#crypto" class="tsd-kind-icon">crypto</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#httpServerPort" class="tsd-kind-icon">http<wbr>Server<wbr>Port</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#notifier" class="tsd-kind-icon">notifier</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#utils" class="tsd-kind-icon">utils</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#buildRequestUrl" class="tsd-kind-icon">build<wbr>Request<wbr>Url</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#completeAuthorizationRequest" class="tsd-kind-icon">complete<wbr>Authorization<wbr>Request</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#completeAuthorizationRequestIfPossible" class="tsd-kind-icon">complete<wbr>Authorization<wbr>Request<wbr>IfPossible</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#performAuthorizationRequest" class="tsd-kind-icon">perform<wbr>Authorization<wbr>Request</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="node_support_node_request_handler.NodeBasedHandler.html#setAuthorizationNotifier" class="tsd-kind-icon">set<wbr>Authorization<wbr>Notifier</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

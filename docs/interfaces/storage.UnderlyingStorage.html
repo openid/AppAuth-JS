@@ -1,0 +1,360 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>UnderlyingStorage | @openid/appauth</title>
+	<meta name="description" content="Documentation for @openid/appauth">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">@openid/appauth</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">@openid/appauth</a>
+				</li>
+				<li>
+					<a href="../modules/storage.html">storage</a>
+				</li>
+				<li>
+					<a href="storage.UnderlyingStorage.html">UnderlyingStorage</a>
+				</li>
+			</ul>
+			<h1>Interface UnderlyingStorage</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A subset of the <code>Storage</code> interface which we need for the backends to work.</p>
+					</div>
+					<p>Essentially removes the indexable properties and readonly properties from
+						<code>Storage</code> in lib.dom.d.ts. This is so that a custom type can extend it for
+					testing.</p>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">UnderlyingStorage</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storage.UnderlyingStorage.html#length" class="tsd-kind-icon">length</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storage.UnderlyingStorage.html#clear" class="tsd-kind-icon">clear</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storage.UnderlyingStorage.html#getItem" class="tsd-kind-icon">get<wbr>Item</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storage.UnderlyingStorage.html#removeItem" class="tsd-kind-icon">remove<wbr>Item</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storage.UnderlyingStorage.html#setItem" class="tsd-kind-icon">set<wbr>Item</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="length" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> length</h3>
+					<div class="tsd-signature tsd-kind-icon">length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/storage.ts#L23">storage.ts:23</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="clear" class="tsd-anchor"></a>
+					<h3>clear</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">clear<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/storage.ts#L24">storage.ts:24</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="getItem" class="tsd-anchor"></a>
+					<h3>get<wbr>Item</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Item<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/storage.ts#L25">storage.ts:25</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="removeItem" class="tsd-anchor"></a>
+					<h3>remove<wbr>Item</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Item<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/storage.ts#L26">storage.ts:26</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="setItem" class="tsd-anchor"></a>
+					<h3>set<wbr>Item</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Item<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/shadow-light/AppAuth-JS/blob/c30f85e/src/storage.ts#L27">storage.ts:27</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>data: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Modules</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/app.html">app</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/authorization_request.html">authorization_<wbr>request</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/authorization_request_handler.html">authorization_<wbr>request_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/authorization_response.html">authorization_<wbr>response</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/authorization_service_configuration.html">authorization_<wbr>service_<wbr>configuration</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/crypto_utils.html">crypto_<wbr>utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/errors.html">errors</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/flags.html">flags</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/index.html">index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/logger.html">logger</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/node_app.html">node_<wbr>app</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/node_support.html">node_<wbr>support</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/node_support_crypto_utils.html">node_<wbr>support/crypto_<wbr>utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/node_support_node_request_handler.html">node_<wbr>support/node_<wbr>request_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/node_support_node_requestor.html">node_<wbr>support/node_<wbr>requestor</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/query_string_utils.html">query_<wbr>string_<wbr>utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/redirect_based_handler.html">redirect_<wbr>based_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/revoke_token_request.html">revoke_<wbr>token_<wbr>request</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/storage.html">storage</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/token_request.html">token_<wbr>request</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/token_request_handler.html">token_<wbr>request_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/token_response.html">token_<wbr>response</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/types.html">types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/xhr.html">xhr</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/storage.LocalStorageBackend.html" class="tsd-kind-icon">Local<wbr>Storage<wbr>Backend</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/storage.StorageBackend.html" class="tsd-kind-icon">Storage<wbr>Backend</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
+						<a href="storage.UnderlyingStorage.html" class="tsd-kind-icon">Underlying<wbr>Storage</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="storage.UnderlyingStorage.html#length" class="tsd-kind-icon">length</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="storage.UnderlyingStorage.html#clear" class="tsd-kind-icon">clear</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="storage.UnderlyingStorage.html#getItem" class="tsd-kind-icon">get<wbr>Item</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="storage.UnderlyingStorage.html#removeItem" class="tsd-kind-icon">remove<wbr>Item</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="storage.UnderlyingStorage.html#setItem" class="tsd-kind-icon">set<wbr>Item</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
