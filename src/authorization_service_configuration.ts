@@ -72,12 +72,12 @@ export class AuthorizationServiceConfiguration {
       Promise<AuthorizationServiceConfiguration> {
     const searchForQueryParams = function(url: string) {
       let result;
-      let queryOr: any = url.split('/');
-      let query = queryOr[queryOr.length - 1].split('?');
-      if (query.length > 1) {
-        queryOr.splice(queryOr.length - 1, 1);
-        queryOr = queryOr.join('/');
-        result = [queryOr, `?${query[query.lenght - 1]}`];
+      let originalUrl: any = url.split('/');
+      let queryParams = originalUrl[originalUrl.length - 1].split('?');
+      if (queryParams.length > 1) {
+        originalUrl.splice(originalUrl.length - 1, 1);
+        originalUrl = originalUrl.join('/');
+        result = [originalUrl, `?${queryParams[queryParams.lenght - 1]}`];
       } else {
         result = [url, ''];
       }
