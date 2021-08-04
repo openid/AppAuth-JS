@@ -4,10 +4,7 @@
   "description": "A general purpose OAuth client.",
   "author": "The OpenID Foundation",
   "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/coicoronado/ionic-appauth.git"
-  },
+  "repository": "openid/AppAuth-JS",
   "bugs": {
     "url": "https://github.com/openid/AppAuth-JS/issues"
   },
