@@ -12,6 +12,7 @@
  * limitations under the License.
  */
 
+import {AuthorizationManagementRequest} from './authorization_management_request'
 import {Crypto, DefaultCrypto} from './crypto_utils';
 import {log} from './logger';
 import {StringMap} from './types';
@@ -42,7 +43,7 @@ const newState = function(crypto: Crypto): string {
  * For more information look at
  * https://tools.ietf.org/html/rfc6749#section-4.1.1
  */
-export class AuthorizationRequest {
+export class AuthorizationRequest extends AuthorizationManagementRequest {
   static RESPONSE_TYPE_TOKEN = 'token';
   static RESPONSE_TYPE_CODE = 'code';
 
@@ -66,6 +67,7 @@ export class AuthorizationRequest {
       request: AuthorizationRequestJson,
       private crypto: Crypto = new DefaultCrypto(),
       private usePkce: boolean = true) {
+    super();
     this.clientId = request.client_id;
     this.redirectUri = request.redirect_uri;
     this.scope = request.scope;
