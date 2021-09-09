@@ -12,6 +12,8 @@
  * limitations under the License.
  */
 
+import {StringMap} from "./types";
+
 export abstract class AuthorizationManagementRequest {
   public abstract state: string;
 
@@ -19,4 +21,6 @@ export abstract class AuthorizationManagementRequest {
    * Serializes the request object to a JavaScript object
    */
   public abstract toJson(): Promise<object>;
+
+  public abstract toRequestMap(): StringMap;
 }

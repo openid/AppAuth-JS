@@ -12,10 +12,16 @@
  * limitations under the License.
  */
 
-import {AuthorizationManagementRequest} from './authorization_management_request'
+import {AuthorizationManagementRequest} from './authorization_management_request';
 import {Crypto, DefaultCrypto} from './crypto_utils';
 import {log} from './logger';
 import {StringMap} from './types';
+
+
+
+// TODO(rahulrav@): add more built in parameters.
+/* built in parameters. */
+export const BUILT_IN_PARAMETERS = ['redirect_uri', 'client_id', 'response_type', 'state', 'scope'];
 
 /**
  * Represents an AuthorizationRequest as JSON.
@@ -33,7 +39,7 @@ export interface AuthorizationRequestJson {
 /**
  * Generates a cryptographically random new state. Useful for CSRF protection.
  */
-const SIZE = 10;  // 10 bytes
+const SIZE = 10; // 10 bytes
 const newState = function(crypto: Crypto): string {
   return crypto.generateRandom(SIZE);
 };
@@ -64,9 +70,9 @@ export class AuthorizationRequest extends AuthorizationManagementRequest {
    * state for CSRF protection.
    */
   constructor(
-      request: AuthorizationRequestJson,
-      private crypto: Crypto = new DefaultCrypto(),
-      private usePkce: boolean = true) {
+    request: AuthorizationRequestJson,
+    private crypto: Crypto = new DefaultCrypto(),
+    private usePkce: boolean = true) {
     super();
     this.clientId = request.client_id;
     this.redirectUri = request.redirect_uri;
@@ -85,9 +91,9 @@ export class AuthorizationRequest extends AuthorizationManagementRequest {
       const codeVerifier = this.crypto.generateRandom(128);
       const challenge: Promise<string|undefined> =
           this.crypto.deriveChallenge(codeVerifier).catch(error => {
-            log('Unable to generate PKCE challenge. Not using PKCE', error);
-            return undefined;
-          });
+        log('Unable to generate PKCE challenge. Not using PKCE', error);
+          return undefined;
+        });
       return challenge.then(result => {
         if (result) {
           // keep track of the code used.
@@ -118,5 +124,29 @@ export class AuthorizationRequest extends AuthorizationManagementRequest {
         internal: this.internal
       };
     });
+  }
+  toRequestMap(): StringMap {
+    // build the query string
+    // coerce to any type for convenience
+    let requestMap: StringMap = {
+      redirect_uri: this.redirectUri,
+      client_id: this.clientId,
+      response_type: this.responseType,
+      state: this.state,
+      scope: this.scope,
+    };
+
+    // copy over extras
+    if (this.extras) {
+      for (let extra in this.extras) {
+        if (this.extras.hasOwnProperty(extra)) {
+          // check before inserting to requestMap
+          if (BUILT_IN_PARAMETERS.indexOf(extra) < 0) {
+            requestMap[extra] = this.extras[extra];
+          }
+        }
+      }
+    }
+    return requestMap
   }
 }

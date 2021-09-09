@@ -12,8 +12,9 @@
  * limitations under the License.
  */
 
-import {AuthorizationRequest} from './authorization_request';
-import {AuthorizationError, AuthorizationResponse} from './authorization_response';
+import {AuthorizationManagementRequest} from './authorization_management_request';
+import {AuthorizationManagementResponse} from './authorization_management_response';
+import {AuthorizationError} from './authorization_management_response';
 import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
 import {Crypto} from './crypto_utils';
 import {log} from './logger';
@@ -26,16 +27,16 @@ import {StringMap} from './types';
  * and an AuthorizationResponse as arguments.
  */
 export type AuthorizationListener =
-    (request: AuthorizationRequest,
-     response: AuthorizationResponse|null,
+    (request: AuthorizationManagementRequest,
+     response: AuthorizationManagementResponse|null,
      error: AuthorizationError|null) => void;
 
 /**
  * Represents a structural type holding both authorization request and response.
  */
 export interface AuthorizationRequestResponse {
-  request: AuthorizationRequest;
-  response: AuthorizationResponse|null;
+  request: AuthorizationManagementRequest;
+  response: AuthorizationManagementResponse|null;
   error: AuthorizationError|null;
 }
 
@@ -54,8 +55,8 @@ export class AuthorizationNotifier {
    * The authorization complete callback.
    */
   onAuthorizationComplete(
-      request: AuthorizationRequest,
-      response: AuthorizationResponse|null,
+      request: AuthorizationManagementRequest,
+      response: AuthorizationManagementResponse|null,
       error: AuthorizationError|null): void {
     if (this.listener) {
       // complete authorization request
@@ -64,9 +65,6 @@ export class AuthorizationNotifier {
   }
 }
 
-// TODO(rahulrav@): add more built in parameters.
-/* built in parameters. */
-export const BUILT_IN_PARAMETERS = ['redirect_uri', 'client_id', 'response_type', 'state', 'scope'];
 
 /**
  * Defines the interface which is capable of handling an authorization request
@@ -83,29 +81,10 @@ export abstract class AuthorizationRequestHandler {
    */
   protected buildRequestUrl(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest) {
+      request: AuthorizationManagementRequest) {
     // build the query string
     // coerce to any type for convenience
-    let requestMap: StringMap = {
-      'redirect_uri': request.redirectUri,
-      'client_id': request.clientId,
-      'response_type': request.responseType,
-      'state': request.state,
-      'scope': request.scope
-    };
-
-    // copy over extras
-    if (request.extras) {
-      for (let extra in request.extras) {
-        if (request.extras.hasOwnProperty(extra)) {
-          // check before inserting to requestMap
-          if (BUILT_IN_PARAMETERS.indexOf(extra) < 0) {
-            requestMap[extra] = request.extras[extra];
-          }
-        }
-      }
-    }
-
+    let requestMap: StringMap = request.toRequestMap()
     let query = this.utils.stringify(requestMap);
     let baseUrl = configuration.authorizationEndpoint;
     let url = `${baseUrl}?${query}`;
@@ -146,7 +125,7 @@ export abstract class AuthorizationRequestHandler {
    */
   abstract performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest): void;
+      request: AuthorizationManagementRequest): void;
 
   /**
    * Checks if an authorization flow can be completed, and completes it.

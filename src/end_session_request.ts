@@ -34,6 +34,11 @@ const newState = function(crypto: Crypto): string {
   return crypto.generateRandom(SIZE);
 };
 
+// TODO(rahulrav@): add more built in parameters.
+/* built in parameters. */
+export const ENDSESSION_BUILT_IN_PARAMETERS =
+    ['id_token_hint', 'post_logout_redirect_uri', 'state'];
+
 /**
  * Represents the EndSessionRequest.
  * For more information look at
@@ -72,5 +77,28 @@ export class EndSessionRequest extends AuthorizationManagementRequest {
       state: this.state,
       extras: this.extras
     });
+  }
+
+  toRequestMap(): StringMap { 
+    // build the query string
+    // coerce to any type for convenience
+    let requestMap: StringMap = {
+      'id_token_hint': this.idTokenHint,
+      'post_logout_redirect_uri': this.postLogoutRedirectUri,
+      'state': this.state
+    };
+
+    // copy over extras
+    if (this.extras) {
+      for (let extra in this.extras) {
+        if (this.extras.hasOwnProperty(extra)) {
+          // check before inserting to requestMap
+          if (ENDSESSION_BUILT_IN_PARAMETERS.indexOf(extra) < 0) {
+            requestMap[extra] = this.extras[extra];
+          }
+        }
+      }
+    }
+    return requestMap;
   }
 }
