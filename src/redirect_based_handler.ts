@@ -12,10 +12,10 @@
  * limitations under the License.
  */
 
+import {AuthorizationError} from './authorization_management_response';
 import {AuthorizationRequest} from './authorization_request';
 import {AuthorizationRequestHandler, AuthorizationRequestResponse} from './authorization_request_handler';
 import {AuthorizationResponse} from './authorization_response'
-import {AuthorizationError} from './authorization_management_response';
 import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
 import {Crypto, DefaultCrypto} from './crypto_utils';
 import {log} from './logger';

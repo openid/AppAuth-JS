@@ -12,12 +12,12 @@
  * limitations under the License.
  */
 
+import {AuthorizationError} from './authorization_management_response';
+import {AuthorizationRequestHandler, AuthorizationRequestResponse} from './authorization_request_handler';
 import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
 import {Crypto, DefaultCrypto} from './crypto_utils';
 import {EndSessionRequest} from './end_session_request';
-import {AuthorizationRequestHandler, AuthorizationRequestResponse} from './authorization_request_handler';
 import {EndSessionResponse} from './end_session_response'
-import { AuthorizationError } from './authorization_management_response';
 import {log} from './logger';
 import {BasicQueryStringUtils} from './query_string_utils';
 import {LocalStorageBackend, StorageBackend} from './storage';

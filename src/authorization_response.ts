@@ -27,7 +27,7 @@ export interface AuthorizationResponseJson {
  * For more information look at
  * https://tools.ietf.org/html/rfc6749#section-4.1.2
  */
-export class AuthorizationResponse extends AuthorizationManagementResponse{
+export class AuthorizationResponse extends AuthorizationManagementResponse {
   code: string;
   state: string;
 

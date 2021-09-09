@@ -79,7 +79,7 @@ export class EndSessionRequest extends AuthorizationManagementRequest {
     });
   }
 
-  toRequestMap(): StringMap { 
+  toRequestMap(): StringMap {
     // build the query string
     // coerce to any type for convenience
     let requestMap: StringMap = {

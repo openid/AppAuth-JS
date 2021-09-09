@@ -17,7 +17,7 @@ import {AuthorizationManagementResponse} from './authorization_management_respon
 /**
  * Represents the EndSessionResponse as a JSON object.
  */
- export interface EndSessionResponseJson {
+export interface EndSessionResponseJson {
   state: string;
 }
 

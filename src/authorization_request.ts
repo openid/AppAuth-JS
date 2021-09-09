@@ -39,7 +39,7 @@ export interface AuthorizationRequestJson {
 /**
  * Generates a cryptographically random new state. Useful for CSRF protection.
  */
-const SIZE = 10; // 10 bytes
+const SIZE = 10;  // 10 bytes
 const newState = function(crypto: Crypto): string {
   return crypto.generateRandom(SIZE);
 };
@@ -70,9 +70,9 @@ export class AuthorizationRequest extends AuthorizationManagementRequest {
    * state for CSRF protection.
    */
   constructor(
-    request: AuthorizationRequestJson,
-    private crypto: Crypto = new DefaultCrypto(),
-    private usePkce: boolean = true) {
+      request: AuthorizationRequestJson,
+      private crypto: Crypto = new DefaultCrypto(),
+      private usePkce: boolean = true) {
     super();
     this.clientId = request.client_id;
     this.redirectUri = request.redirect_uri;
@@ -91,9 +91,9 @@ export class AuthorizationRequest extends AuthorizationManagementRequest {
       const codeVerifier = this.crypto.generateRandom(128);
       const challenge: Promise<string|undefined> =
           this.crypto.deriveChallenge(codeVerifier).catch(error => {
-        log('Unable to generate PKCE challenge. Not using PKCE', error);
-          return undefined;
-        });
+            log('Unable to generate PKCE challenge. Not using PKCE', error);
+            return undefined;
+          });
       return challenge.then(result => {
         if (result) {
           // keep track of the code used.

@@ -74,7 +74,7 @@ export class App {
     // set a listener to listen for authorization responses
     this.notifier.setAuthorizationListener((request, response, error) => {
       log('Authorization request complete ', request, response, error);
-      if (response) {
+      if (response && response instanceof AuthorizationResponse && request instanceof AuthorizationRequest) {
         this.request = request;
         this.response = response;
         this.code = response.code;
