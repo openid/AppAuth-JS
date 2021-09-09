@@ -15,3 +15,7 @@ export * from './token_request_handler';
 export * from './token_response';
 export * from './types';
 export * from './xhr';
+export * from './authorization_management_request';
+export * from './end_session_request';
+export * from './end_session_response';
+export * from './authorization_management_response';
