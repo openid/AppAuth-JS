@@ -1,5 +1,6 @@
-import { AuthorizationRequest } from './authorization_request';
-import { AuthorizationError, AuthorizationResponse } from './authorization_response';
+import { AuthorizationManagementRequest } from './authorization_management_request';
+import { AuthorizationManagementResponse } from './authorization_management_response';
+import { AuthorizationError } from './authorization_management_response';
 import { AuthorizationServiceConfiguration } from './authorization_service_configuration';
 import { Crypto } from './crypto_utils';
 import { QueryStringUtils } from './query_string_utils';
@@ -7,13 +8,13 @@ import { QueryStringUtils } from './query_string_utils';
  * This type represents a lambda that can take an AuthorizationRequest,
  * and an AuthorizationResponse as arguments.
  */
-export declare type AuthorizationListener = (request: AuthorizationRequest, response: AuthorizationResponse | null, error: AuthorizationError | null) => void;
+export declare type AuthorizationListener = (request: AuthorizationManagementRequest, response: AuthorizationManagementResponse | null, error: AuthorizationError | null) => void;
 /**
  * Represents a structural type holding both authorization request and response.
  */
 export interface AuthorizationRequestResponse {
-    request: AuthorizationRequest;
-    response: AuthorizationResponse | null;
+    request: AuthorizationManagementRequest;
+    response: AuthorizationManagementResponse | null;
     error: AuthorizationError | null;
 }
 /**
@@ -26,9 +27,8 @@ export declare class AuthorizationNotifier {
     /**
      * The authorization complete callback.
      */
-    onAuthorizationComplete(request: AuthorizationRequest, response: AuthorizationResponse | null, error: AuthorizationError | null): void;
+    onAuthorizationComplete(request: AuthorizationManagementRequest, response: AuthorizationManagementResponse | null, error: AuthorizationError | null): void;
 }
-export declare const BUILT_IN_PARAMETERS: string[];
 /**
  * Defines the interface which is capable of handling an authorization request
  * using various methods (iframe / popup / different process etc.).
@@ -41,7 +41,7 @@ export declare abstract class AuthorizationRequestHandler {
     /**
      * A utility method to be able to build the authorization request URL.
      */
-    protected buildRequestUrl(configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest): string;
+    protected buildRequestUrl(configuration: AuthorizationServiceConfiguration, request: AuthorizationManagementRequest): string;
     /**
      * Completes the authorization request if necessary & when possible.
      */
@@ -53,7 +53,7 @@ export declare abstract class AuthorizationRequestHandler {
     /**
      * Makes an authorization request.
      */
-    abstract performAuthorizationRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest): void;
+    abstract performAuthorizationRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationManagementRequest): void;
     /**
      * Checks if an authorization flow can be completed, and completes it.
      * The handler returns a `Promise<AuthorizationRequestResponse>` if ready, or a `Promise<null>`

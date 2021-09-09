@@ -24,6 +24,7 @@ import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_han
 import {TokenResponse} from '../token_response';
 import { AuthorizationResponse } from '../authorization_response';
 import { StringMap } from '../types';
+import { EndSessionRequest } from '../end_session_request';
 
 /* Some interface declarations for Material design lite. */
 
