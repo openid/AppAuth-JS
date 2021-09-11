@@ -24,28 +24,24 @@ import {EndSessionResponse} from './end_session_response';
 import {log} from './logger';
 import {BasicQueryStringUtils} from './query_string_utils';
 import {LocalStorageBackend, StorageBackend} from './storage';
-import {LocationLike} from './types';
+import {LocationLike, RedirectRequestTypes} from './types';
 
-
-enum RequestTypes {
-  endSession = 'end_session',
-  authorization = 'authorization'
-}
 
 /** key for authorization request. */
 const requestKey =
-    (handle: string, requestType: RequestTypes) => {
+    (handle: string, requestType: RedirectRequestTypes) => {
       return `${handle}_appauth_${requestType}_request`;
     }
 
 /** key for authorization service configuration */
 const serviceConfigurationKey =
-    (handle: string, requestType: RequestTypes) => {
+    (handle: string, requestType: RedirectRequestTypes) => {
       return `${handle}_appauth_${requestType}_service_configuration`;
     }
 
 /** key in local storage which represents the current authorization request. */
-const REQUEST_HANDLE_KEY = (requestType: RequestTypes) => `appauth_current_${requestType}_request`;
+const REQUEST_HANDLE_KEY = (requestType: RedirectRequestTypes) =>
+    `appauth_current_${requestType}_request`;
 
 /**
  * Represents an AuthorizationRequestHandler which uses a standard
@@ -66,19 +62,19 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
   performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
       request: AuthorizationRequest) {
-    this.performRequest(configuration, request, RequestTypes.authorization);
+    this.performRequest(configuration, request, RedirectRequestTypes.authorization);
   }
 
   performEndSessionRequest(
       configuration: AuthorizationServiceConfiguration,
       request: EndSessionRequest) {
-    this.performRequest(configuration, request, RequestTypes.endSession);
+    this.performRequest(configuration, request, RedirectRequestTypes.endSession);
   }
 
   private performRequest(
       configuration: AuthorizationServiceConfiguration,
       request: AuthorizationManagementRequest,
-      requestType: RequestTypes = RequestTypes.authorization) {
+      requestType: RedirectRequestTypes = RedirectRequestTypes.authorization) {
     const handle = this.crypto.generateRandom(10);
 
     // before you make request, persist all request related data in local storage.
@@ -94,7 +90,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
 
     persisted.then(() => {
       // make the redirect request
-      let url = this.buildRequestUrl(configuration, request);
+      let url = this.buildRequestUrl(configuration, request, requestType);
       log('Making a request to ', request, url);
       this.locationLike.assign(url);
     });
@@ -105,7 +101,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
    *  authorization request.
    */
   protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse|null> {
-    return this.completeRequest(RequestTypes.authorization);
+    return this.completeRequest(RedirectRequestTypes.authorization);
   }
 
   /**
@@ -113,14 +109,14 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
    * end session request.
    */
   protected completeEndSessionRequest(): Promise<AuthorizationRequestResponse|null> {
-    return this.completeRequest(RequestTypes.endSession);
+    return this.completeRequest(RedirectRequestTypes.endSession);
   }
 
   /**
    * Attempts to introspect the contents of storage backend and completes the
    * request.
    */
-  private completeRequest(requestType: RequestTypes) {
+  private completeRequest(requestType: RedirectRequestTypes) {
     // TODO(rahulrav@): handle authorization errors.
     return this.storageBackend.getItem(REQUEST_HANDLE_KEY(requestType)).then(handle => {
       if (handle) {
@@ -132,7 +128,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
             // TODO(rahulrav@): check for inconsistent state here
             .then(result => JSON.parse(result!))
             .then(
-                json => requestType === RequestTypes.authorization ?
+                json => requestType === RedirectRequestTypes.authorization ?
                     new AuthorizationRequest(json) :
                     new EndSessionRequest(json))
             .then(request => {
@@ -142,7 +138,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
               let state: string|undefined = queryParams['state'];
               let code: string|undefined = queryParams['code'];
               let error: string|undefined = queryParams['error'];
-              if (requestType === RequestTypes.authorization) {
+              if (requestType === RedirectRequestTypes.authorization) {
                 log('Potential authorization request ',
                     currentUri,
                     queryParams,
@@ -167,9 +163,9 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
                     state: state
                   });
                 } else {
-                  if (requestType === RequestTypes.authorization) {
+                  if (requestType === RedirectRequestTypes.authorization) {
                     authorizationResponse = new AuthorizationResponse({code: code, state: state});
-                  } else if (requestType === RequestTypes.endSession) {
+                  } else if (requestType === RedirectRequestTypes.endSession) {
                     authorizationResponse = new EndSessionResponse({state: state})
                   }
                 }
