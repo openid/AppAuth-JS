@@ -4,6 +4,7 @@ import { AuthorizationError } from './authorization_management_response';
 import { AuthorizationServiceConfiguration } from './authorization_service_configuration';
 import { Crypto } from './crypto_utils';
 import { QueryStringUtils } from './query_string_utils';
+import { RedirectRequestTypes } from './types';
 /**
  * This type represents a lambda that can take an AuthorizationRequest,
  * and an AuthorizationResponse as arguments.
@@ -41,11 +42,15 @@ export declare abstract class AuthorizationRequestHandler {
     /**
      * A utility method to be able to build the authorization request URL.
      */
-    protected buildRequestUrl(configuration: AuthorizationServiceConfiguration, request: AuthorizationManagementRequest): string;
+    protected buildRequestUrl(configuration: AuthorizationServiceConfiguration, request: AuthorizationManagementRequest, requestType: RedirectRequestTypes): string;
     /**
      * Completes the authorization request if necessary & when possible.
      */
     completeAuthorizationRequestIfPossible(): Promise<void>;
+    /**
+     * Completes the endsession request if necessary & when possible.
+     */
+    completeEndSessionRequestIfPossible(): Promise<void>;
     /**
      * Sets the default Authorization Service notifier.
      */
@@ -55,9 +60,19 @@ export declare abstract class AuthorizationRequestHandler {
      */
     abstract performAuthorizationRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationManagementRequest): void;
     /**
+     * Makes an end session request.
+     */
+    abstract performEndSessionRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationManagementRequest): void;
+    /**
      * Checks if an authorization flow can be completed, and completes it.
      * The handler returns a `Promise<AuthorizationRequestResponse>` if ready, or a `Promise<null>`
      * if not ready.
      */
     protected abstract completeAuthorizationRequest(): Promise<AuthorizationRequestResponse | null>;
+    /**
+     * Checks if an end session flow can be completed, and completes it.
+     * The handler returns a `Promise<AuthorizationRequestResponse>` if ready, or a `Promise<null>`
+     * if not ready.
+     */
+    protected abstract completeEndSessionRequest(): Promise<AuthorizationRequestResponse | null>;
 }
