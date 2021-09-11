@@ -131,8 +131,8 @@ this.notifier.setAuthorizationListener((request, response, error) => {
 
 // create a request
 const request = new EndSessionRequest({
-    id_token_hint: this.tokenResponse?.idToken,
-    post_logout_redirect_uri: settings.post_logout_redirect_uri,
+    id_token_hint: idToken,
+    post_logout_redirect_uri: post_logout_redirect_uri,
     state: undefined,
   })
 
