@@ -113,6 +113,33 @@ this.tokenHandler.performTokenRequest(this.configuration, request)
   });
 ```
 
+##### Make End Session Requests
+
+```typescript
+this.notifier = new AuthorizationNotifier();
+// uses a redirect flow
+this.authorizationHandler = new RedirectRequestHandler();
+// set notifier to deliver responses
+this.authorizationHandler.setAuthorizationNotifier(this.notifier);
+// set a listener to listen for authorization responses
+this.notifier.setAuthorizationListener((request, response, error) => {
+  log('End Session request complete ', request, response, error);
+  if (response && response instanceof EndSessionResponse) {
+    //do clean up
+  }
+});
+
+// create a request
+const request = new EndSessionRequest({
+    id_token_hint: this.tokenResponse?.idToken,
+    post_logout_redirect_uri: settings.post_logout_redirect_uri,
+    state: undefined,
+  })
+
+// make the end Session request
+this.authorizationHandler.performEndSessionRequest(this.configuration, request);
+```
+
 ### Development
 
 #### Preamble
