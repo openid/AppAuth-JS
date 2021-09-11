@@ -30,3 +30,8 @@ export interface LocationLike {
   search: string;
   assign(url: string): void;
 }
+
+export enum RedirectRequestTypes {
+  endSession = 'end_session',
+  authorization = 'authorization'
+}
