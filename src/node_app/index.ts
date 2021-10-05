@@ -59,7 +59,7 @@ export class App {
     this.notifier.setAuthorizationListener((request, response, error) => {
       log('Authorization request complete ', request, response, error);
       if (response) {
-        this.makeRefreshTokenRequest(this.configuration!, request, response)
+        this.makeRefreshTokenRequest(this.configuration!, request as AuthorizationRequest, response as AuthorizationResponse)
             .then(result => this.makeAccessTokenRequest(this.configuration!, result.refreshToken!))
             .then(() => log('All done.'));
       }

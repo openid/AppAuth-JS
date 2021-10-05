@@ -15,29 +15,26 @@
 import {AuthorizationManagementResponse} from './authorization_management_response'
 
 /**
- * Represents the AuthorizationResponse as a JSON object.
+ * Represents the EndSessionResponse as a JSON object.
  */
-export interface AuthorizationResponseJson {
-  code: string;
+export interface EndSessionResponseJson {
   state: string;
 }
 
 /**
- * Represents the Authorization Response type.
+ * Represents the EndSession Response type.
  * For more information look at
- * https://tools.ietf.org/html/rfc6749#section-4.1.2
+ * http://openid.net/specs/openid-connect-session-1_0.html
  */
-export class AuthorizationResponse extends AuthorizationManagementResponse {
-  code: string;
+export class EndSessionResponse extends AuthorizationManagementResponse {
   state: string;
 
-  constructor(response: AuthorizationResponseJson) {
+  constructor(response: EndSessionResponseJson) {
     super();
-    this.code = response.code;
     this.state = response.state;
   }
 
-  toJson(): AuthorizationResponseJson {
-    return {code: this.code, state: this.state};
+  toJson(): EndSessionResponseJson {
+    return {state: this.state};
   }
 }

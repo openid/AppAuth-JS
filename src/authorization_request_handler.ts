@@ -12,13 +12,14 @@
  * limitations under the License.
  */
 
-import {AuthorizationRequest} from './authorization_request';
-import {AuthorizationError, AuthorizationResponse} from './authorization_response';
+import {AuthorizationManagementRequest} from './authorization_management_request';
+import {AuthorizationManagementResponse} from './authorization_management_response';
+import {AuthorizationError} from './authorization_management_response';
 import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
 import {Crypto} from './crypto_utils';
 import {log} from './logger';
 import {QueryStringUtils} from './query_string_utils';
-import {StringMap} from './types';
+import {RedirectRequestTypes, StringMap} from './types';
 
 
 /**
@@ -26,16 +27,16 @@ import {StringMap} from './types';
  * and an AuthorizationResponse as arguments.
  */
 export type AuthorizationListener =
-    (request: AuthorizationRequest,
-     response: AuthorizationResponse|null,
+    (request: AuthorizationManagementRequest,
+     response: AuthorizationManagementResponse|null,
      error: AuthorizationError|null) => void;
 
 /**
  * Represents a structural type holding both authorization request and response.
  */
 export interface AuthorizationRequestResponse {
-  request: AuthorizationRequest;
-  response: AuthorizationResponse|null;
+  request: AuthorizationManagementRequest;
+  response: AuthorizationManagementResponse|null;
   error: AuthorizationError|null;
 }
 
@@ -54,8 +55,8 @@ export class AuthorizationNotifier {
    * The authorization complete callback.
    */
   onAuthorizationComplete(
-      request: AuthorizationRequest,
-      response: AuthorizationResponse|null,
+      request: AuthorizationManagementRequest,
+      response: AuthorizationManagementResponse|null,
       error: AuthorizationError|null): void {
     if (this.listener) {
       // complete authorization request
@@ -64,9 +65,6 @@ export class AuthorizationNotifier {
   }
 }
 
-// TODO(rahulrav@): add more built in parameters.
-/* built in parameters. */
-export const BUILT_IN_PARAMETERS = ['redirect_uri', 'client_id', 'response_type', 'state', 'scope'];
 
 /**
  * Defines the interface which is capable of handling an authorization request
@@ -83,31 +81,15 @@ export abstract class AuthorizationRequestHandler {
    */
   protected buildRequestUrl(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest) {
+      request: AuthorizationManagementRequest,
+      requestType: RedirectRequestTypes) {
     // build the query string
     // coerce to any type for convenience
-    let requestMap: StringMap = {
-      'redirect_uri': request.redirectUri,
-      'client_id': request.clientId,
-      'response_type': request.responseType,
-      'state': request.state,
-      'scope': request.scope
-    };
-
-    // copy over extras
-    if (request.extras) {
-      for (let extra in request.extras) {
-        if (request.extras.hasOwnProperty(extra)) {
-          // check before inserting to requestMap
-          if (BUILT_IN_PARAMETERS.indexOf(extra) < 0) {
-            requestMap[extra] = request.extras[extra];
-          }
-        }
-      }
-    }
-
+    let requestMap: StringMap = request.toRequestMap()
     let query = this.utils.stringify(requestMap);
-    let baseUrl = configuration.authorizationEndpoint;
+    let baseUrl = requestType === RedirectRequestTypes.authorization ?
+        configuration.authorizationEndpoint :
+        configuration.endSessionEndpoint;
     let url = `${baseUrl}?${query}`;
     return url;
   }
@@ -134,6 +116,27 @@ export abstract class AuthorizationRequestHandler {
   }
 
   /**
+   * Completes the endsession request if necessary & when possible.
+   */
+  completeEndSessionRequestIfPossible(): Promise<void> {
+    // call complete endsession if possible to see there might
+    // be a response that needs to be delivered.
+    log(`Checking to see if there is an endsession response to be delivered.`);
+    if (!this.notifier) {
+      log(`Notifier is not present on EndSessionRequest handler.
+          No delivery of result will be possible`)
+    }
+    return this.completeEndSessionRequest().then(result => {
+      if (!result) {
+        log(`No result is available yet.`);
+      }
+      if (result && this.notifier) {
+        this.notifier.onAuthorizationComplete(result.request, result.response, result.error);
+      }
+    });
+  }
+
+  /**
    * Sets the default Authorization Service notifier.
    */
   setAuthorizationNotifier(notifier: AuthorizationNotifier): AuthorizationRequestHandler {
@@ -146,12 +149,25 @@ export abstract class AuthorizationRequestHandler {
    */
   abstract performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest): void;
+      request: AuthorizationManagementRequest): void;
 
+  /**
+   * Makes an end session request.
+   */
+  abstract performEndSessionRequest(
+      configuration: AuthorizationServiceConfiguration,
+      request: AuthorizationManagementRequest): void;
   /**
    * Checks if an authorization flow can be completed, and completes it.
    * The handler returns a `Promise<AuthorizationRequestResponse>` if ready, or a `Promise<null>`
    * if not ready.
    */
   protected abstract completeAuthorizationRequest(): Promise<AuthorizationRequestResponse|null>;
+
+  /**
+   * Checks if an end session flow can be completed, and completes it.
+   * The handler returns a `Promise<AuthorizationRequestResponse>` if ready, or a `Promise<null>`
+   * if not ready.
+   */
+  protected abstract completeEndSessionRequest(): Promise<AuthorizationRequestResponse|null>;
 }

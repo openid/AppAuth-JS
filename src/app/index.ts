@@ -24,6 +24,7 @@ import {BaseTokenRequestHandler, TokenRequestHandler} from '../token_request_han
 import {TokenResponse} from '../token_response';
 import { AuthorizationResponse } from '../authorization_response';
 import { StringMap } from '../types';
+import { EndSessionRequest } from '../end_session_request';
 
 /* Some interface declarations for Material design lite. */
 
@@ -74,7 +75,7 @@ export class App {
     // set a listener to listen for authorization responses
     this.notifier.setAuthorizationListener((request, response, error) => {
       log('Authorization request complete ', request, response, error);
-      if (response) {
+      if (response && response instanceof AuthorizationResponse && request instanceof AuthorizationRequest) {
         this.request = request;
         this.response = response;
         this.code = response.code;

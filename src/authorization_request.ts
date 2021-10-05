@@ -12,9 +12,16 @@
  * limitations under the License.
  */
 
+import {AuthorizationManagementRequest} from './authorization_management_request';
 import {Crypto, DefaultCrypto} from './crypto_utils';
 import {log} from './logger';
 import {StringMap} from './types';
+
+
+
+// TODO(rahulrav@): add more built in parameters.
+/* built in parameters. */
+export const BUILT_IN_PARAMETERS = ['redirect_uri', 'client_id', 'response_type', 'state', 'scope'];
 
 /**
  * Represents an AuthorizationRequest as JSON.
@@ -42,7 +49,7 @@ const newState = function(crypto: Crypto): string {
  * For more information look at
  * https://tools.ietf.org/html/rfc6749#section-4.1.1
  */
-export class AuthorizationRequest {
+export class AuthorizationRequest extends AuthorizationManagementRequest {
   static RESPONSE_TYPE_TOKEN = 'token';
   static RESPONSE_TYPE_CODE = 'code';
 
@@ -66,6 +73,7 @@ export class AuthorizationRequest {
       request: AuthorizationRequestJson,
       private crypto: Crypto = new DefaultCrypto(),
       private usePkce: boolean = true) {
+    super();
     this.clientId = request.client_id;
     this.redirectUri = request.redirect_uri;
     this.scope = request.scope;
@@ -116,5 +124,29 @@ export class AuthorizationRequest {
         internal: this.internal
       };
     });
+  }
+  toRequestMap(): StringMap {
+    // build the query string
+    // coerce to any type for convenience
+    let requestMap: StringMap = {
+      redirect_uri: this.redirectUri,
+      client_id: this.clientId,
+      response_type: this.responseType,
+      state: this.state,
+      scope: this.scope,
+    };
+
+    // copy over extras
+    if (this.extras) {
+      for (let extra in this.extras) {
+        if (this.extras.hasOwnProperty(extra)) {
+          // check before inserting to requestMap
+          if (BUILT_IN_PARAMETERS.indexOf(extra) < 0) {
+            requestMap[extra] = this.extras[extra];
+          }
+        }
+      }
+    }
+    return requestMap
   }
 }

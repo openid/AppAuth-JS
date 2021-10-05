@@ -1,5 +1,7 @@
+import { AuthorizationManagementRequest } from './authorization_management_request';
 import { Crypto } from './crypto_utils';
 import { StringMap } from './types';
+export declare const BUILT_IN_PARAMETERS: string[];
 /**
  * Represents an AuthorizationRequest as JSON.
  */
@@ -17,7 +19,7 @@ export interface AuthorizationRequestJson {
  * For more information look at
  * https://tools.ietf.org/html/rfc6749#section-4.1.1
  */
-export declare class AuthorizationRequest {
+export declare class AuthorizationRequest extends AuthorizationManagementRequest {
     private crypto;
     private usePkce;
     static RESPONSE_TYPE_TOKEN: string;
@@ -40,4 +42,5 @@ export declare class AuthorizationRequest {
      * Serializes the AuthorizationRequest to a JavaScript Object.
      */
     toJson(): Promise<AuthorizationRequestJson>;
+    toRequestMap(): StringMap;
 }
