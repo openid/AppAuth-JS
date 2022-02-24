@@ -26,7 +26,7 @@ export declare class AuthorizationNotifier {
     /**
      * The authorization complete callback.
      */
-    onAuthorizationComplete(request: AuthorizationRequest, response: AuthorizationResponse | null, error: AuthorizationError | null): void;
+    onAuthorizationComplete(request: AuthorizationRequest, response: AuthorizationResponse | null, error: AuthorizationError | null): any;
 }
 export declare const BUILT_IN_PARAMETERS: string[];
 /**
@@ -45,7 +45,7 @@ export declare abstract class AuthorizationRequestHandler {
     /**
      * Completes the authorization request if necessary & when possible.
      */
-    completeAuthorizationRequestIfPossible(): Promise<void>;
+    completeAuthorizationRequestIfPossible(): Promise<any>;
     /**
      * Sets the default Authorization Service notifier.
      */

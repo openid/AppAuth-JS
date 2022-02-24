@@ -56,10 +56,10 @@ export class AuthorizationNotifier {
   onAuthorizationComplete(
       request: AuthorizationRequest,
       response: AuthorizationResponse|null,
-      error: AuthorizationError|null): void {
+      error: AuthorizationError|null): any {
     if (this.listener) {
       // complete authorization request
-      this.listener(request, response, error);
+      return this.listener(request, response, error);
     }
   }
 }
@@ -115,7 +115,7 @@ export abstract class AuthorizationRequestHandler {
   /**
    * Completes the authorization request if necessary & when possible.
    */
-  completeAuthorizationRequestIfPossible(): Promise<void> {
+  completeAuthorizationRequestIfPossible(): Promise<any> {
     // call complete authorization if possible to see there might
     // be a response that needs to be delivered.
     log(`Checking to see if there is an authorization response to be delivered.`);
@@ -128,8 +128,9 @@ export abstract class AuthorizationRequestHandler {
         log(`No result is available yet.`);
       }
       if (result && this.notifier) {
-        this.notifier.onAuthorizationComplete(result.request, result.response, result.error);
+        return this.notifier.onAuthorizationComplete(result.request, result.response, result.error);
       }
+      return null
     });
   }
 
