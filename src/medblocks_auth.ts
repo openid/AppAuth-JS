@@ -94,10 +94,9 @@ export class MedblocksAuth {
       if (!this.token) {
         log('No token in axios interceptor. Signing in.');
         await this.signin();
-      } else {
-        config.headers = {...config.headers, 'Authorization': `Bearer ${this.token.accessToken}`};
-        return config;
       }
+      config.headers = {...config.headers, 'Authorization': `Bearer ${this.token?.accessToken}`};
+      return config;
     }, (err: any) => Promise.resolve(err))
 
     instance.interceptors.response.use((response) => {return response}, async (error: any) => {
