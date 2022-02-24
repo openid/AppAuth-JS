@@ -15,3 +15,4 @@ export * from './token_request_handler';
 export * from './token_response';
 export * from './types';
 export * from './xhr';
+export * from './medblocks_auth'
