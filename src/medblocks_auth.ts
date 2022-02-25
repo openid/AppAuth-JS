@@ -1,6 +1,7 @@
 import {AuthorizationListener, AuthorizationNotifier, AuthorizationRequest, AuthorizationServiceConfiguration, BaseTokenRequestHandler, GRANT_TYPE_AUTHORIZATION_CODE, RedirectRequestHandler, RevokeTokenRequest, TokenRequest, TokenResponse} from './index'
 import type {AxiosInstance} from 'axios';
 import {log} from './logger';
+import {SessionStorageBackend} from './storage';
 
 interface Config {
   client_id: string, redirect_uri: string, issuer: string, scope: string, extra?: any,
@@ -13,8 +14,9 @@ export class MedblocksAuth {
   private authHandler = new RedirectRequestHandler();
   private tokenHandler = new BaseTokenRequestHandler();
   private authServiceConfig?: AuthorizationServiceConfiguration;
+  private storageBackend = new SessionStorageBackend()
   token?: TokenResponse;
-  authRetryKey: string = 'auth-retry';
+  authRetryKey: string = 'medblocks-auth-retry';
 
   constructor(config: Config) {
     this.config = config;
@@ -25,7 +27,6 @@ export class MedblocksAuth {
   public authListner: AuthorizationListener =
       async (req, res) => {
     if (res && req.internal) {
-      console.log('triggering authListner');
       const extras: any = {};
       extras['code_verifier'] = req.internal['code_verifier'];
       const {client_id, redirect_uri} = this.config;
@@ -40,7 +41,7 @@ export class MedblocksAuth {
       if (this.authServiceConfig) {
         const tokenResponse =
             await this.tokenHandler.performTokenRequest(this.authServiceConfig, request)
-        window.history.pushState({}, '', redirect_uri)
+        window.location.replace(redirect_uri)
         return tokenResponse
       };
     }
@@ -97,13 +98,13 @@ export class MedblocksAuth {
 
     instance.interceptors.response.use((response) => {return response}, async (error: any) => {
       if ([401, 403].includes(error.response?.status)) {
-        if (localStorage.getItem(this.authRetryKey)) {
+        if (await this.storageBackend.getItem(this.authRetryKey)) {
           log('Request already failed once. Rejecting request')
-          localStorage.removeItem(this.authRetryKey);
+              await this.storageBackend.removeItem(this.authRetryKey);
           return Promise.reject(error);
         } else {
           log(`Request status ${error.response?.status}. Trying to sign in again.`)
-          localStorage.setItem(this.authRetryKey, 'true');
+              await this.storageBackend.setItem(this.authRetryKey, 'true');
           await this.getToken();
         }
       }

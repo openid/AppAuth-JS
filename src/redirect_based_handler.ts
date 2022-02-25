@@ -19,7 +19,7 @@ import {AuthorizationServiceConfiguration} from './authorization_service_configu
 import {Crypto, DefaultCrypto} from './crypto_utils';
 import {log} from './logger';
 import {BasicQueryStringUtils} from './query_string_utils';
-import {LocalStorageBackend, StorageBackend} from './storage';
+import {SessionStorageBackend, StorageBackend} from './storage';
 import {LocationLike} from './types';
 
 
@@ -47,7 +47,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
       // use the provided storage backend
       // or initialize local storage with the default storage backend which
       // uses window.localStorage
-      public storageBackend: StorageBackend = new LocalStorageBackend(),
+      public storageBackend: StorageBackend = new SessionStorageBackend(),
       utils = new BasicQueryStringUtils(),
       public locationLike: LocationLike = window.location,
       crypto: Crypto = new DefaultCrypto()) {

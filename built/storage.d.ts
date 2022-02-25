@@ -48,3 +48,11 @@ export declare class LocalStorageBackend extends StorageBackend {
     clear(): Promise<void>;
     setItem(name: string, value: string): Promise<void>;
 }
+export declare class SessionStorageBackend extends StorageBackend {
+    private storage;
+    constructor(storage?: UnderlyingStorage);
+    getItem(name: string): Promise<string | null>;
+    removeItem(name: string): Promise<void>;
+    clear(): Promise<void>;
+    setItem(name: string, value: string): Promise<void>;
+}

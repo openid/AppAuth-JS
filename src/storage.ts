@@ -98,3 +98,43 @@ export class LocalStorageBackend extends StorageBackend {
     });
   }
 }
+
+export class SessionStorageBackend extends StorageBackend {
+  private storage: UnderlyingStorage;
+  constructor(storage?: UnderlyingStorage) {
+    super();
+    this.storage = storage || window.sessionStorage;
+  }
+
+  public getItem(name: string): Promise<string|null> {
+    return new Promise<string|null>((resolve, reject) => {
+      const value = this.storage.getItem(name);
+      if (value) {
+        resolve(value);
+      } else {
+        resolve(null);
+      }
+    });
+  }
+
+  public removeItem(name: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.storage.removeItem(name);
+      resolve();
+    });
+  }
+
+  public clear(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.storage.clear();
+      resolve();
+    });
+  }
+
+  public setItem(name: string, value: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.storage.setItem(name, value);
+      resolve();
+    });
+  }
+}
