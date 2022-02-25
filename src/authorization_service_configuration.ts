@@ -12,7 +12,8 @@
  * limitations under the License.
  */
 
-import {JQueryRequestor, Requestor} from './xhr';
+import {FetchRequestor} from '.';
+import {Requestor} from './xhr';
 
 
 /**
@@ -72,7 +73,7 @@ export class AuthorizationServiceConfiguration {
       Promise<AuthorizationServiceConfiguration> {
     const fullUrl = `${openIdIssuerUrl}/${WELL_KNOWN_PATH}/${OPENID_CONFIGURATION}`;
 
-    const requestorToUse = requestor || new JQueryRequestor();
+    const requestorToUse = requestor || new FetchRequestor();
 
     return requestorToUse
         .xhr<AuthorizationServiceConfigurationJson>({url: fullUrl, dataType: 'json', method: 'GET'})

@@ -54,9 +54,9 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
     super(utils, crypto);
   }
 
-  performAuthorizationRequest(
+  async performAuthorizationRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest) {
+      request: AuthorizationRequest): Promise<void> {
     const handle = this.crypto.generateRandom(10);
 
     // before you make request, persist all request related data in local storage.
@@ -70,7 +70,7 @@ export class RedirectRequestHandler extends AuthorizationRequestHandler {
           authorizationServiceConfigurationKey(handle), JSON.stringify(configuration.toJson())),
     ]);
 
-    persisted.then(() => {
+    return await persisted.then(() => {
       // make the redirect request
       let url = this.buildRequestUrl(configuration, request);
       log('Making a request to ', request, url);

@@ -1,4 +1,4 @@
-import {AuthorizationListener, AuthorizationNotifier, AuthorizationRequest, AuthorizationServiceConfiguration, BaseTokenRequestHandler, FetchRequestor, GRANT_TYPE_AUTHORIZATION_CODE, RedirectRequestHandler, RevokeTokenRequest, TokenRequest, TokenResponse} from './index'
+import {AuthorizationListener, AuthorizationNotifier, AuthorizationRequest, AuthorizationServiceConfiguration, BaseTokenRequestHandler, GRANT_TYPE_AUTHORIZATION_CODE, RedirectRequestHandler, RevokeTokenRequest, TokenRequest, TokenResponse} from './index'
 import type {AxiosInstance} from 'axios';
 import {log} from './logger';
 
@@ -11,9 +11,8 @@ export class MedblocksAuth {
   private config: Config;
   private notifier = new AuthorizationNotifier();
   private authHandler = new RedirectRequestHandler();
-  private tokenHandler = new BaseTokenRequestHandler(new FetchRequestor());
+  private tokenHandler = new BaseTokenRequestHandler();
   private authServiceConfig?: AuthorizationServiceConfiguration;
-  private requestor = new FetchRequestor();
   token?: TokenResponse;
   authRetryKey: string = 'auth-retry';
 
@@ -48,20 +47,22 @@ export class MedblocksAuth {
   }
 
   public authRequest =
-      () => {
-        const {client_id, redirect_uri} = this.config;
-        let request = new AuthorizationRequest({
-          client_id: client_id,
-          redirect_uri: redirect_uri,
-          scope: 'openid',
-          response_type: AuthorizationRequest.RESPONSE_TYPE_CODE,
-          state: undefined,
-          extras: {...this.config.extra, 'response_mode': 'fragment'}
-        });
-        if (this.authServiceConfig) {
-          this.authHandler.performAuthorizationRequest(this.authServiceConfig, request)
-        }
-      }
+      async () => {
+    const {client_id, redirect_uri} = this.config;
+    let request = new AuthorizationRequest({
+      client_id: client_id,
+      redirect_uri: redirect_uri,
+      scope: 'openid',
+      response_type: AuthorizationRequest.RESPONSE_TYPE_CODE,
+      state: undefined,
+      extras: {...this.config.extra, 'response_mode': 'fragment'}
+    });
+    if (this.authServiceConfig) {
+      await this.authHandler.performAuthorizationRequest(this.authServiceConfig, request)
+          // Waits for the page to redirect and come back.
+          await new Promise(res => {});
+    }
+  }
 
   public revoke =
       (token: string) => {
@@ -74,26 +75,21 @@ export class MedblocksAuth {
       }
 
   public getToken = async():
-      Promise<TokenResponse> => {
-        this.authServiceConfig = await AuthorizationServiceConfiguration.fetchFromIssuer(
-            this.config.issuer, this.requestor);
-        const token = await this.authHandler.completeAuthorizationRequestIfPossible();
-        if (!token) {
-          this.authRequest();
+      Promise<void> => {
+        this.authServiceConfig =
+            await AuthorizationServiceConfiguration.fetchFromIssuer(this.config.issuer);
+
+        this.token = await this.authHandler.completeAuthorizationRequestIfPossible();
+
+        if (!this.token) {
+          await this.authRequest();
         }
-        return token
       }
 
-  signin =
-      async () => {
-    this.token = await this.getToken();
-  }
-
-  registerAxiosInterceptor = (instance: AxiosInstance): AxiosInstance => {
+  registerAxiosInterceptor = (instance: AxiosInstance): void => {
     instance.interceptors.request.use(async (config) => {
       if (!this.token) {
-        log('No token in axios interceptor. Signing in.');
-        await this.signin();
+        await this.getToken()
       }
       config.headers = {...config.headers, 'Authorization': `Bearer ${this.token?.accessToken}`};
       return config;
@@ -108,10 +104,9 @@ export class MedblocksAuth {
         } else {
           log(`Request status ${error.response?.status}. Trying to sign in again.`)
           localStorage.setItem(this.authRetryKey, 'true');
-          await this.signin();
+          await this.getToken();
         }
       }
     })
-    return instance
   }
 }
