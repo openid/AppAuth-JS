@@ -41,7 +41,7 @@ export class MedblocksAuth {
       if (this.authServiceConfig) {
         const tokenResponse =
             await this.tokenHandler.performTokenRequest(this.authServiceConfig, request)
-        window.location.replace(redirect_uri)
+        window.history.replaceState({}, '', redirect_uri)
         return tokenResponse
       };
     }
