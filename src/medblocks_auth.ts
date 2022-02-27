@@ -17,6 +17,9 @@ export class MedblocksAuth {
   private storageBackend = new SessionStorageBackend()
   token?: TokenResponse;
   authRetryKey: string = 'medblocks-auth-retry';
+  originalUrlKey: string = 'medblocks-auth-original-url'
+  tokenKey: string = 'medblocks-auth-token'
+  openidConfigKey: string = 'medblocks-auth-openid-config'
 
   constructor(config: Config) {
     this.config = config;
@@ -41,7 +44,8 @@ export class MedblocksAuth {
       if (this.authServiceConfig) {
         const tokenResponse =
             await this.tokenHandler.performTokenRequest(this.authServiceConfig, request)
-        window.history.replaceState({}, '', redirect_uri)
+        const originalUrl = await this.storageBackend.getItem(this.originalUrlKey)
+        window.location.href = originalUrl || redirect_uri
         return tokenResponse
       };
     }
@@ -59,28 +63,47 @@ export class MedblocksAuth {
       extras: {...this.config.extra, 'response_mode': 'fragment'}
     });
     if (this.authServiceConfig) {
-      await this.authHandler.performAuthorizationRequest(this.authServiceConfig, request)
+      this.storageBackend.setItem(this.originalUrlKey, window.location.href)
+          await this.authHandler.performAuthorizationRequest(this.authServiceConfig, request)
           // Waits for the page to redirect and come back.
           await new Promise(res => {});
     }
   }
 
-  public revoke =
-      (token: string) => {
-        if (this.authServiceConfig) {
-          this.tokenHandler.performRevokeTokenRequest(
-              this.authServiceConfig,
-              new RevokeTokenRequest(
-                  {token, client_id: this.config.client_id, token_type_hint: 'access_token'}))
-        }
+  public revoke = (token: string) => {
+    if (this.authServiceConfig) {
+      this.tokenHandler.performRevokeTokenRequest(
+          this.authServiceConfig,
+          new RevokeTokenRequest(
+              {token, client_id: this.config.client_id, token_type_hint: 'access_token'}))
+    }
+  };
+
+  public getTokenFromSession = async():
+      Promise<TokenResponse|undefined> => {
+        const t = await this.storageBackend.getItem(this.tokenKey);
+        return t ? JSON.parse(t) : undefined;
       }
 
-  public getToken = async():
+  public setTokenFromSession = async(token: TokenResponse):
+      Promise<void> => {
+        return await this.storageBackend.setItem(this.tokenKey, JSON.stringify(token));
+      }
+
+  public init = async(force: boolean = false):
       Promise<void> => {
         this.authServiceConfig =
             await AuthorizationServiceConfiguration.fetchFromIssuer(this.config.issuer);
+        if (force) {
+          this.token = undefined;
+          await this.authRequest();
+        }
+        const tokenFromRedirect = await this.authHandler.completeAuthorizationRequestIfPossible();
+        if (tokenFromRedirect) {
+          await this.setTokenFromSession(tokenFromRedirect);
+        }
 
-        this.token = await this.authHandler.completeAuthorizationRequestIfPossible();
+        this.token = tokenFromRedirect || await this.getTokenFromSession()
 
         if (!this.token) {
           await this.authRequest();
@@ -90,7 +113,7 @@ export class MedblocksAuth {
   registerAxiosInterceptor = (instance: AxiosInstance): void => {
     instance.interceptors.request.use(async (config) => {
       if (!this.token) {
-        await this.getToken()
+        await this.init()
       }
       config.headers = {...config.headers, 'Authorization': `Bearer ${this.token?.accessToken}`};
       return config;
@@ -103,9 +126,9 @@ export class MedblocksAuth {
               await this.storageBackend.removeItem(this.authRetryKey);
           return Promise.reject(error);
         } else {
-          log(`Request status ${error.response?.status}. Trying to sign in again.`)
+          log(`Request status ${error.response?.status}. Trying to force sign in again.`)
               await this.storageBackend.setItem(this.authRetryKey, 'true');
-          await this.getToken();
+          await this.init(true);
         }
       }
     })
