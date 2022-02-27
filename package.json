@@ -1,6 +1,6 @@
 {
   "name": "@medblocks/appauth",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "A general purpose OAuth client.",
   "author": "The OpenID Foundation",
   "license": "Apache-2.0",
