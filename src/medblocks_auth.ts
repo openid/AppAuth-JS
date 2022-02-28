@@ -4,8 +4,10 @@ import {log} from './logger';
 import {SessionStorageBackend} from './storage';
 
 interface Config {
-  client_id: string, redirect_uri: string, issuer: string, scope: string, extra?: any,
-      onToken?: (token: TokenResponse) => any
+  client_id: string, redirect_uri: string, issuer?: string, scope: string, extra?: any,
+      onToken?: (token: TokenResponse) => any, onRedirect?: (url: string) => void,
+                        authorization_endpoint?:
+                            string, revocation_endpoint?: string, token_endpoint?: string
 }
 
 export class MedblocksAuth {
@@ -19,12 +21,19 @@ export class MedblocksAuth {
   authRetryKey: string = 'medblocks-auth-retry';
   originalUrlKey: string = 'medblocks-auth-original-url'
   tokenKey: string = 'medblocks-auth-token'
-  openidConfigKey: string = 'medblocks-auth-openid-config'
+  openidConfigKey: string = 'medblocks-auth-openid-config';
+  onRedirect =
+      (url: string) => {
+        window.history.replaceState({}, '', url)
+      }
 
   constructor(config: Config) {
     this.config = config;
     this.notifier.setAuthorizationListener(this.authListner);
     this.authHandler.setAuthorizationNotifier(this.notifier);
+    if (config.onRedirect) {
+      this.onRedirect = config.onRedirect
+    }
   }
 
   public authListner: AuthorizationListener =
@@ -44,8 +53,8 @@ export class MedblocksAuth {
       if (this.authServiceConfig) {
         const tokenResponse =
             await this.tokenHandler.performTokenRequest(this.authServiceConfig, request)
-        const originalUrl = await this.storageBackend.getItem(this.originalUrlKey)
-        window.location.href = originalUrl || redirect_uri
+        const originalUrl = await this.storageBackend.getItem(this.originalUrlKey);
+        this.onRedirect(originalUrl || redirect_uri)
         return tokenResponse
       };
     }
@@ -92,8 +101,19 @@ export class MedblocksAuth {
 
   public init = async(force: boolean = false):
       Promise<void> => {
-        this.authServiceConfig =
-            await AuthorizationServiceConfiguration.fetchFromIssuer(this.config.issuer);
+        const {authorization_endpoint, revocation_endpoint, token_endpoint} = this.config
+        if (authorization_endpoint && revocation_endpoint && token_endpoint) {
+          this.authServiceConfig = new AuthorizationServiceConfiguration(
+              {authorization_endpoint, revocation_endpoint, token_endpoint});
+        }
+        else {
+          if (!this.config.issuer) {
+            throw new Error(
+                'issuer or (authorization_endpoint, revocation_endpoint & token_endpoint) must be provided.')
+          }
+          this.authServiceConfig =
+              await AuthorizationServiceConfiguration.fetchFromIssuer(this.config.issuer);
+        }
         if (force) {
           this.token = undefined;
           await this.authRequest();
