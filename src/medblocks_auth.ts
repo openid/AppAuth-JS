@@ -1,5 +1,6 @@
 import {AuthorizationListener, AuthorizationNotifier, AuthorizationRequest, AuthorizationServiceConfiguration, BaseTokenRequestHandler, GRANT_TYPE_AUTHORIZATION_CODE, RedirectRequestHandler, RevokeTokenRequest, TokenRequest, TokenResponse} from './index'
 import type {AxiosInstance} from 'axios';
+import axios from 'axios'
 import {log} from './logger';
 import {SessionStorageBackend} from './storage';
 
@@ -133,7 +134,10 @@ export class MedblocksAuth {
   registerAxiosInterceptor = (instance: AxiosInstance): void => {
     instance.interceptors.request.use(async (config) => {
       if (!this.token) {
-        await this.init()
+        const msg =
+            'A request has been made before authentication has finished. Please wait for await init() to finish before making any requests. This request will be ignored.';
+        console.warn(msg, {axiosOptions: config});
+        return {...config, cancelToken: new axios.CancelToken(cancel => cancel(msg))};
       }
       config.headers = {...config.headers, 'Authorization': `Bearer ${this.token?.accessToken}`};
       return config;
