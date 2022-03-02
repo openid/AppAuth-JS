@@ -1,0 +1,60 @@
+name: NPM Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Test and Publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Slack Notification Start
+      id: slack
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel_id: C02K52UNL0N
+        status: STARTED
+        color: FFA500
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install
+      run: npm ci
+
+    - name: Test
+      run: npm run test
+
+    - name: Publish
+      if: ${{ github.event_name == 'push' }}
+      uses: JS-DevTools/npm-publish@v1
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
+        access: public
+
+    - name: Notify Success Status
+      if: success()
+      env: 
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        message_id: ${{ steps.slack.outputs.message_id }}
+        channel_id: C02K52UNL0N
+        status: SUCCESS
+        color: good
+
+    - name: Notify Fail Status
+      if: failure()
+      env: 
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        message_id: ${{ steps.slack.outputs.message_id }}
+        channel_id: C02K52UNL0N
+        status: FAILURE
+        color: danger
