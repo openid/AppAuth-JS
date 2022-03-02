@@ -35,7 +35,7 @@
     "gzipSize": "gzip -c built/app/bundle_minified.js | wc -c",
     "prewatch": "npm run-script --silent format",
     "watch": "node_modules/.bin/tsc --watch &",
-    "release": "standard-version -a && git push --follow-tags origin medblocks"
+    "release": "standard-version -a && git push --follow-tags origin master"
   },
   "keywords": [
     "OAuth",
