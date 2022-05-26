@@ -37,6 +37,9 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
   // the handle to the current authorization request
   authorizationPromise: Promise<AuthorizationRequestResponse|null>|null = null;
 
+  /** The content for the authorization redirect response page. */
+  protected authorizationRedirectPageContent = 'Close your browser to continue';
+
   constructor(
       // default to port 8000
       public httpServerPort = 8000,
@@ -88,7 +91,8 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         error: authorizationError
       } as AuthorizationRequestResponse;
       emitter.emit(ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE, completeResponse);
-      response.end('Close your browser to continue');
+      response.setHeader('Content-Type', 'text/html');
+      response.end(this.authorizationRedirectPageContent);
     };
 
     this.authorizationPromise = new Promise<AuthorizationRequestResponse>((resolve, reject) => {
