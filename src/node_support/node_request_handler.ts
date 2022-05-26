@@ -96,6 +96,10 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         reject(`Unable to create HTTP server at port ${this.httpServerPort}`);
       });
       emitter.once(ServerEventsEmitter.ON_AUTHORIZATION_RESPONSE, (result: any) => {
+        // Set timeout for the server connections to 1 ms as we wish to close and end the server
+        // as soon as possible. This prevents a user failing to close the redirect window from
+        // causing a hanging process due to the server.
+        server.setTimeout(1);
         server.close();
         // resolve pending promise
         resolve(result as AuthorizationRequestResponse);
