@@ -12,26 +12,15 @@
  * limitations under the License.
  */
 
-export interface StringMap {
-  [key: string]: string;
-}
+import {StringMap} from './types';
 
-/**
- * Represents a window.location like object.
- */
-export interface LocationLike {
-  hash: string;
-  host: string;
-  origin: string;
-  hostname: string;
-  pathname: string;
-  port: string;
-  protocol: string;
-  search: string;
-  assign(url: string): void;
-}
+export abstract class AuthorizationManagementRequest {
+  public abstract state: string;
 
-export enum RedirectRequestTypes {
-  endSession = 'end_session',
-  authorization = 'authorization'
+  /*
+   * Serializes the request object to a JavaScript object
+   */
+  public abstract toJson(): Promise<object>;
+
+  public abstract toRequestMap(): StringMap;
 }

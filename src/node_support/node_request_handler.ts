@@ -15,18 +15,22 @@
 import {EventEmitter} from 'events';
 import * as Http from 'http';
 import * as Url from 'url';
-import {AuthorizationRequest} from '../authorization_request';
+import {AuthorizationManagementRequest} from '../authorization_management_request';
 import {AuthorizationRequestHandler, AuthorizationRequestResponse} from '../authorization_request_handler';
-import {AuthorizationError, AuthorizationResponse} from '../authorization_response';
+import {AuthorizationResponse} from '../authorization_response';
+import {AuthorizationError} from '../authorization_management_response';
 import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
 import {Crypto} from '../crypto_utils';
 import {log} from '../logger';
 import {BasicQueryStringUtils, QueryStringUtils} from '../query_string_utils';
 import {NodeCrypto} from './crypto_utils';
+import {RedirectRequestTypes} from '../types';
+import {EndSessionResponse} from '../end_session_response';
 
 
 // TypeScript typings for `opener` are not correct and do not export it as module
 import opener = require('opener');
+import { AuthorizationRequest } from '../authorization_request';
 
 class ServerEventsEmitter extends EventEmitter {
   static ON_UNABLE_TO_START = 'unable_to_start';
@@ -48,9 +52,18 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
     super(utils, crypto);
   }
 
-  performAuthorizationRequest(
+  performAuthorizationRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest){
+    this.performRequest(configuration, request, RedirectRequestTypes.authorization);
+  }
+
+  performEndSessionRequest(configuration: AuthorizationServiceConfiguration, request: AuthorizationRequest){
+    this.performRequest(configuration, request, RedirectRequestTypes.endSession);
+  }
+  
+  private performRequest(
       configuration: AuthorizationServiceConfiguration,
-      request: AuthorizationRequest) {
+      request: AuthorizationManagementRequest, 
+      requestType: RedirectRequestTypes) {
     // use opener to launch a web browser and start the authorization flow.
     // start a web server to handle the authorization response.
     const emitter = new ServerEventsEmitter();
@@ -72,8 +85,12 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         return;
       }
 
-      log('Handling Authorization Request ', searchParams, state, code, error);
-      let authorizationResponse: AuthorizationResponse|null = null;
+      if(requestType === RedirectRequestTypes.authorization){
+        log('Handling Authorization Request ', searchParams, state, code, error);
+      } else if(requestType === RedirectRequestTypes.endSession){
+        log('Handling end session Request ', searchParams, state, error);
+      }
+      let authorizationResponse: EndSessionResponse|AuthorizationResponse|null = null;
       let authorizationError: AuthorizationError|null = null;
       if (error) {
         log('error');
@@ -83,7 +100,11 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
         authorizationError = new AuthorizationError(
             {error: error, error_description: errorDescription, error_uri: errorUri, state: state});
       } else {
-        authorizationResponse = new AuthorizationResponse({code: code!, state: state!});
+        if (requestType === RedirectRequestTypes.authorization) {
+          authorizationResponse = new AuthorizationResponse({code: code!, state: state!});
+        } else if (requestType === RedirectRequestTypes.endSession) {
+          authorizationResponse = new EndSessionResponse({state: state!})
+        }
       }
       const completeResponse = {
         request,
@@ -113,11 +134,15 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
     });
 
     let server: Http.Server;
-    request.setupCodeVerifier()
-        .then(() => {
+    let codeVerified: Promise<any> = Promise.resolve();
+    if(request instanceof AuthorizationRequest){
+      codeVerified = request.setupCodeVerifier()
+    }
+
+        codeVerified.then(() => {
           server = Http.createServer(requestHandler);
           server.listen(this.httpServerPort);
-          const url = this.buildRequestUrl(configuration, request);
+          const url = this.buildRequestUrl(configuration, request, requestType);
           log('Making a request to ', request, url);
           opener(url);
         })
@@ -128,6 +153,14 @@ export class NodeBasedHandler extends AuthorizationRequestHandler {
   }
 
   protected completeAuthorizationRequest(): Promise<AuthorizationRequestResponse|null> {
+    return this.completeRequest();
+  }
+
+  protected completeEndSessionRequest(): Promise<AuthorizationRequestResponse|null> {
+    return this.completeRequest();
+  }
+
+  private completeRequest(): Promise<AuthorizationRequestResponse|null> {
     if (!this.authorizationPromise) {
       return Promise.reject(
           'No pending authorization request. Call performAuthorizationRequest() ?');
