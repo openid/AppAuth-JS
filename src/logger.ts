@@ -12,10 +12,10 @@
  * limitations under the License.
  */
 
-import {IS_LOG, IS_PROFILE} from './flags';
+import {Flags} from './flags';
 
 export function log(message: string, ...args: any[]) {
-  if (IS_LOG) {
+  if (Flags.IS_LOG) {
     let length = args ? args.length : 0;
     if (length > 0) {
       console.log(message, ...args);
@@ -33,7 +33,7 @@ const NATIVE_PROFILE_SUPPORT =
  * A decorator that can profile a function.
  */
 export function profile(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-  if (IS_PROFILE) {
+  if (Flags.IS_PROFILE) {
     return performProfile(target, propertyKey, descriptor);
   } else {
     // return as-is
