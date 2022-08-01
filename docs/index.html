@@ -1,0 +1,342 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>@openid/appauth</title>
+	<meta name="description" content="Documentation for @openid/appauth">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">@openid/appauth</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>@openid/appauth</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<p><img src="assets/logo.png" alt="AppAuth for JS"></p>
+				<p>AppAuth for JavaScript is a client SDK for <a href="https://tools.ietf.org/html/rfc6749#section-2.1">public clients</a>
+					for communicating with <a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0</a>
+					and <a href="http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect</a> providers
+					following the best practice
+					<a href="https://tools.ietf.org/html/rfc8252">RFC 8252 - OAuth 2.0 for Native Apps</a>.
+					The library is designed for use in <code>Web Apps</code>, <code>Node.js</code> CLI applications,
+				<code>Chrome Apps</code> and applications that use <code>Electron</code> or similar frameworks.</p>
+				<p>It strives to directly map the requests and responses of those specifications,
+				while following the idiomatic style of the implementation language.</p>
+				<p>The library also supports the <a href="https://tools.ietf.org/html/rfc7636">PKCE</a>
+					extension to OAuth which was created to secure authorization codes in public
+					clients when custom URI scheme redirects are used. The library is friendly to
+					other extensions (standard or otherwise) with the ability to handle additional
+				parameters in all protocol requests and responses.</p>
+				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+					<h3>Examples</h3>
+				</a>
+				<p>An example application using the library is included in the <code>src/node_app</code> folder and at <a href="https://github.com/googlesamples/appauth-js-electron-sample">https://github.com/googlesamples/appauth-js-electron-sample</a>.</p>
+				<a href="#auth-flow" id="auth-flow" style="color: inherit; text-decoration: none;">
+					<h4>Auth Flow</h4>
+				</a>
+				<p>AppAuth supports manual interaction with the Authorization Server where you need to perform
+				your own token exchanges. This example performs a manual exchange.</p>
+				<a href="#fetch-service-configuration" id="fetch-service-configuration" style="color: inherit; text-decoration: none;">
+					<h5>Fetch Service Configuration</h5>
+				</a>
+				<pre><code class="language-typescript"><span style="color: #001080">AuthorizationServiceConfiguration</span><span style="color: #000000">.</span><span style="color: #795E26">fetchFromIssuer</span><span style="color: #000000">(</span><span style="color: #001080">openIdConnectUrl</span><span style="color: #000000">)</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">response</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Fetched service configuration&#039;</span><span style="color: #000000">, </span><span style="color: #001080">response</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">configuration</span><span style="color: #000000"> = </span><span style="color: #001080">response</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #795E26">showMessage</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Completed fetching configuration&#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">  })</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">error</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Something bad happened&#039;</span><span style="color: #000000">, </span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #795E26">showMessage</span><span style="color: #000000">(</span><span style="color: #A31515">`Something bad happened </span><span style="color: #0000FF">${</span><span style="color: #001080">error</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">)</span>
+<span style="color: #000000">  });</span>
+</code></pre>
+				<a href="#make-authorization-requests" id="make-authorization-requests" style="color: inherit; text-decoration: none;">
+					<h5>Make Authorization Requests</h5>
+				</a>
+				<pre><code class="language-typescript"><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">notifier</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AuthorizationNotifier</span><span style="color: #000000">();</span>
+<span style="color: #008000">// uses a redirect flow</span>
+<span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">authorizationHandler</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">RedirectRequestHandler</span><span style="color: #000000">();</span>
+<span style="color: #008000">// set notifier to deliver responses</span>
+<span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">authorizationHandler</span><span style="color: #000000">.</span><span style="color: #795E26">setAuthorizationNotifier</span><span style="color: #000000">(</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">notifier</span><span style="color: #000000">);</span>
+<span style="color: #008000">// set a listener to listen for authorization responses</span>
+<span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">notifier</span><span style="color: #000000">.</span><span style="color: #795E26">setAuthorizationListener</span><span style="color: #000000">((</span><span style="color: #001080">request</span><span style="color: #000000">, </span><span style="color: #001080">response</span><span style="color: #000000">, </span><span style="color: #001080">error</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Authorization request complete &#039;</span><span style="color: #000000">, </span><span style="color: #001080">request</span><span style="color: #000000">, </span><span style="color: #001080">response</span><span style="color: #000000">, </span><span style="color: #001080">error</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">response</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">code</span><span style="color: #000000"> = </span><span style="color: #001080">response</span><span style="color: #000000">.</span><span style="color: #001080">code</span><span style="color: #000000">;</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #795E26">showMessage</span><span style="color: #000000">(</span><span style="color: #A31515">`Authorization Code </span><span style="color: #0000FF">${</span><span style="color: #001080">response</span><span style="color: #000000FF">.</span><span style="color: #001080">code</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">);</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #008000">// create a request</span>
+<span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">request</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AuthorizationRequest</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #001080">client_id:</span><span style="color: #000000"> </span><span style="color: #001080">clientId</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">redirect_uri:</span><span style="color: #000000"> </span><span style="color: #001080">redirectUri</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">scope:</span><span style="color: #000000"> </span><span style="color: #001080">scope</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">response_type:</span><span style="color: #000000"> </span><span style="color: #001080">AuthorizationRequest</span><span style="color: #000000">.</span><span style="color: #0070C1">RESPONSE_TYPE_CODE</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">state:</span><span style="color: #000000"> </span><span style="color: #0000FF">undefined</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">extras:</span><span style="color: #000000"> {</span><span style="color: #A31515">&#039;prompt&#039;</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;consent&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;access_type&#039;</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;offline&#039;</span><span style="color: #000000">}</span>
+<span style="color: #000000">  });</span>
+
+<span style="color: #008000">// make the authorization request</span>
+<span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">authorizationHandler</span><span style="color: #000000">.</span><span style="color: #795E26">performAuthorizationRequest</span><span style="color: #000000">(</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">configuration</span><span style="color: #000000">, </span><span style="color: #001080">request</span><span style="color: #000000">);</span>
+</code></pre>
+				<a href="#making-token-requests" id="making-token-requests" style="color: inherit; text-decoration: none;">
+					<h5>Making Token Requests</h5>
+				</a>
+				<pre><code class="language-typescript"><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">tokenHandler</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">BaseTokenRequestHandler</span><span style="color: #000000">();</span>
+
+<span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">request</span><span style="color: #000000">: </span><span style="color: #267F99">TokenRequest</span><span style="color: #000000">|</span><span style="color: #267F99">null</span><span style="color: #000000"> = </span><span style="color: #0000FF">null</span><span style="color: #000000">;</span>
+
+<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">code</span><span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">extras</span><span style="color: #000000">: </span><span style="color: #267F99">StringMap</span><span style="color: #000000">|</span><span style="color: #267F99">undefined</span><span style="color: #000000"> = </span><span style="color: #0000FF">undefined</span><span style="color: #000000">;</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">request</span><span style="color: #000000"> &amp;&amp; </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">request</span><span style="color: #000000">.</span><span style="color: #001080">internal</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #001080">extras</span><span style="color: #000000"> = {};</span>
+<span style="color: #000000">    </span><span style="color: #001080">extras</span><span style="color: #000000">[</span><span style="color: #A31515">&#039;code_verifier&#039;</span><span style="color: #000000">] = </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">request</span><span style="color: #000000">.</span><span style="color: #001080">internal</span><span style="color: #000000">[</span><span style="color: #A31515">&#039;code_verifier&#039;</span><span style="color: #000000">];</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">  </span><span style="color: #008000">// use the code to make the token request.</span>
+<span style="color: #000000">  </span><span style="color: #001080">request</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TokenRequest</span><span style="color: #000000">({</span>
+<span style="color: #000000">      </span><span style="color: #001080">client_id:</span><span style="color: #000000"> </span><span style="color: #001080">clientId</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">redirect_uri:</span><span style="color: #000000"> </span><span style="color: #001080">redirectUri</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">grant_type:</span><span style="color: #000000"> </span><span style="color: #0070C1">GRANT_TYPE_AUTHORIZATION_CODE</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">code:</span><span style="color: #000000"> </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">code</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">refresh_token:</span><span style="color: #000000"> </span><span style="color: #0000FF">undefined</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">extras:</span><span style="color: #000000"> </span><span style="color: #001080">extras</span>
+<span style="color: #000000">    });</span>
+<span style="color: #000000">} </span><span style="color: #AF00DB">else</span><span style="color: #000000"> </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">tokenResponse</span><span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #008000">// use the token response to make a request for an access token</span>
+<span style="color: #000000">  </span><span style="color: #001080">request</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TokenRequest</span><span style="color: #000000">({</span>
+<span style="color: #000000">      </span><span style="color: #001080">client_id:</span><span style="color: #000000"> </span><span style="color: #001080">clientId</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">redirect_uri:</span><span style="color: #000000"> </span><span style="color: #001080">redirectUri</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">grant_type:</span><span style="color: #000000"> </span><span style="color: #0070C1">GRANT_TYPE_REFRESH_TOKEN</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">code:</span><span style="color: #000000"> </span><span style="color: #0000FF">undefined</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">refresh_token:</span><span style="color: #000000"> </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">tokenResponse</span><span style="color: #000000">.</span><span style="color: #001080">refreshToken</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #001080">extras:</span><span style="color: #000000"> </span><span style="color: #0000FF">undefined</span>
+<span style="color: #000000">    });</span>
+<span style="color: #000000">}</span>
+
+<span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">tokenHandler</span><span style="color: #000000">.</span><span style="color: #795E26">performTokenRequest</span><span style="color: #000000">(</span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">configuration</span><span style="color: #000000">, </span><span style="color: #001080">request</span><span style="color: #000000">)</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">response</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #008000">// ... do something with token response</span>
+<span style="color: #000000">  });</span>
+</code></pre>
+				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
+					<h3>Development</h3>
+				</a>
+				<a href="#preamble" id="preamble" style="color: inherit; text-decoration: none;">
+					<h4>Preamble</h4>
+				</a>
+				<p>This client has been written with <a href="https://typescriptlang.org">TypeScript</a>.</p>
+				<a href="#setup" id="setup" style="color: inherit; text-decoration: none;">
+					<h3>Setup</h3>
+				</a>
+				<ul>
+					<li><p>Install the latest version of <a href="https://nodejs.org/en/">Node</a>.
+							<a href="https://github.com/creationix/nvm">NVM</a>
+						(Node Version Manager is highly recommended).</p>
+					</li>
+					<li><p>Use <code>nvm install</code> to install the recommended Node.js version.</p>
+					</li>
+					<li><p>Download the latest version of Visual Studio Code from
+						<a href="https://code.visualstudio.com/">here</a>.</p>
+					</li>
+				</ul>
+				<a href="#provision-dependencies" id="provision-dependencies" style="color: inherit; text-decoration: none;">
+					<h4>Provision Dependencies</h4>
+				</a>
+				<p>This app uses <code>npm</code> to provision it dependencies.</p>
+				<ul>
+					<li><code>git clone</code> the <code>AppAuthJS</code> library and go to the root folder of
+					the project containing <code>package.json</code> file.</li>
+					<li><code>npm install</code> to install all the dev and project dependencies.</li>
+				</ul>
+				<p>Thats it! You are now ready to start working on <code>AppAuthJS</code>.</p>
+				<a href="#development-workflow" id="development-workflow" style="color: inherit; text-decoration: none;">
+					<h4>Development Workflow</h4>
+				</a>
+				<p>The project uses <code>npm</code> scripts to automate development workflows.
+				These scripts are made available via the <code>package.json</code> file.</p>
+				<p>The following scripts are included:</p>
+				<ul>
+					<li><p><code>npm run-script compile</code> or <code>tsc</code> will compile all your TypeScript files.
+						All compiled files go into the <code>built/</code> folder.</p>
+					</li>
+					<li><p><code>npm run-script watch</code> or <code>tsc --watch</code> will compile your TypeScript files
+						in <code>watch</code> mode. Recommended if you want to get continuous feedback.</p>
+					</li>
+					<li><p><code>npm run-script build-app</code> generates the output <code>bundle.js</code> file in the <code>built/</code>
+							directory. This includes the full <code>AppAuthJS</code> library including all
+						its dependencies.</p>
+					</li>
+					<li><p><code>npm test</code> provisions the <code>Karma</code> test runner to run all unit tests.
+							All tests are written using <a href="http://jasmine.github.io/">Jasmine</a>.
+							To <em>DEBUG</em> your tests, click on the <code>Debug</code> button in the Karma test runner
+						to look at the actual source of the tests. You can attach break points here.</p>
+					</li>
+					<li><p><code>npm run-script app</code> builds the test app on a local web server.
+							This is an end-to-end app which uses AppAuthJS and is a demonstration
+						on how to use the library.</p>
+					</li>
+					<li><p><code>npm run-script node-app</code> builds a Node.js CLI sample app. This is an end-to-end app
+						which uses AppAuthJS in a Node.js context.</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Modules</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/app.html">app</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/authorization_request.html">authorization_<wbr>request</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/authorization_request_handler.html">authorization_<wbr>request_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/authorization_response.html">authorization_<wbr>response</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/authorization_service_configuration.html">authorization_<wbr>service_<wbr>configuration</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/crypto_utils.html">crypto_<wbr>utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/errors.html">errors</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/flags.html">flags</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/index.html">index</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/logger.html">logger</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/node_app.html">node_<wbr>app</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/node_support.html">node_<wbr>support</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/node_support_crypto_utils.html">node_<wbr>support/crypto_<wbr>utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/node_support_node_request_handler.html">node_<wbr>support/node_<wbr>request_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/node_support_node_requestor.html">node_<wbr>support/node_<wbr>requestor</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/query_string_utils.html">query_<wbr>string_<wbr>utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/redirect_based_handler.html">redirect_<wbr>based_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/revoke_token_request.html">revoke_<wbr>token_<wbr>request</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/storage.html">storage</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/token_request.html">token_<wbr>request</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/token_request_handler.html">token_<wbr>request_<wbr>handler</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/token_response.html">token_<wbr>response</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/types.html">types</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/xhr.html">xhr</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
