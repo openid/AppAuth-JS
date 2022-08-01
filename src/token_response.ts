@@ -98,7 +98,7 @@ export class TokenResponse {
   isValid(buffer: number = AUTH_EXPIRY_BUFFER): boolean {
     if (this.expiresIn) {
       let now = nowInSeconds();
-      return now < this.issuedAt + this.expiresIn + buffer;
+      return now < Number(this.issuedAt) + Number(this.expiresIn) + Number(buffer);
     } else {
       return true;
     }
