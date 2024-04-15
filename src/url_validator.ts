@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2024 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -12,18 +12,13 @@
  * limitations under the License.
  */
 
-/* Global flags that control the behavior of App Auth JS. */
-export const Flags =
-    {
-      /* Logging turned on ? */
-      IS_LOG: true,
-      /* Profiling turned on ? */
-      IS_PROFILE: false,
-    }
+import {AppAuthError} from './errors';
 
-/** Set a value for the specified global control flags.  */
-export function setFlag(flag: keyof typeof Flags, value: boolean) {
-  Flags[flag] = value;
+export function requireValidUrl(input: string): string {
+  try {
+    new URL(input);
+    return input;
+  } catch (error) {
+    throw new AppAuthError(`Invalid input url ${input}`);
+  }
 }
-
-export const {IS_LOG, IS_PROFILE} = Flags;

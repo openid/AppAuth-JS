@@ -19,6 +19,7 @@ import {Crypto} from './crypto_utils';
 import {log} from './logger';
 import {QueryStringUtils} from './query_string_utils';
 import {StringMap} from './types';
+import {requireValidUrl} from './url_validator';
 
 
 /**
@@ -107,7 +108,7 @@ export abstract class AuthorizationRequestHandler {
     }
 
     let query = this.utils.stringify(requestMap);
-    let baseUrl = configuration.authorizationEndpoint;
+    let baseUrl = requireValidUrl(configuration.authorizationEndpoint);
     let url = `${baseUrl}?${query}`;
     return url;
   }

@@ -2,7 +2,7 @@ import { StringMap } from './types';
 /**
  * Supported token types
  */
-export declare type TokenTypeHint = 'refresh_token' | 'access_token';
+export type TokenTypeHint = 'refresh_token' | 'access_token';
 /**
  * Represents the Token Request as JSON.
  */
