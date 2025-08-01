@@ -66,7 +66,7 @@
     "@types/jquery": "^3.5.29",
     "base64-js": "^1.5.1",
     "follow-redirects": "^1.15.6",
-    "form-data": "^4.0.0",
+    "form-data": "^4.0.4",
     "opener": "^1.5.2"
   }
 }
