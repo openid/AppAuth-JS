@@ -52,34 +52,31 @@ describe('Authorization Service Configuration Tests', () => {
   });
 
   describe('Tests with dependencies', () => {
-    it('Fetch from issuer tests should work', (done: DoneFn) => {
+    it('Fetch from issuer tests should work', async () => {
       let promise: Promise<AuthorizationServiceConfigurationJson> =
           Promise.resolve(configuration.toJson());
       let requestor = new TestRequestor(promise);
-      AuthorizationServiceConfiguration.fetchFromIssuer('some://endpoint', requestor)
-          .then(result => {
-            expect(result).toBeTruthy();
-            expect(result.authorizationEndpoint).toBe(configuration.authorizationEndpoint);
-            expect(result.tokenEndpoint).toBe(configuration.tokenEndpoint);
-            expect(result.revocationEndpoint).toBe(configuration.revocationEndpoint);
-            expect(configuration.endSessionEndpoint).toBe(endSessionEndpoint);
-            expect(configuration.userInfoEndpoint).toBe(userInfoEndpoint);
-            done();
-          });
+      const result =
+          await AuthorizationServiceConfiguration.fetchFromIssuer('some://endpoint', requestor)
+      expect(result).toBeTruthy();
+      expect(result.authorizationEndpoint).toBe(configuration.authorizationEndpoint);
+      expect(result.tokenEndpoint).toBe(configuration.tokenEndpoint);
+      expect(result.revocationEndpoint).toBe(configuration.revocationEndpoint);
+      expect(configuration.endSessionEndpoint).toBe(endSessionEndpoint);
+      expect(configuration.userInfoEndpoint).toBe(userInfoEndpoint);
     });
 
-    it('Fetch from issuer tests should work', (done: DoneFn) => {
+    it('Fetch from issuer tests should work', async () => {
       let promise: Promise<AuthorizationServiceConfigurationJson> =
           Promise.reject(new Error('Something bad happened.'));
       let requestor = new TestRequestor(promise);
-
-      AuthorizationServiceConfiguration.fetchFromIssuer('some://endpoint', requestor)
-          .catch(result => {
-            expect(result).toBeTruthy();
-            let error = result as AppAuthError;
-            expect(error.message).toBe('Something bad happened.');
-            done();
-          });
+      try {
+        await AuthorizationServiceConfiguration.fetchFromIssuer('some://endpoint', requestor)
+      } catch (result) {
+        expect(result).toBeTruthy();
+        let error = result as AppAuthError;
+        expect(error.message).toBe('Something bad happened.');
+      }
     });
   });
 });

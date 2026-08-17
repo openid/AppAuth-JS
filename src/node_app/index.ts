@@ -27,7 +27,7 @@ import { GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest }
 import { BaseTokenRequestHandler, TokenRequestHandler } from '../token_request_handler';
 import { StringMap } from '../types';
 
-const PORT = 32111;
+const PORT = 8080;
 
 /* the Node.js based HTTP client. */
 const requestor = new NodeRequestor();
@@ -36,8 +36,9 @@ const requestor = new NodeRequestor();
 const openIdConnectUrl = 'https://accounts.google.com';
 
 /* example client configuration */
-const clientId = '511828570984-7nmej36h9j2tebiqmpqh835naet4vci4.apps.googleusercontent.com';
-const redirectUri = `http://127.0.0.1:${PORT}`;
+const clientId = '511828570984-dhnshqcpegee66hgnp754dupe8sbas18.apps.googleusercontent.com';
+const clientSecret = 'your-client-secret';
+const redirectUri = `http://localhost:${PORT}`;
 const scope = 'openid';
 
 export class App {
@@ -95,9 +96,12 @@ export class App {
       response: AuthorizationResponse) {
     
     let extras: StringMap|undefined = undefined;
-    if (request && request.internal) {
+    if (request) {
       extras = {};
-      extras['code_verifier'] = request.internal['code_verifier'];
+      extras['client_secret'] = clientSecret;
+      if (request.internal) {
+        extras['code_verifier'] = request.internal['code_verifier'];
+      }
     }
 
     let tokenRequest = new TokenRequest({
@@ -116,13 +120,16 @@ export class App {
   }
 
   makeAccessTokenRequest(configuration: AuthorizationServiceConfiguration, refreshToken: string) {
+    let extras: StringMap = {};
+    extras['client_secret'] = clientSecret;
+
     let request = new TokenRequest({
       client_id: clientId,
       redirect_uri: redirectUri,
       grant_type: GRANT_TYPE_REFRESH_TOKEN,
       code: undefined,
       refresh_token: refreshToken,
-      extras: undefined
+      extras: extras
     });
 
     return this.tokenHandler.performTokenRequest(configuration, request).then(response => {

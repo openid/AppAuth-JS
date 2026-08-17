@@ -8,7 +8,7 @@ discuss your plans over
 [mailing list](http://lists.openid.net/mailman/listinfo/openid-specs-ab), and
 send in those pull requests!
 
-# Signing the Agreements
+## Signing the Agreements
 
 In order to contribute to this project, you need to execute two legal agreements
 that cover your contributions.  Pull requests from users who have not signed
@@ -16,7 +16,7 @@ these agreements will not be merged.
 
 ## Execute the Contributor License Agreement (CLA)
 
-1. Visit http://openid.net/contribution-license-agreement/
+1. Visit [this](http://openid.net/contribution-license-agreement/) link.
 2. Tap *Execute OpenID Foundation Contribution License Agreement* for the
    version relevant to you (Individual or Corporate).
 3. Follow the instructions to sign the agreement.
@@ -28,13 +28,13 @@ a working group contribution agreement to cover any contributions you may make
 towards the OpenID Connect spec itself (e.g. in comments, bug reports, feature
 requests).
 
-1. Visit http://openid.net/intellectual-property/
+1. Visit [this](http://openid.net/intellectual-property/) link.
 2. Tap *Execute Contributor Agreement By Electronic Signature* in the box
    marked *Resources*.
 3. Follow the instructions to sign the document, state `OpenID AB/Connect` as
    the Initial Working Group.
 
-# Making a Pull Request
+## Making a Pull Request
 
 ## Before you Start
 

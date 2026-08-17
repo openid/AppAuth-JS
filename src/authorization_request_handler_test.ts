@@ -16,9 +16,8 @@ import {AuthorizationNotifier} from './authorization_request_handler';
 
 describe('Tests for the Authorization Request handler', () => {
   describe('Basic protocol tests', () => {
-    it('Basic authorization flow tests', (done: DoneFn) => {
+    it('Basic authorization flow tests', () => {
       let notifier = new AuthorizationNotifier();
-      done();
     });
   });
 });

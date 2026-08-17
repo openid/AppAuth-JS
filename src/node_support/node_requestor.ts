@@ -20,8 +20,9 @@ import {AppAuthError} from '../errors';
 import {log} from '../logger';
 import {Requestor} from '../xhr';
 
-const https = require('follow-redirects').https;
-const http = require('follow-redirects').http;
+import followRedirects from 'follow-redirects';
+const https = followRedirects.https;
+const http = followRedirects.http;
 
 /**
  * A Node.js HTTP client.
@@ -45,7 +46,7 @@ export class NodeRequestor extends Requestor {
         options.headers['Content-Length'] = String(data.toString().length);
       }
 
-      let protocol = https;
+      let protocol: any = https;
       if (url.protocol && url.protocol.toLowerCase() === 'http:') {
         protocol = http;
       }

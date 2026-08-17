@@ -1,12 +1,15 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
+        "module": "esnext",
+        "target": "es6",
         "lib": [
             "dom",
-            "es2015"
+            "ES2015"
         ],
-        "rootDir": "src",
+        "rootDirs": [
+            "src",
+            "app"
+        ],
         "outDir": "built",
         "noImplicitAny": true,
         "experimentalDecorators": true,
@@ -16,11 +19,23 @@
         "declaration": true,
         "noEmitOnError": true,
         "inlineSourceMap": true,
-        "inlineSources": true
+        "inlineSources": true,
+        "types": [
+            "base64-js",
+            "jquery",
+            // Dev dependencies
+            "hapi",
+            "node",
+            "react",
+            "react-dom",
+            "vitest/globals"
+        ],
     },
     "exclude": [
         "node_modules",
-        "built"
+        "built",
+        "vitest.config.ts",
+        "vite.config.ts",
     ],
     "compileOnSave": true
 }
