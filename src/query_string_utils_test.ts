@@ -98,7 +98,7 @@ describe('Query String Parser Tests', () => {
     let result = parser.parse(locationLike);
     let keys = Object.keys(result);
     expect(result).toBeTruthy();
-    expect(keys.length).toBe(0, 'No query parameters provided');
+    expect(keys.length, 'No query parameters provided').toBe(0);
   });
 
   it('Should parse simple query strings.', () => {
@@ -106,13 +106,13 @@ describe('Query String Parser Tests', () => {
     let result = parser.parse(locationLike);
     let keys = Object.keys(result);
     expect(result).toBeTruthy();
-    expect(keys.length).toBe(3, '3 Query parameters should be present');
+    expect(keys.length, '3 Query parameters should be present').toBe(3);
     expect(keys[0]).toBe('key1');
     expect(keys[1]).toBe('key2');
     expect(keys[2]).toBe(' key3');
-    expect(result[keys[0]]).toBe('value1', 'Expected value is "value1"');
-    expect(result[keys[1]]).toBe('value 2', 'Expected value is "value 2"');
-    expect(result[keys[2]]).toBe(' value 3', 'Expected value is " value 3"');
+    expect(result[keys[0]], 'Expected value is "value1"').toBe('value1');
+    expect(result[keys[1]], 'Expected value is "value 2"').toBe('value 2');
+    expect(result[keys[2]], 'Expected value is " value 3"').toBe(' value 3');
   });
 
   it('Should handle params with no values', () => {
@@ -120,9 +120,9 @@ describe('Query String Parser Tests', () => {
     let result = parser.parse(locationLike);
     let keys = Object.keys(result);
     expect(result).toBeTruthy();
-    expect(keys.length).toBe(1, '1 Query parameter should be present');
+    expect(keys.length, '1 Query parameter should be present').toBe(1);
     expect(keys[0]).toBe('key1');
-    expect(result[keys[0]]).toBe('value1', 'Expected value is "value1"');
+    expect(result[keys[0]], 'Expected value is "value1"').toBe('value1');
   });
 
   it('Should handle duplicate parameter values', () => {
@@ -130,9 +130,9 @@ describe('Query String Parser Tests', () => {
     let result = parser.parse(locationLike);
     let keys = Object.keys(result);
     expect(result).toBeTruthy();
-    expect(keys.length).toBe(1, '1 Query parameter should be present');
+    expect(keys.length, '1 Query parameter should be present').toBe(1);
     expect(keys[0]).toBe('key1');
-    expect(result[keys[0]]).toBe('value2', 'Expected value is "value2"');
+    expect(result[keys[0]], 'Expected value is "value2"').toBe('value2');
   });
 
   it('Should be able to deal with escaped # or ? characters', () => {
@@ -140,10 +140,10 @@ describe('Query String Parser Tests', () => {
     let result = parser.parse(locationLike);
     let keys = Object.keys(result);
     expect(result).toBeTruthy();
-    expect(keys.length).toBe(2, '2 Query parameters should be present');
+    expect(keys.length, '2 Query parameters should be present').toBe(2);
     expect(keys[0]).toBe('key1');
     expect(keys[1]).toBe('key2');
-    expect(result[keys[0]]).toBe('value1?', 'Expected value is "value1?"');
-    expect(result[keys[1]]).toBe('value2 #', 'Expected value is "value2 #"');
+    expect(result[keys[0]], 'Expected value is "value1?"').toBe('value1?');
+    expect(result[keys[1]], 'Expected value is "value2 #"').toBe('value2 #');
   });
 });

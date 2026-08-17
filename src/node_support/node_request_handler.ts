@@ -23,10 +23,7 @@ import {Crypto} from '../crypto_utils';
 import {log} from '../logger';
 import {BasicQueryStringUtils, QueryStringUtils} from '../query_string_utils';
 import {NodeCrypto} from './crypto_utils';
-
-
-// TypeScript typings for `opener` are not correct and do not export it as module
-import opener = require('opener');
+import opener from 'opener';
 
 class ServerEventsEmitter extends EventEmitter {
   static ON_UNABLE_TO_START = 'unable_to_start';

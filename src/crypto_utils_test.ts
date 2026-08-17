@@ -19,46 +19,23 @@ describe('Crypto Utils Tests.', () => {
   const EXPECTED_BASE64 = 'MYdqq2Vt_ZLMAWpXXsjGIrlxrCF2e4ZP4SxDf7cm_tg';
   const crypto = new DefaultCrypto();
 
-  it('produces the right challenge for a valid code', (done: DoneFn) => {
+  it('produces the right challenge for a valid code', async () => {
     const code = crypto.generateRandom(43);
-    const challenge = crypto.deriveChallenge(code);
-    challenge
-        .then(result => {
-          expect(result).toBeTruthy();
-          // No `==` in the base64 encoded result.
-          expect(result.indexOf('=') < 0);
-          done();
-        })
-        .catch(error => {
-          fail(error);
-          done();
-        });
+    const result = await crypto.deriveChallenge(code);
+    expect(result).toBeTruthy();
+    // No `==` in the base64 encoded result.
+    expect(result.indexOf('=') < 0);
   });
 
-  it('generateRandom produces different values', (done: DoneFn) => {
+  it('generateRandom produces different values', async () => {
     const code1 = crypto.generateRandom(10);
     const code2 = crypto.generateRandom(10);
-    Promise.all([code1, code2])
-        .then(result => {
-          expect(result[0]).not.toEqual(result[1]);
-          done();
-        })
-        .catch(error => {
-          fail(error);
-          done();
-        });
+    const result = await Promise.all([code1, code2])
+    expect(result[0]).not.toEqual(result[1]);
   });
 
-  it('produces the right base64 encoded challenge', (done: DoneFn) => {
-    const challenge = crypto.deriveChallenge(CODE);
-    challenge
-        .then(result => {
-          expect(result).toEqual(EXPECTED_BASE64);
-          done();
-        })
-        .catch(error => {
-          fail(error);
-          done();
-        });
+  it('produces the right base64 encoded challenge', async () => {
+    const result = await crypto.deriveChallenge(CODE);
+    expect(result).toEqual(EXPECTED_BASE64);
   });
 });
