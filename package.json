@@ -1,6 +1,6 @@
 {
   "name": "@openid/appauth",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "A general purpose OAuth client.",
   "author": "The OpenID Foundation",
   "license": "Apache-2.0",
@@ -14,18 +14,37 @@
     "built/**"
   ],
   "type": "module",
-  "main": "built/src/index.js",
-  "types": "built/src/index.d.ts",
+  "main": "./built/cjs/src/index.js",
+  "module": "./built/src/index.js",
+  "types": "./built/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./built/src/index.d.ts",
+      "import": "./built/src/index.js",
+      "require": "./built/cjs/src/index.js"
+    },
+    "./built/node_support": {
+      "types": "./built/src/node_support/index.d.ts",
+      "import": "./built/src/node_support/index.js",
+      "require": "./built/cjs/src/node_support/index.js"
+    },
+    "./built/*": {
+      "types": "./built/src/*.d.ts",
+      "import": "./built/src/*.js",
+      "require": "./built/cjs/src/*.js"
+    }
+  },
   "scripts": {
     "app": "vite",
     "prenode-app": "npm run-script --silent compile",
     "node-app": "tsx built/src/node_app/index.js",
     "prebuild-app": "npm run-script --silent compile",
-    "build-app": "vite build app",
+    "build-app": "vite build",
     "preminify": "npm run-script --silent build-app",
     "minify": "java -jar node_modules/google-closure-compiler/compiler.jar --js built/app/bundle.js --js_output_file built/app/bundle_minified.js",
     "precompile": "npm run-script --silent clean && npm run-script --silent format",
-    "compile": "node_modules/.bin/tsc",
+    "compile": "node_modules/.bin/tsc && node_modules/.bin/tsc -p tsconfig.cjs.json",
+    "postcompile": "echo '{\"type\": \"commonjs\"}' > built/cjs/package.json",
     "prepare": "npm run-script --silent build-app",
     "format": "node_modules/.bin/clang-format -i -style=file --glob=src/**.ts",
     "clean": "rm -rf built",
@@ -45,24 +64,24 @@
   "devDependencies": {
     "@types/follow-redirects": "^1.14.4",
     "@types/hapi": "^18.0.15",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.6.6",
     "@types/opener": "^1.4.3",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitest/coverage-v8": "^5.1.0",
     "clang-format": "^1.8.0",
-    "google-closure-compiler": "^20260811.0.0",
+    "google-closure-compiler": "^20261104.0.0",
     "http-server": "^14.1.1",
-    "jsdom": "^30.0.1",
-    "tsx": "^4.23.12",
+    "jsdom": "^31.0.0",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.1.0"
   },
   "dependencies": {
     "@types/base64-js": "^1.5.0",
     "@types/jquery": "^4.0.1",
     "base64-js": "^1.5.1",
-    "follow-redirects": "^1.16.0",
+    "follow-redirects": "^1.16.2",
     "form-data": "^4.0.6",
     "opener": "^1.5.2"
   }
