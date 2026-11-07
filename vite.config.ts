@@ -9,8 +9,8 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       input: {
-        main: resolve(import.meta.dirname, 'index.html'),
-        redirect: resolve(import.meta.dirname, 'redirect.html'),
+        main: resolve(import.meta.dirname, 'app/index.html'),
+        redirect: resolve(import.meta.dirname, 'app/redirect.html'),
       },
       output: {
         // Enforce static names without hashes
