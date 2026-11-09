@@ -12,14 +12,14 @@
  * limitations under the License.
  */
 
-import {AuthorizationRequest} from './authorization_request';
-import {AuthorizationError, AuthorizationResponse} from './authorization_response';
-import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
-import {Crypto} from './crypto_utils';
-import {log} from './logger';
-import {QueryStringUtils} from './query_string_utils';
-import {StringMap} from './types';
-import {requireValidUrl} from './url_validator';
+import {AuthorizationRequest} from './authorization_request.ts';
+import {AuthorizationError, AuthorizationResponse} from './authorization_response.ts';
+import {AuthorizationServiceConfiguration} from './authorization_service_configuration.ts';
+import {Crypto} from './crypto_utils.ts';
+import {log} from './logger.ts';
+import {QueryStringUtils} from './query_string_utils.ts';
+import {StringMap} from './types.ts';
+import {requireValidUrl} from './url_validator.ts';
 
 
 /**

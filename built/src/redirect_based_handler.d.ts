@@ -1,10 +1,10 @@
-import { AuthorizationRequest } from './authorization_request';
-import { AuthorizationRequestHandler, AuthorizationRequestResponse } from './authorization_request_handler';
-import { AuthorizationServiceConfiguration } from './authorization_service_configuration';
-import { Crypto } from './crypto_utils';
-import { BasicQueryStringUtils } from './query_string_utils';
-import { StorageBackend } from './storage';
-import { LocationLike } from './types';
+import { AuthorizationRequest } from './authorization_request.ts';
+import { AuthorizationRequestHandler, AuthorizationRequestResponse } from './authorization_request_handler.ts';
+import { AuthorizationServiceConfiguration } from './authorization_service_configuration.ts';
+import { Crypto } from './crypto_utils.ts';
+import { BasicQueryStringUtils } from './query_string_utils.ts';
+import { StorageBackend } from './storage.ts';
+import { LocationLike } from './types.ts';
 /**
  * Represents an AuthorizationRequestHandler which uses a standard
  * redirect based code flow.

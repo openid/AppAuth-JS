@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {AppAuthError} from './errors';
+import {AppAuthError} from './errors.ts';
 
 describe('Errors Tests', () => {
   const message = 'Something bad happened';

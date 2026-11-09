@@ -14,18 +14,18 @@
 
 // Represents a Node application, that uses the AppAuthJS library.
 
-import { AuthorizationRequest } from '../authorization_request';
-import { AuthorizationNotifier, AuthorizationRequestHandler } from '../authorization_request_handler';
-import { AuthorizationResponse } from '../authorization_response';
-import { AuthorizationServiceConfiguration } from '../authorization_service_configuration';
-import { log } from '../logger';
-import { NodeCrypto } from '../node_support';
-import { NodeRequestor } from '../node_support/node_requestor';
-import { NodeBasedHandler } from '../node_support/node_request_handler';
-import { RevokeTokenRequest } from '../revoke_token_request';
-import { GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest } from '../token_request';
-import { BaseTokenRequestHandler, TokenRequestHandler } from '../token_request_handler';
-import { StringMap } from '../types';
+import { AuthorizationRequest } from '../authorization_request.ts';
+import { AuthorizationNotifier, AuthorizationRequestHandler } from '../authorization_request_handler.ts';
+import { AuthorizationResponse } from '../authorization_response.ts';
+import { AuthorizationServiceConfiguration } from '../authorization_service_configuration.ts';
+import { log } from '../logger.ts';
+import { NodeCrypto } from '../node_support/index.ts';
+import { NodeRequestor } from '../node_support/node_requestor.ts';
+import { NodeBasedHandler } from '../node_support/node_request_handler.ts';
+import { RevokeTokenRequest } from '../revoke_token_request.ts';
+import { GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest } from '../token_request.ts';
+import { BaseTokenRequestHandler, TokenRequestHandler } from '../token_request_handler.ts';
+import { StringMap } from '../types.ts';
 
 const PORT = 8080;
 

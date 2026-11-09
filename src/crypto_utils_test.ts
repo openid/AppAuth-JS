@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {DefaultCrypto} from './crypto_utils';
+import {DefaultCrypto} from './crypto_utils.ts';
 
 describe('Crypto Utils Tests.', () => {
   const CODE = new Array(6).join('challenge');

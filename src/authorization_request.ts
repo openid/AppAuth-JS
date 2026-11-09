@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-import {Crypto, DefaultCrypto} from './crypto_utils';
-import {log} from './logger';
-import {StringMap} from './types';
+import {Crypto, DefaultCrypto} from './crypto_utils.ts';
+import {log} from './logger.ts';
+import {StringMap} from './types.ts';
 
 /**
  * Represents an AuthorizationRequest as JSON.

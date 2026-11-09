@@ -12,13 +12,13 @@
  * limitations under the License.
  */
 
-import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
-import {AppAuthError} from './errors';
-import {BasicQueryStringUtils, QueryStringUtils} from './query_string_utils';
-import {RevokeTokenRequest} from './revoke_token_request';
-import {TokenRequest} from './token_request';
-import {TokenError, TokenErrorJson, TokenResponse, TokenResponseJson} from './token_response';
-import {JQueryRequestor, Requestor} from './xhr';
+import {AuthorizationServiceConfiguration} from './authorization_service_configuration.ts';
+import {AppAuthError} from './errors.ts';
+import {BasicQueryStringUtils, QueryStringUtils} from './query_string_utils.ts';
+import {RevokeTokenRequest} from './revoke_token_request.ts';
+import {TokenRequest} from './token_request.ts';
+import {TokenError, TokenErrorJson, TokenResponse, TokenResponseJson} from './token_response.ts';
+import {JQueryRequestor, Requestor} from './xhr.ts';
 
 
 /**

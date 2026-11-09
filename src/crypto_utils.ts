@@ -14,7 +14,7 @@
 
 import * as base64 from 'base64-js';
 
-import {AppAuthError} from './errors';
+import {AppAuthError} from './errors.ts';
 
 const HAS_CRYPTO = typeof window !== 'undefined' && !!(window.crypto as any);
 const HAS_SUBTLE_CRYPTO = HAS_CRYPTO && !!(window.crypto.subtle as any);

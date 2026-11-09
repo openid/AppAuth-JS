@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "module": "esnext",
+        "module": "nodenext",
+        "rewriteRelativeImportExtensions": true,
         "target": "es6",
         "lib": [
             "dom",

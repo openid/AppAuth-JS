@@ -11,8 +11,8 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {AuthorizationRequest, AuthorizationRequestJson} from './authorization_request';
-import {StringMap} from './types';
+import {AuthorizationRequest, AuthorizationRequestJson} from './authorization_request.ts';
+import {StringMap} from './types.ts';
 
 describe('AuthorizationRequest Tests', () => {
   const clientId = 'client_id';

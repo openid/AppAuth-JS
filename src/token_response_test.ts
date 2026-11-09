@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {TokenError, TokenResponse} from './token_response';
+import {TokenError, TokenResponse} from './token_response.ts';
 
 describe('Token Response tests', () => {
   const accessToken = 'accessToken';

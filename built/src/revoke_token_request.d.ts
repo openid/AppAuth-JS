@@ -1,4 +1,4 @@
-import { StringMap } from './types';
+import { StringMap } from './types.ts';
 /**
  * Supported token types
  */

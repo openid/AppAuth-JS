@@ -13,7 +13,7 @@
  */
 
 import * as crypto from 'crypto';
-import { bufferToString, Crypto, urlSafe } from '../crypto_utils';
+import { bufferToString, Crypto, urlSafe } from '../crypto_utils.ts';
 
 export class NodeCrypto implements Crypto {
   generateRandom(size: number): string {
