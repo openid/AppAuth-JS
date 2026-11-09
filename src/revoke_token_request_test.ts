@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {RevokeTokenRequest} from './revoke_token_request';
+import {RevokeTokenRequest} from './revoke_token_request.ts';
 
 describe('Revoke Token Request tests', () => {
   const token = 'token';

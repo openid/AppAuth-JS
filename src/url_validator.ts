@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {AppAuthError} from './errors';
+import {AppAuthError} from './errors.ts';
 
 export function requireValidUrl(input: string): string {
   try {

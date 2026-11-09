@@ -1,4 +1,4 @@
-import { LocationLike, StringMap } from './types';
+import { LocationLike, StringMap } from './types.ts';
 /**
  * Query String Utilities.
  */

@@ -1,5 +1,5 @@
-import {AppAuthError} from './errors';
-import {requireValidUrl} from './url_validator';
+import {AppAuthError} from './errors.ts';
+import {requireValidUrl} from './url_validator.ts';
 
 describe('URL Validation Tests', () => {
   it('Passes for a valid input URL', () => {

@@ -16,9 +16,9 @@ import * as Buffer from 'buffer';
 import {ServerResponse} from 'http';
 import * as Url from 'url';
 
-import {AppAuthError} from '../errors';
-import {log} from '../logger';
-import {Requestor} from '../xhr';
+import {AppAuthError} from '../errors.ts';
+import {log} from '../logger.ts';
+import {Requestor} from '../xhr.ts';
 
 import followRedirects from 'follow-redirects';
 const https = followRedirects.https;

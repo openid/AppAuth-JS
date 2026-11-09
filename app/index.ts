@@ -14,16 +14,16 @@
 
 // Represents the test web app that uses the AppAuthJS library.
 
-import {AuthorizationRequest} from '../src/authorization_request';
-import {AuthorizationNotifier, AuthorizationRequestHandler} from '../src/authorization_request_handler';
-import {AuthorizationServiceConfiguration} from '../src/authorization_service_configuration';
-import {log} from '../src/logger';
-import {RedirectRequestHandler} from '../src/redirect_based_handler';
-import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../src/token_request';
-import {BaseTokenRequestHandler, TokenRequestHandler} from '../src/token_request_handler';
-import {TokenResponse} from '../src/token_response';
-import { AuthorizationResponse } from '../src/authorization_response';
-import { StringMap } from '../src/types';
+import {AuthorizationRequest} from '../src/authorization_request.ts';
+import {AuthorizationNotifier, AuthorizationRequestHandler} from '../src/authorization_request_handler.ts';
+import {AuthorizationServiceConfiguration} from '../src/authorization_service_configuration.ts';
+import {log} from '../src/logger.ts';
+import {RedirectRequestHandler} from '../src/redirect_based_handler.ts';
+import {GRANT_TYPE_AUTHORIZATION_CODE, GRANT_TYPE_REFRESH_TOKEN, TokenRequest} from '../src/token_request.ts';
+import {BaseTokenRequestHandler, TokenRequestHandler} from '../src/token_request_handler.ts';
+import {TokenResponse} from '../src/token_response.ts';
+import { AuthorizationResponse } from '../src/authorization_response.ts';
+import { StringMap } from '../src/types.ts';
 
 /* Some interface declarations for Material design lite. */
 

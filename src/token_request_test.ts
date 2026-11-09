@@ -12,8 +12,8 @@
  * limitations under the License.
  */
 
-import {GRANT_TYPE_AUTHORIZATION_CODE, TokenRequest} from './token_request';
-import {StringMap} from './types';
+import {GRANT_TYPE_AUTHORIZATION_CODE, TokenRequest} from './token_request.ts';
+import {StringMap} from './types.ts';
 
 describe('Token Request tests', () => {
   const clientId = 'client_id';

@@ -1,5 +1,5 @@
-import { Crypto } from './crypto_utils';
-import { StringMap } from './types';
+import { Crypto } from './crypto_utils.ts';
+import { StringMap } from './types.ts';
 /**
  * Represents an AuthorizationRequest as JSON.
  */

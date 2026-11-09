@@ -1,4 +1,4 @@
-import { Requestor } from '../xhr';
+import { Requestor } from '../xhr.ts';
 /**
  * A Node.js HTTP client.
  */

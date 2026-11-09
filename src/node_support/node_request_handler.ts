@@ -15,14 +15,14 @@
 import {EventEmitter} from 'events';
 import * as Http from 'http';
 import * as Url from 'url';
-import {AuthorizationRequest} from '../authorization_request';
-import {AuthorizationRequestHandler, AuthorizationRequestResponse} from '../authorization_request_handler';
-import {AuthorizationError, AuthorizationResponse} from '../authorization_response';
-import {AuthorizationServiceConfiguration} from '../authorization_service_configuration';
-import {Crypto} from '../crypto_utils';
-import {log} from '../logger';
-import {BasicQueryStringUtils, QueryStringUtils} from '../query_string_utils';
-import {NodeCrypto} from './crypto_utils';
+import {AuthorizationRequest} from '../authorization_request.ts';
+import {AuthorizationRequestHandler, AuthorizationRequestResponse} from '../authorization_request_handler.ts';
+import {AuthorizationError, AuthorizationResponse} from '../authorization_response.ts';
+import {AuthorizationServiceConfiguration} from '../authorization_service_configuration.ts';
+import {Crypto} from '../crypto_utils.ts';
+import {log} from '../logger.ts';
+import {BasicQueryStringUtils, QueryStringUtils} from '../query_string_utils.ts';
+import {NodeCrypto} from './crypto_utils.ts';
 import opener from 'opener';
 
 class ServerEventsEmitter extends EventEmitter {

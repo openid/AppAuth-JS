@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {AppAuthError} from './errors';
+import {AppAuthError} from './errors.ts';
 
 /**
  * An class that abstracts away the ability to make an XMLHttpRequest.

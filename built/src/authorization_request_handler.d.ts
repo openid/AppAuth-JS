@@ -1,8 +1,8 @@
-import { AuthorizationRequest } from './authorization_request';
-import { AuthorizationError, AuthorizationResponse } from './authorization_response';
-import { AuthorizationServiceConfiguration } from './authorization_service_configuration';
-import { Crypto } from './crypto_utils';
-import { QueryStringUtils } from './query_string_utils';
+import { AuthorizationRequest } from './authorization_request.ts';
+import { AuthorizationError, AuthorizationResponse } from './authorization_response.ts';
+import { AuthorizationServiceConfiguration } from './authorization_service_configuration.ts';
+import { Crypto } from './crypto_utils.ts';
+import { QueryStringUtils } from './query_string_utils.ts';
 /**
  * This type represents a lambda that can take an AuthorizationRequest,
  * and an AuthorizationResponse as arguments.

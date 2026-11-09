@@ -1,4 +1,4 @@
-import { Requestor } from './xhr';
+import { Requestor } from './xhr.ts';
 /**
  * Represents AuthorizationServiceConfiguration as a JSON object.
  */

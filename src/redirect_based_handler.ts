@@ -12,15 +12,15 @@
  * limitations under the License.
  */
 
-import {AuthorizationRequest} from './authorization_request';
-import {AuthorizationRequestHandler, AuthorizationRequestResponse} from './authorization_request_handler';
-import {AuthorizationError, AuthorizationResponse} from './authorization_response'
-import {AuthorizationServiceConfiguration} from './authorization_service_configuration';
-import {Crypto, DefaultCrypto} from './crypto_utils';
-import {log} from './logger';
-import {BasicQueryStringUtils} from './query_string_utils';
-import {LocalStorageBackend, StorageBackend} from './storage';
-import {LocationLike} from './types';
+import {AuthorizationRequest} from './authorization_request.ts';
+import {AuthorizationRequestHandler, AuthorizationRequestResponse} from './authorization_request_handler.ts';
+import {AuthorizationError, AuthorizationResponse} from './authorization_response.ts'
+import {AuthorizationServiceConfiguration} from './authorization_service_configuration.ts';
+import {Crypto, DefaultCrypto} from './crypto_utils.ts';
+import {log} from './logger.ts';
+import {BasicQueryStringUtils} from './query_string_utils.ts';
+import {LocalStorageBackend, StorageBackend} from './storage.ts';
+import {LocationLike} from './types.ts';
 
 
 /** key for authorization request. */

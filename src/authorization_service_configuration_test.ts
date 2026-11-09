@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-import {AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson} from './authorization_service_configuration';
-import {AppAuthError} from './errors';
-import {TestRequestor} from './xhr';
+import {AuthorizationServiceConfiguration, AuthorizationServiceConfigurationJson} from './authorization_service_configuration.ts';
+import {AppAuthError} from './errors.ts';
+import {TestRequestor} from './xhr.ts';
 
 describe('Authorization Service Configuration Tests', () => {
   const authorizationEndpoint = 'authorization://endpoint';

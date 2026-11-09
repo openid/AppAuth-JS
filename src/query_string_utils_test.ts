@@ -12,8 +12,8 @@
  * limitations under the License.
  */
 
-import {BasicQueryStringUtils} from './query_string_utils';
-import {LocationLike} from './types';
+import {BasicQueryStringUtils} from './query_string_utils.ts';
+import {LocationLike} from './types.ts';
 
 const MOCK_LOCATION_UNDEFINED = 'undefined';
 

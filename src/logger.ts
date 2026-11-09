@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {Flags} from './flags';
+import {Flags} from './flags.ts';
 
 export function log(message: string, ...args: any[]) {
   if (Flags.IS_LOG) {

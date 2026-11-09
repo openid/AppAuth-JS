@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {JQueryRequestor, Requestor} from './xhr';
+import {JQueryRequestor, Requestor} from './xhr.ts';
 
 
 /**

@@ -1,9 +1,9 @@
-import { AuthorizationServiceConfiguration } from './authorization_service_configuration';
-import { QueryStringUtils } from './query_string_utils';
-import { RevokeTokenRequest } from './revoke_token_request';
-import { TokenRequest } from './token_request';
-import { TokenResponse } from './token_response';
-import { Requestor } from './xhr';
+import { AuthorizationServiceConfiguration } from './authorization_service_configuration.ts';
+import { QueryStringUtils } from './query_string_utils.ts';
+import { RevokeTokenRequest } from './revoke_token_request.ts';
+import { TokenRequest } from './token_request.ts';
+import { TokenResponse } from './token_response.ts';
+import { Requestor } from './xhr.ts';
 /**
  * Represents an interface which can make a token request.
  */

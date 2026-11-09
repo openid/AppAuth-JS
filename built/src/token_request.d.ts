@@ -1,4 +1,4 @@
-import { StringMap } from './types';
+import { StringMap } from './types.ts';
 export declare const GRANT_TYPE_AUTHORIZATION_CODE = "authorization_code";
 export declare const GRANT_TYPE_REFRESH_TOKEN = "refresh_token";
 /**

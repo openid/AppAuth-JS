@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {AuthorizationResponse} from './authorization_response';
+import {AuthorizationResponse} from './authorization_response.ts';
 
 describe('Authorization Response Tests', () => {
   const code = 'code';

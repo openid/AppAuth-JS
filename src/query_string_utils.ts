@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import {LocationLike, StringMap} from './types';
+import {LocationLike, StringMap} from './types.ts';
 
 
 /**
